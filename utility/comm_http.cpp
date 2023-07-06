@@ -6,10 +6,10 @@
 ///
 class CommHttp::Private {
   public:
-    Private(CommHttp* q) : manager(new QNetworkAccessManager(q)) {
-        manager->setProxy(QNetworkProxy::NoProxy);
+    Private(CommHttp* q) : manager(new httplib::Client("123124")) {
+//        manager->setProxy(QNetworkProxy::NoProxy);
     }
-    QNetworkAccessManager* manager;
+    httplib::Client* manager;
 };
 
 ///
@@ -23,8 +23,8 @@ CommHttp::CommHttp(QObject* parent) : QObject(parent) {
     m_tmr = new QTimer(this);
     connect(m_tmr, &QTimer::timeout, this, &CommHttp::sendQueueCmd);
     d = new CommHttp::Private(this);
-    connect(d->manager, &QNetworkAccessManager::finished, this,
-            &CommHttp::replyFinishedSlot);
+//    connect(d->manager, &QNetworkAccessManager::finished, this,
+//            &CommHttp::replyFinishedSlot);
 }
 
 ///
@@ -41,7 +41,7 @@ CommHttp* CommHttp::GetInstance() {
 /// \param cmd
 ///
 void CommHttp::execCmd(QString cmd) {
-    d->manager->get(QNetworkRequest(QUrl(cmd)));
+//    d->manager->get(QNetworkRequest(QUrl(cmd)));
 }
 
 ///
@@ -58,24 +58,24 @@ CommHttp::~CommHttp() {
 /// \brief CommHttp::replyFinishedSlot. response handle.
 /// \param reply
 ///
-void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
-    reply->deleteLater();
-    if (reply->error() == QNetworkReply::NoError) {
-        QList<QNetworkCookie> lc_cookie =
-            d->manager->cookieJar()->cookiesForUrl(reply->url());
-        QString s_rgaIp = lc_cookie.value(0).domain();
-        QByteArray data = reply->readAll();
-        QJsonParseError jsonpe;
-        QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
-        if (jsonpe.error == QJsonParseError::NoError) {
-            QJsonObject data_obj = json_data.object();
-            data_obj.insert("id", s_rgaIp.replace(".", ""));
-            ResponseCalc* calc = new ResponseCalc(data_obj);
-            m_pool->start(calc);
-            emit respArrival();
-        }
-    }
-}
+//void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
+//    reply->deleteLater();
+//    if (reply->error() == QNetworkReply::NoError) {
+//        QList<QNetworkCookie> lc_cookie =
+//            d->manager->cookieJar()->cookiesForUrl(reply->url());
+//        QString s_rgaIp = lc_cookie.value(0).domain();
+//        QByteArray data = reply->readAll();
+//        QJsonParseError jsonpe;
+//        QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
+//        if (jsonpe.error == QJsonParseError::NoError) {
+//            QJsonObject data_obj = json_data.object();
+//            data_obj.insert("id", s_rgaIp.replace(".", ""));
+//            ResponseCalc* calc = new ResponseCalc(data_obj);
+//            m_pool->start(calc);
+//            emit respArrival();
+//        }
+//    }
+//}
 
 ///
 /// \brief CommHttp::cmdEnQueue
@@ -104,7 +104,7 @@ void CommHttp::sendQueueCmd() {
         return;
     }
     QString s_cmd = m_cmdQ.dequeue();
-    d->manager->get(QNetworkRequest(QUrl(s_cmd)));
+//    d->manager->get(QNetworkRequest(QUrl(s_cmd)));
     if (m_cmdQ.count() > 100) {
         clearCmdQ();
     }

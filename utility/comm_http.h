@@ -2,6 +2,7 @@
 #define COMMHTTP_H
 
 #include <QObject>
+#include "thirdparty/httplib.h"
 
 ///
 /// \brief The CommHttp class
@@ -10,9 +11,10 @@ class CommHttp : public QObject {
     Q_OBJECT
   private:
     explicit CommHttp(QObject* parent = nullptr);
-    QNetworkAccessManager*  m_qnaHttp = nullptr;
-    QNetworkRequest         m_req;
-    QList<QNetworkCookie>   m_allCookies;
+    httplib::Client* http = nullptr;
+//    QNetworkAccessManager*  m_qnaHttp = nullptr;
+//    QNetworkRequest         m_req;
+//    QList<QNetworkCookie>   m_allCookies;
     QTimer*                 m_tmr = nullptr;
     QQueue<QString>         m_cmdQ;
     QThreadPool*            m_pool;
@@ -29,7 +31,7 @@ class CommHttp : public QObject {
     Private* d;
 
   private slots:
-    void replyFinishedSlot(QNetworkReply* reply);
+//    void replyFinishedSlot(QNetworkReply* reply);
 
   public:
     void cmdEnQueue(QVariant cmd, bool is_str_list = false);

@@ -33,13 +33,13 @@
 #include <QStringList>
 #include <QString>
 
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkCookieJar>
-#include <QNetworkCookie>
-#include <QNetworkRequest>
-#include <QNetworkProxy>
-#include <QTcpSocket>
+//#include <QNetworkAccessManager>
+//#include <QNetworkReply>
+//#include <QNetworkCookieJar>
+//#include <QNetworkCookie>
+//#include <QNetworkRequest>
+//#include <QNetworkProxy>
+//#include <QTcpSocket>
 
 #include <QTimer>
 #include <QDateTime>
@@ -52,7 +52,7 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include <Windows.h>
+
 #include <algorithm>
 
 
