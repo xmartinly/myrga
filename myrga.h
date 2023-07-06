@@ -42,13 +42,9 @@ class MyRga : public QMainWindow
 
     void on_tb_start_clicked();
 
-    void on_tb_stop_clicked();
-
     void on_tb_flmt_clicked();
 
     void on_tb_em_clicked();
-
-    void on_actionExit_triggered();
 
     void acq_tmr_action();
 
@@ -58,7 +54,15 @@ class MyRga : public QMainWindow
 
     void on_tb_info_clicked();
 
-private:
+    void on_actionRecipe_triggered();
+
+    void on_actionComm_triggered();
+
+    void on_actionExit_triggered();
+
+    void on_tb_review_clicked();
+
+  private:
     Ui::MyRga* ui;
 
     // acquire command generate timer
@@ -93,6 +97,10 @@ private:
     void menu_popout();
     // set spec chart x axis ticks and labels
     void set_spec_xaxis();
+    // open add rga comm dialog
+    void open_add_dlg();
+    // open recipe setting dialog
+    void open_recipe_dlg();
 
 };
 

@@ -19,7 +19,7 @@ class AddRgaDlg : public QDialog {
   private slots:
     void on_btn_save_clicked();
 
-    void on_tbl_rgas_cellClicked(int row, int column);
+    void on_tbl_rgas_cellClicked(int row, int);
 
     void on_btn_del_clicked();
 

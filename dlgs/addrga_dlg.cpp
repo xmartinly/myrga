@@ -168,7 +168,7 @@ void AddRgaDlg::on_btn_save_clicked() {
     tblInit();
 }
 
-void AddRgaDlg::on_tbl_rgas_cellClicked(int row, int column) {
+void AddRgaDlg::on_tbl_rgas_cellClicked(int row, int) {
     m_iRow = row;
     QStringList sl_rgas = DataHelper::listConfFile(m_sRgaPath);
     QMap<QString, QString> qm_values = DataHelper::readConf(sl_rgas.at(row) + ".ini", m_sRgaPath, "Rga");
