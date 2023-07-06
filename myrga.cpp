@@ -78,6 +78,44 @@ void MyRga::on_actionExit_triggered() {
 }
 
 ///
+/// \brief MyRga::on_cb_method_currentIndexChanged
+/// \param index
+///
+void MyRga::on_cb_method_currentIndexChanged(int index) {
+    ui->frame_points->setVisible(index);
+    ui->frame_range->setVisible(!index);
+}
+
+///
+/// \brief MyRga::on_tb_info_clicked
+///
+void MyRga::on_tb_info_clicked() {
+    bool tw_info_visable = ui->tw_info->isVisible();
+    ui->tw_info->setVisible(!tw_info_visable);
+}
+
+///
+/// \brief MyRga::on_actionRecipe_triggered
+///
+void MyRga::on_actionRecipe_triggered() {
+    open_recipe_dlg();
+}
+
+///
+/// \brief MyRga::on_actionComm_triggered
+///
+void MyRga::on_actionComm_triggered() {
+    open_add_dlg();
+}
+
+///
+/// \brief MyRga::on_tb_review_clicked
+///
+void MyRga::on_tb_review_clicked() {
+}
+
+
+///
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
@@ -88,7 +126,6 @@ void MyRga::acq_tmr_action() {
 ///
 void MyRga::idle_tmr_action() {
 }
-
 
 ///
 /// \brief MyRga::initDataTbl
@@ -123,29 +160,4 @@ void MyRga::open_recipe_dlg() {
     dlg_addRga.exec();
 }
 
-
-void MyRga::on_cb_method_currentIndexChanged(int index) {
-    ui->frame_points->setVisible(index);
-    ui->frame_range->setVisible(!index);
-}
-
-
-void MyRga::on_tb_info_clicked() {
-    bool tw_info_visable = ui->tw_info->isVisible();
-    ui->tw_info->setVisible(!tw_info_visable);
-}
-
-
-void MyRga::on_actionRecipe_triggered() {
-    open_recipe_dlg();
-}
-
-
-void MyRga::on_actionComm_triggered() {
-    open_add_dlg();
-}
-
-
-void MyRga::on_tb_review_clicked() {
-}
 
