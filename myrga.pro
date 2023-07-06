@@ -25,13 +25,14 @@ SOURCES += \
     utility/static_container.cpp
 
 HEADERS += \
+    myrga.h \
+    data_helper.h \
     chart_plugin/qcp_modify.h \
     chart_plugin/qcustomplot.h \
     dlgs/addrga_dlg.h \
     dlgs/ipaddress.h \
     dlgs/recipe_dlg.h \
-    myrga.h \
-    data_helper.h \
+    thirdparty/httplib.h \
     observer/data_observer.h \
     observer/observer_subject.h \
     utility/comm_http.h \
