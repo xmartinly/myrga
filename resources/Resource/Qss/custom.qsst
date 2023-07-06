@@ -1,0 +1,430 @@
+$cust_red=#E63946;
+$yellow_light=#F1FAEE;
+$blue_light=#A8DADC;
+$blue_normal=#457B9D;
+$blue_border=#2196F3;
+$blue_inf=#2E598A;
+$blue_inf_light=#E12E598A;
+$blue_normal_dark=#1D3557;
+$blue_normal_item=#AED8F9;
+$blue_normal_item_darker=#A0C8FF;
+$purple_dark=#53297C;
+$purple_light=#C053297C;
+$gray_dark=#999999;
+$gray_light=#E1E1E1;
+$dark_light=#393E46;
+$dark_medium=#1E1E1E;
+$dark_menu=#222831;
+$white_light=#FDFDFD;
+$white_pure=#FFFFFF;
+
+$temp=#393E46;
+
+QMainWindow {
+    background-color: $white_pure;
+}
+
+QDialog {
+    background-color: $white_pure;
+}
+
+/* =============================================== */
+/* QStatusBar                                      */
+/* =============================================== */
+QStatusBar {
+   background: transparent;
+   border-top:1px solid $gray_dark;
+}
+
+/* =============================================== */
+/* QSlider                                         */
+/* =============================================== */
+QSlider {
+    border: none;
+}
+
+QSlider::groove {
+    border: 3px solid $cust_red;
+    background: $purple_dark;
+}
+
+QSlider::handle {
+    /*设置中间的那个滑动的键*/
+    border: 3px solid $gray_dark;
+    background: $purple_light;
+}
+
+QSlider::groove:horizontal {
+    height: 3px;
+    /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    left: 5px;
+    right: 5px;
+}
+
+QSlider::groove:vertical {
+    width: 3px;
+    top: 5px;
+    bottom: 5px;
+}
+
+QSlider::handle:horizontal {
+    width: 6px;
+    margin: -7px;
+    /* height */
+}
+
+QSlider::handle:vertical {
+    height: 6px;
+    margin: -7px;
+    /* height */
+}
+
+QSlider::add-page {
+    /*还没有滑上去的地方*/
+    border: none;
+    background: $gray_light;
+}
+
+QSlider::sub-page {
+    /*已经划过的从地方*/
+    background: $gray_dark;
+}
+
+/* =============================================== */
+/* QScrollBar                                      */
+/* =============================================== */
+QScrollBar {
+    border: none;
+}
+
+QScrollBar::handle {
+    background: $blue_normal_item_darker;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:hover {
+    background: $blue_border;
+}
+
+QScrollBar::sub-line {
+    background: transparent;
+}
+
+QScrollBar::add-line {
+    background: transparent;
+}
+
+QScrollBar::sub-page {
+    background: $gray_light;
+}
+
+QScrollBar::add-page {
+    background: $gray_light;
+}
+
+
+/* =============================================== */
+/* QProgressBar                                    */
+/* =============================================== */
+QProgressBar {
+    width: 265px;
+    border: none;
+    color: $dark_medium;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    border: none;
+    background: $blue_border;
+}
+
+QScrollArea {
+    border: none;
+}
+
+/* =============================================== */
+/* QTableWidget                                    */
+/* =============================================== */
+QTableWidget {
+    /* border: 1px solid #2196F3;*/
+    border: 1px dashed $blue_border;
+    margin-right: 5px;
+    /*selection-color: white;*/
+    /*    alternate-background-color:#e3edf9;*/
+}
+
+QTableWidget::item:selected {
+    background-color: $blue_normal_item_darker;
+}
+
+
+/* =============================================== */
+/* Label     QToolTip                              */
+/* =============================================== */
+QLabel {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 1px;
+}
+
+/* A QToolTip is a QLabel ... */
+QToolTip {
+    border: none;
+    color: $white_pure;
+    font-weight: bold;
+    font-size: 14px;
+    background: $blue_inf;
+    padding: 5px;
+    opacity: 225;
+}
+
+/* =============================================== */
+/* MenuBar Menu                                    */
+/* =============================================== */
+QMenuBar {
+    background-color: $dark_light;
+    color: $white_light;
+    spacing: 1px;
+    border-bottom: 1px solid $gray_dark;
+    padding: 2px;
+}
+
+QMenuBar::item {
+    background: transparent;
+    padding: 1px 8px;
+}
+
+QMenuBar::item:selected {
+    background: $dark_menu;
+    border: none;
+}
+
+
+QMenu {
+    background-color: $dark_light;
+    color: $gray_light;
+    margin: 1px;
+    /* some spacing around the menu */
+    padding: 1px;
+}
+
+
+QMenu::item {
+    padding: 2px 25px 2px 15px;
+    border: 1px solid transparent;
+    border: none;
+    margin: 1px;
+}
+
+QMenu::item:selected {
+    border: none;
+	background-color: $dark_medium;
+	color: $white_pure;
+}
+
+
+/* =============================================== */
+/* ToolBar                                         */
+/* =============================================== */
+QToolBar {
+    background: $white_pure;
+    spacing: 20px;
+    /* spacing between items in the tool bar */
+    padding: 5px;
+    border-bottom: 1px solid $gray_dark;
+}
+
+QToolButton {
+    border: none;
+    border-radius: 3px;
+    background: $white_pure;
+    padding: 5px;
+}
+
+QToolButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0.2 $yellow_light, stop:0.8 $white_light);
+
+}
+
+QToolButton:pressed {
+    background: $gray_light;
+}
+
+/* =============================================== */
+/* QPushButton                                     */
+/* =============================================== */
+QPushButton {
+    /*background-color: $blue_inf;*/
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 $blue_inf, stop:1 $blue_inf_light);
+    color: $white_light;
+    border: none;
+    height: 25px;
+    border-radius: 2px;
+    padding: 2px 10px;
+}
+
+QPushButton:disabled {
+    background-color: $gray_dark;
+    color: $white_light
+}
+
+QPushButton:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 $blue_border, stop:1 $blue_inf);
+    color: $white_light;
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 $blue_inf, stop:1 $blue_inf_light);
+    color: $gray_light;
+}
+
+/* =============================================== */
+/* QLineEdit  QTextEdit                            */
+/* =============================================== */
+QLineEdit,
+QTextEdit {
+    background: $white_light;
+    selection-background-color: $blue_normal_dark;
+    border: 2px solid $gray_light;
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 2px 10px;
+}
+
+QLineEdit:hover,
+QTextEdit:hover {
+    border: 2px solid $blue_border;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+QLineEdit:focus,
+QTextEdit:focus {
+    border: 2px solid $purple_light;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+/* =============================================== */
+/* ComboBox                                        */
+/* =============================================== */
+QComboBox {
+    background: $white_light;
+    border: 2px solid #E1E1E1;
+    border-radius: 0px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 2px 10px;
+}
+
+QComboBox:hover {
+    border: 2px solid $blue_border;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+QComboBox:focus {
+    border: 2px solid $purple_light;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+QComboBox QAbstractItemView {
+    margin-top: 3px;
+    background: $white_light;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+
+QComboBox::down-arrow {
+    image: url(:/Resource/Picture/svg/forward.svg);
+    height: 15px;
+    width: 15px;
+}
+
+QComboBox::down-arrow:on {
+    height: 12px;
+    width: 12px;
+}
+
+/* ================================================================================ */
+/* SpinBox QDoubleSpinBox DateTime QDateEdit   QTimeEdit   QDateTimeEdit            */
+/* ================================================================================ */
+QSpinBox,
+QDoubleSpinBox,
+QDateEdit,
+QTimeEdit,
+QDateTimeEdit {
+    selection-background-color: $blue_normal_dark;
+    background: $white_light;
+    border: 2px solid $gray_light;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 2px 10px;
+}
+
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QDateEdit:focus,
+QTimeEdit:focus,
+QDateTimeEdit:hover {
+    border: 2px solid $purple_light;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QDateEdit:hover,
+QTimeEdit:hover,
+QDateTimeEdit:hover {
+    border: 2px solid $blue_border;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button,
+QTimeEdit::up-button,
+QDateTimeEdit::up-button {
+    image: url(:/Resource/Picture/svg/collapse_arrow.svg);
+    height: 15px;
+}
+
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button,
+QTimeEdit::down-button,
+QDateTimeEdit::down-button {
+    image: url(:/Resource/Picture/svg/expand_arrow.svg);
+    height: 15px;
+}
+
+QSpinBox::up-button:pressed,
+QDoubleSpinBox::up-button:pressed,
+QDateEdit::up-button:pressed,
+QTimeEdit::up-button:pressed,
+QDateTimeEdit::up-button:pressed {
+    height: 12px;
+}
+
+QSpinBox::down-button:pressed,
+QDoubleSpinBox::down-button:pressed,
+QDateEdit::down-button:pressed,
+QTimeEdit::down-button:pressed,
+QDateTimeEdit::down-button:pressed {
+    height: 12px;
+}

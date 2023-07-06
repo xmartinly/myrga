@@ -1,0 +1,1286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MyRga</class>
+ <widget class="QMainWindow" name="MyRga">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>710</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>710</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MyRga</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,999">
+    <item row="0" column="0">
+     <widget class="QFrame" name="frm_toolbtns">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="13">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="20">
+        <spacer name="horizontalSpacer_12">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>15</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="14">
+        <widget class="QToolButton" name="tb_flmt">
+         <property name="toolTip">
+          <string>Toggle Filament</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/filament_off.svg</normaloff>:/Resource/Picture/svg/filament_off.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <spacer name="horizontalSpacer_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="7">
+        <widget class="QToolButton" name="tb_review">
+         <property name="toolTip">
+          <string>Data Review</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/rollback.svg</normaloff>:/Resource/Picture/svg/rollback.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="19">
+        <widget class="QToolButton" name="tb_info">
+         <property name="toolTip">
+          <string>Information</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/information.svg</normaloff>:/Resource/Picture/svg/information.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="15">
+        <widget class="QToolButton" name="tb_em">
+         <property name="toolTip">
+          <string>Toggle EM</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/em_off.svg</normaloff>:/Resource/Picture/svg/em_off.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="18">
+        <spacer name="horizontalSpacer_15">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>13</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer_14">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>15</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QToolButton" name="tb_menu">
+         <property name="toolTip">
+          <string>Toggle Side</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/menu.svg</normaloff>:/Resource/Picture/svg/menu.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="16">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>15</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="5">
+        <widget class="QToolButton" name="tb_comm">
+         <property name="toolTip">
+          <string>Communication</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/data_transfer.svg</normaloff>:/Resource/Picture/svg/data_transfer.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QToolButton" name="tb_recipe">
+         <property name="toolTip">
+          <string>Recipe</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/tune.svg</normaloff>:/Resource/Picture/svg/tune.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="12">
+        <widget class="QLabel" name="lb_logo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>355</width>
+           <height>39</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>355</width>
+           <height>39</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resources/resources.qrc">:/Resource/Picture/jpg/Inficon-Logo.jpg</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="17">
+        <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>RGA offline</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resources/resources.qrc">:/Resource/Picture/svg/broken_link.svg</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="11">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>45</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>10</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(170, 0, 127);</string>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,8,3">
+      <item>
+       <widget class="QFrame" name="frm_left">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <widget class="QFrame" name="frame_settings">
+           <property name="minimumSize">
+            <size>
+             <width>360</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>360</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="2" column="0">
+             <widget class="QFrame" name="frame_range">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <property name="horizontalSpacing">
+                <number>6</number>
+               </property>
+               <property name="verticalSpacing">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <widget class="QLabel" name="lb_range">
+                   <property name="minimumSize">
+                    <size>
+                     <width>55</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>55</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Sweep range</string>
+                   </property>
+                   <property name="text">
+                    <string>Range</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="sb_start">
+                   <property name="minimumSize">
+                    <size>
+                     <width>90</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Mass begin.</string>
+                   </property>
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>199</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lb_arrow">
+                   <property name="minimumSize">
+                    <size>
+                     <width>40</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>→</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="sb_end">
+                   <property name="minimumSize">
+                    <size>
+                     <width>90</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Mass end.</string>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>200</number>
+                   </property>
+                   <property name="value">
+                    <number>100</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="bl_method_pres">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label_5">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scan Method</string>
+                  </property>
+                  <property name="text">
+                   <string>Method</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_method">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scan method.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Sweep</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Points</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_12">
+                <item>
+                 <widget class="QLabel" name="label_10">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Pressure Unit</string>
+                  </property>
+                  <property name="text">
+                   <string>Pressure</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_unitpressure">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Pressure unit for total pressure and partial pressure.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Torr</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>mBar</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Pa</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="5" column="0">
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="6" column="0">
+             <layout class="QHBoxLayout" name="bl_ctrl">
+              <item>
+               <spacer name="horizontalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tb_ctrl">
+                <property name="minimumSize">
+                 <size>
+                  <width>110</width>
+                  <height>42</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Start</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources/resources.qrc">
+                  <normaloff>:/Resource/Picture/svg/resume_button.svg</normaloff>:/Resource/Picture/svg/resume_button.svg</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="3" column="0">
+             <layout class="QHBoxLayout" name="bl_dwell_ppamu">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QLabel" name="label_7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scan Dwell</string>
+                  </property>
+                  <property name="text">
+                   <string>Dwell</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_dwell">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Point dwell time(ms).</string>
+                  </property>
+                  <property name="currentIndex">
+                   <number>2</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>4</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>8</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>64</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>128</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>256</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_18">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <item>
+                 <widget class="QLabel" name="label_11">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scan PPAmu</string>
+                  </property>
+                  <property name="text">
+                   <string>PPAmu</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_ppamu">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Points per amu.</string>
+                  </property>
+                  <property name="currentIndex">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>5</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>10</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <widget class="QFrame" name="frame_points">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_19">
+                 <item>
+                  <widget class="QLabel" name="lb_points">
+                   <property name="minimumSize">
+                    <size>
+                     <width>55</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>55</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Selected points</string>
+                   </property>
+                   <property name="text">
+                    <string>Points</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_points">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>300</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Mass points.</string>
+                   </property>
+                   <property name="text">
+                    <string>2/4/16/18/28/32/44</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <layout class="QHBoxLayout" name="bl_type_flmt">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Data type</string>
+                  </property>
+                  <property name="text">
+                   <string>Type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_unitreport">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Report unit type.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Current</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>PP</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_19">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <item>
+                 <widget class="QLabel" name="label_13">
+                  <property name="minimumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>55</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Select filament</string>
+                  </property>
+                  <property name="text">
+                   <string>Flmt</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="cb_flmt">
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Filament index for this recipe.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>2</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QTableWidget" name="tw_data">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSplitter" name="chart_splitter">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="opaqueResize">
+         <bool>false</bool>
+        </property>
+        <property name="handleWidth">
+         <number>2</number>
+        </property>
+        <property name="childrenCollapsible">
+         <bool>false</bool>
+        </property>
+        <widget class="QCustomPlot" name="qcp_spec" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+        <widget class="QCustomPlot" name="qcp_line" native="true"/>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tw_info">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuSetting">
+    <property name="title">
+     <string>Setting</string>
+    </property>
+    <addaction name="actionRecipe"/>
+    <addaction name="actionComm"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionManual"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSetting"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionRecipe">
+   <property name="text">
+    <string>Recipe</string>
+   </property>
+  </action>
+  <action name="actionComm">
+   <property name="text">
+    <string>Comm</string>
+   </property>
+  </action>
+  <action name="actionManual">
+   <property name="text">
+    <string>Manual</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>chart_plugin/qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources/resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
