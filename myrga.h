@@ -65,6 +65,8 @@ class MyRga : public QMainWindow
 
   private:
     Ui::MyRga* ui;
+    RgaUtility* rga_inst;
+
     // recipe dialog pointer
     RecipeDlg* dlg_recipe = nullptr;
     // add rga dialog pointer
