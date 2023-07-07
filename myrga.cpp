@@ -143,15 +143,19 @@ void MyRga::setup_observers() {
 }
 
 void MyRga::save_current() {
-    QString mass_start = ui->sb_start->text();
-    QString mass_stop = ui->sb_end->text();
-    QString mass_points = ui->le_points->text();
-    QString method = QString::number(ui->cb_method->currentIndex());
-    QString ppamu = QString::number(ui->cb_ppamu->currentIndex());
-    QString dwell = QString::number(ui->cb_dwell->currentIndex());
-    QString flmt = QString::number(ui->cb_flmt->currentIndex());
-    QString type = QString::number(ui->cb_unitreport->currentIndex());
-    QString tp_unit = QString::number(ui->cb_unitpressure->currentIndex());
+    QMap<QString, QString> recipe = DataHelper::gen_recipe_config(
+                                        "Off",
+                                        QString::number(ui->cb_unitpressure->currentIndex()),
+                                        QString::number(ui->sb_start->value()),
+                                        QString::number(ui->sb_end->value()),
+                                        ui->le_points->text(),
+                                        ui->cb_method->currentText(),
+                                        ui->cb_dwell->currentText(),
+                                        ui->cb_flmt->currentText(),
+                                        ui->cb_ppamu->currentText(),
+                                        ui->cb_unitreport->currentText(),
+                                        "0");
+    DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
 }
 
 
