@@ -11,8 +11,8 @@ RecipeDlg::RecipeDlg(QWidget* parent) :
     ui->setupUi(this);
     ui->lb_points->setHidden(true);
     ui->le_points->setHidden(true);
-    m_s_recipePath = DataHelper::getFileFolder("recipes");
-    tblInit();
+    recipe_config_path = DataHelper::get_file_folder("recipes");
+    recipe_tbl_init();
 }
 ///
 /// \brief RecipeDlg::~RecipeDlg
@@ -42,55 +42,30 @@ void RecipeDlg::on_cb_method_currentIndexChanged(int index) {
 /// \brief RecipeDlg::on_btn_del_clicked
 ///
 void RecipeDlg::on_btn_del_clicked() {
-    if(m_iRow < 0) {
+    if(row_count < 0) {
         return;
     }
-    QString s_fileName = m_slRecipes.at(m_iRow) + ".ini";
-    DataHelper::delFile(s_fileName, m_s_recipePath);
-    tblInit();
-    m_iRow = -1;
+    QString s_fileName = recipe_list.at(row_count) + ".ini";
+    DataHelper::del_config_file(s_fileName, recipe_config_path);
+    recipe_tbl_init();
+    row_count = -1;
 }
 
 ///
 /// \brief RecipeDlg::on_btn_save_clicked. Save recipe to config file.
 ///
 void RecipeDlg::on_btn_save_clicked() {
-    QString s_recipeName        = ui->le_name->text();
-    if(s_recipeName.length() < 1) {
-        QMessageBox::warning(nullptr, "Recipe Name", "Please input recipe name.");
-        return;
-    } else {
-        s_recipeName += ".ini";
-    }
-    QMap<QString, QString> recipe;
-    int     i_acquirePeriod     = DataHelper::tmToSec(ui->te_time->time());
-    QString s_emOpt             = ui->cb_emauto->isChecked() ? "On" : "Off";
-    recipe.insert("EmOpt",      s_emOpt);
-    recipe.insert("PressureUnit", QString::number(ui->cb_unitpressure->currentIndex()));
-    recipe.insert("Peroid",     QString::number(i_acquirePeriod));
-    recipe.insert("StartMass",  QString::number(ui->sb_start->value()));
-    recipe.insert("StopMass",   QString::number(ui->sb_end->value()));
-    recipe.insert("Points",     ui->le_points->text());
-    recipe.insert("Method",     ui->cb_method->currentText());
-    recipe.insert("Dwell",      ui->cb_dwell->currentText());
-    recipe.insert("Flmt",       ui->cb_flmt->currentText());
-    recipe.insert("PPAmu",      ui->cb_ppamu->currentText());
-    recipe.insert("ReportUnit", ui->cb_unitreport->currentText());
-    if(DataHelper::saveConf(recipe, s_recipeName, m_s_recipePath, "Recipe")) {
-        QMessageBox::information(nullptr, "Success", "Recipe config saved.");
-    } else {
-        QMessageBox::warning(nullptr, "Save Failed", "Please check the settings.");
-    }
-    tblInit();
+    recipe_save();
+    recipe_tbl_init();
 }
 
 ///
 /// \brief RecipeDlg::tblInit
 ///
-void RecipeDlg::tblInit() {
+void RecipeDlg::recipe_tbl_init() {
     ui->tbl_recipe->clear();
-    m_slRecipes = DataHelper::listConfFile(m_s_recipePath);
-    int i_recipeCount = m_slRecipes.length();
+    recipe_list = DataHelper::list_config_file(recipe_config_path);
+    int i_recipeCount = recipe_list.length();
     QStringList tblHeader;
     tblHeader << tr("No.") << tr("Name");
     ui->tbl_recipe->setColumnCount(2);
@@ -105,7 +80,7 @@ void RecipeDlg::tblInit() {
     }
     for(int i = 0; i < i_recipeCount; ++i) {
         ui->tbl_recipe->setItem(i, 0, new QTableWidgetItem(QString::number(i + 1)));
-        ui->tbl_recipe->setItem(i, 1, new QTableWidgetItem(m_slRecipes.at(i)));
+        ui->tbl_recipe->setItem(i, 1, new QTableWidgetItem(recipe_list.at(i)));
     }
 }
 
@@ -114,9 +89,10 @@ void RecipeDlg::tblInit() {
 /// \param row
 ///
 void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
-    m_iRow = row;
-    QStringList sl_recipes = DataHelper::listConfFile(m_s_recipePath);
-    QMap<QString, QString> qm_values = DataHelper::readConf(sl_recipes.at(row) + ".ini", m_s_recipePath, "Recipe");
+    row_count = row;
+    QStringList sl_recipes = DataHelper::list_config_file(recipe_config_path);
+    QMap<QString, QString> qm_values = DataHelper::read_config(sl_recipes.at(row) + ".ini", recipe_config_path, "Recipe");
+    qDebug() << sl_recipes.at(row);
     if(!qm_values.count()) {
         QMessageBox::warning(nullptr, "Read Failed", "No value readed.");
         return;
@@ -180,7 +156,7 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     on_cb_method_currentIndexChanged(!b_isSweep);
     ui->cb_emauto->setChecked(b_isEmOn);
     ui->cb_method->setCurrentIndex(!b_isSweep);
-    ui->te_time->setTime(DataHelper::secToTm(i_period));
+    ui->te_time->setTime(DataHelper::sec_to_tm(i_period));
     ui->le_name->setText(sl_recipes.at(row));
     ui->le_points->setText(s_points);
     ui->sb_start->setValue(i_startMass);
@@ -194,7 +170,46 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
 
 
 void RecipeDlg::on_btn_run_clicked() {
+    recipe_save(true);
     emit start_recipe(ui->cb_run->currentIndex());
     this->close();
+}
+
+void RecipeDlg::recipe_save(bool is_run) {
+    QString s_recipeName        =  ui->le_name->text();
+    if(s_recipeName.length() < 1) {
+        QMessageBox::warning(nullptr, "Recipe Name", "Please input recipe name.");
+        return;
+    } else {
+        s_recipeName += ".ini";
+    }
+    if(is_run) {
+        s_recipeName = "lastrun.ini";
+    }
+    QString file_path = DataHelper::get_file_folder(is_run ? "" : "recipes");
+    QMap<QString, QString> recipe;
+    int     i_acquirePeriod     = DataHelper::tm_to_sec(ui->te_time->time());
+    QString s_emOpt             = ui->cb_emauto->isChecked() ? "On" : "Off";
+    recipe = DataHelper::gen_recipe_config(
+                 s_emOpt,
+                 QString::number(ui->cb_unitpressure->currentIndex()),
+                 QString::number(ui->sb_start->value()),
+                 QString::number(ui->sb_end->value()),
+                 ui->le_points->text(),
+                 ui->cb_method->currentText(),
+                 ui->cb_dwell->currentText(),
+                 ui->cb_flmt->currentText(),
+                 ui->cb_ppamu->currentText(),
+                 ui->cb_unitreport->currentText(),
+                 QString::number(i_acquirePeriod)
+             );
+    if(DataHelper::save_config(recipe, s_recipeName, file_path, "Recipe")) {
+        if(is_run) {
+            return;
+        }
+        QMessageBox::information(nullptr, "Success", "Recipe config saved.");
+    } else {
+        QMessageBox::warning(nullptr, "Save Failed", "Please check the settings.");
+    }
 }
 

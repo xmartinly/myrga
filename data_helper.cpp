@@ -47,7 +47,7 @@ DataHelper::~DataHelper() {}
 /// \param port, uint
 /// \return bool, connect state.
 ///
-bool DataHelper::checkConnect(const QString& ip, uint port) {
+bool DataHelper::check_rga_conn(const QString& ip, uint port) {
     QTcpSocket socket;
     socket.setProxy(QNetworkProxy::NoProxy);
     socket.connectToHost(ip, static_cast<uint>(port));
@@ -69,7 +69,7 @@ void DataHelper::save_last_config(const QString& rga, const QString& recipe, con
 /// \param data, QString.
 /// \param file, QFile pointer.
 ///
-void DataHelper::writeDataToFile(const QString& data, QFile* file) {
+void DataHelper::write_data_file(const QString& data, QFile* file) {
     if (file->open(QFile::WriteOnly | QIODevice::Append)) {
         file->write(data.toStdString().c_str());
         file->close();
@@ -81,7 +81,7 @@ void DataHelper::writeDataToFile(const QString& data, QFile* file) {
 /// \param index
 /// \return
 ///
-QColor DataHelper::getColor(int index) {
+QColor DataHelper::get_color(int index) {
     uint8_t r = (index + 47) % 256;
     uint8_t g = (r * 151) % 256;
     uint8_t b = (g * 97) % 256;
@@ -93,8 +93,8 @@ QColor DataHelper::getColor(int index) {
 /// \param index
 /// \return
 ///
-QPen DataHelper::getPen(int index) {
-    return QPen(getColor(index), 2);
+QPen DataHelper::get_pen(int index) {
+    return QPen(get_color(index), 2);
 }
 
 ///
@@ -105,10 +105,10 @@ QPen DataHelper::getPen(int index) {
 /// \param group. QString
 /// \return int. Section count saved.
 ///
-int DataHelper::saveConf(const QMap<QString, QString>& values,
-                         QString file_name, QString file_folder,
-                         QString group) {
-    QString s_iniFile = delFile(file_name, file_folder);
+int DataHelper::save_config(const QMap<QString, QString>& values,
+                            const QString& file_name, const QString& file_folder,
+                            const QString& group) {
+    QString s_iniFile = del_config_file(file_name, file_folder, group);
     int i_writeCount = 0;
     QSettings f_iniFile(s_iniFile, QSettings::IniFormat);
     f_iniFile.beginGroup(group);
@@ -127,12 +127,14 @@ int DataHelper::saveConf(const QMap<QString, QString>& values,
 /// \param file_folder. QString
 /// \return QString. File absolute path.
 ///
-QString DataHelper::delFile(QString file_name, QString file_folder) {
+QString DataHelper::del_config_file(const QString& file_name, const QString& file_folder, const QString& group) {
     QString s_iniFile = file_folder + '/' + file_name;
     QFile file(s_iniFile);
-    if (file.exists()) {
+    if (file.exists() && group == "") {
         file.remove();
     }
+    QSettings f_iniFile(s_iniFile, QSettings::IniFormat);
+    f_iniFile.remove(group);
     return s_iniFile;
 }
 
@@ -141,7 +143,7 @@ QString DataHelper::delFile(QString file_name, QString file_folder) {
 /// \param file_folder. QString
 /// \return QStringList. Files name list.
 ///
-QStringList DataHelper::listConfFile(QString file_folder) {
+QStringList DataHelper::list_config_file(const QString& file_folder) {
     QStringList sl_files;
     sl_files.clear();
     QDir dir(file_folder);
@@ -175,7 +177,7 @@ QStringList DataHelper::listConfFile(QString file_folder) {
 /// \return
 ///
 QMap<QString, QString>
-DataHelper::readConf(QString file_name, QString file_folder, QString group) {
+DataHelper::read_config(const QString& file_name, const QString& file_folder, const QString& group) {
     QMap<QString, QString> qm_values = {};
     QString s_iniFile = file_folder + '/' + file_name;
     QFile file(s_iniFile);
@@ -195,7 +197,34 @@ DataHelper::readConf(QString file_name, QString file_folder, QString group) {
     return qm_values;
 }
 
-QVector<double> DataHelper::genPPamuPos(int i_start, int i_stop, int i_ppamu) {
+QMap<QString, QString> DataHelper::gen_recipe_config(
+    const QString& em_opt,
+    const QString& pre_unit,
+    const QString& mass_start,
+    const QString& mass_stop,
+    const QString& points,
+    const QString& method,
+    const QString& dwell,
+    const QString& flmt,
+    const QString& ppamu,
+    const QString& rpt_uint,
+    const QString& peroid) {
+    QMap<QString, QString> recipe;
+    recipe.insert("EmOpt",      em_opt);
+    recipe.insert("PressureUnit", pre_unit);
+    recipe.insert("Peroid",     peroid);
+    recipe.insert("StartMass",  mass_start);
+    recipe.insert("StopMass",   mass_stop);
+    recipe.insert("Points",     points);
+    recipe.insert("Method",     method);
+    recipe.insert("Dwell",      dwell);
+    recipe.insert("Flmt",       flmt);
+    recipe.insert("PPAmu",      ppamu);
+    recipe.insert("ReportUnit", rpt_uint);
+    return recipe;
+}
+
+QVector<double> DataHelper::gen_ppamu_pos(int i_start, int i_stop, int i_ppamu) {
     if(i_start == i_stop || i_start > i_stop) {
         QString s_err = QString("invalid start(%1) or stop(%2) value.").arg(i_start).arg(i_stop);
         qDebug() << Q_FUNC_INFO << s_err;
@@ -217,7 +246,7 @@ QVector<double> DataHelper::genPPamuPos(int i_start, int i_stop, int i_ppamu) {
 /// \param d_magic
 /// \return
 ///
-double DataHelper::pow2Calc(const QJsonArray& data_array, double d_magic) {
+double DataHelper::pow2_calc(const QJsonArray& data_array, double d_magic) {
     int i_first = data_array.first().toInt();
     int i_second = 0;
     if (data_array.count() == 2) {
@@ -232,7 +261,7 @@ double DataHelper::pow2Calc(const QJsonArray& data_array, double d_magic) {
 /// \param time. QTime
 /// \return int.
 ///
-int DataHelper::tmToSec(QTime time) {
+int DataHelper::tm_to_sec(const QTime& time) {
     int i_sec = 0;
     i_sec = time.hour() * 3600 + time.minute() * 60;
     return i_sec;
@@ -243,11 +272,12 @@ int DataHelper::tmToSec(QTime time) {
 /// \param folder_type
 /// \return
 ///
-QString DataHelper::getFileFolder(QString folder_type) {
+QString DataHelper::get_file_folder(const QString& folder_type) {
+    QString app_folder = QCoreApplication::applicationDirPath() + "/";
     if (folder_type.length() < 1) {
-        return "";
+        return app_folder;
     }
-    return QCoreApplication::applicationDirPath() + "/" + folder_type;
+    return app_folder + folder_type;
 }
 
 ///
@@ -255,7 +285,7 @@ QString DataHelper::getFileFolder(QString folder_type) {
 /// \param sec. int
 /// \return QTime
 ///
-QTime DataHelper::secToTm(int sec) {
+QTime DataHelper::sec_to_tm(int sec) {
     QTime time;
     int i_hour = 0;
     int i_min = 0;
@@ -270,7 +300,7 @@ QTime DataHelper::secToTm(int sec) {
 /// \param idx
 /// \return
 ///
-QString DataHelper::getPosEl(int idx) {
+QString DataHelper::get_pos_el(int idx) {
     QString s_el = "*";
     if(C_POSELEMAP.contains(idx)) {
         s_el = C_POSELEMAP.value(idx);
@@ -278,7 +308,7 @@ QString DataHelper::getPosEl(int idx) {
     return s_el;
 }
 
-double DataHelper::calPPVal(int i_amu, double d_crnt_val, double d_s_sen, bool b_em_state, double d_em_gain, int i_unit) {
+double DataHelper::cal_pp_val(int i_amu, double d_crnt_val, double d_s_sen, bool b_em_state, double d_em_gain, int i_unit) {
     Q_ASSERT_X(d_crnt_val > 0, Q_FUNC_INFO, "d_crnt_val error");
     double d_magic = 1;
     //0: torr, 1: mbar, 2: pa
@@ -381,8 +411,8 @@ double DataHelper::calPPVal(int i_amu, double d_crnt_val, double d_s_sen, bool b
 /// \param size
 /// \return
 ///
-QPixmap DataHelper::getPixmap(const QString& name, const qreal& ratio,
-                              const QSize& size) {
+QPixmap DataHelper::get_pixmap(const QString& name, const qreal& ratio,
+                               const QSize& size) {
     QString s_path = ":/Resource/Picture/svg/";
     const QIcon& icon = QIcon(s_path + name + ".svg");
     QPixmap pixmap =

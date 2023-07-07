@@ -162,5 +162,23 @@ void MyRga::run_from_recipe(int dur) {
 
 
 void MyRga::on_tb_ctrl_clicked() {
+    QMap<QString, QString> recipe;
+    recipe = DataHelper::gen_recipe_config(
+                 "Off",
+                 QString::number(ui->cb_unitpressure->currentIndex()),
+                 QString::number(ui->sb_start->value()),
+                 QString::number(ui->sb_end->value()),
+                 ui->le_points->text(),
+                 ui->cb_method->currentText(),
+                 ui->cb_dwell->currentText(),
+                 ui->cb_flmt->currentText(),
+                 ui->cb_ppamu->currentText(),
+                 ui->cb_unitreport->currentText(),
+                 "-1"
+             );
+    if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
+        QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
+        return;
+    }
 }
 

@@ -22,20 +22,22 @@ class RecipeDlg : public QDialog {
 
     void on_btn_save_clicked();
 
-    void tblInit();
+    void recipe_tbl_init();
 
     void on_tbl_recipe_cellClicked(int row, int);
 
     void on_btn_run_clicked();
 
+    void recipe_save(bool is_run = false);
+
   private:
     Ui::RecipeDlg* ui;
 
-    bool m_method = false;
-
-    int m_iRow = 0;
-    QStringList m_slRecipes;
-    QString m_s_recipePath;
+    bool scan_method = false;
+    QString recipe_to_run = "";
+    int row_count = 0;
+    QStringList recipe_list;
+    QString recipe_config_path;
 
   signals:
     void start_recipe(int dur);

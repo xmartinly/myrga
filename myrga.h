@@ -102,6 +102,8 @@ class MyRga : public QMainWindow
     // set spec chart x axis ticks and labels
     void set_spec_xaxis();
 
+    void save_current();
+
   public slots:
     // receive run from recipe dialog
     void run_from_recipe(int dur);

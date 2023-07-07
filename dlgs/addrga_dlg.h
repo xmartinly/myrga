@@ -27,17 +27,14 @@ class AddRgaDlg : public QDialog {
 
   private:
     Ui::AddRgaDlg* ui;
-    int         m_iRow = -1;
+    int         row_count = -1;
     //rga list path
-    QString     m_sRgaPath;
+    QString     rga_config_path;
     //recipe list path
-    QString     m_sRecipePath;
-    QStringList m_slRgas;
-    bool        m_bIsFromEdit = false;
+    QString     recipe_config_path;
+    QStringList rga_list;
+    bool        is_from_edit = false;
     void        tbl_init();
-//    void        initRecipeList();
-    bool        check_conn();
-
     int         check_setting_conflict(QString tag, QString ip);
 };
 

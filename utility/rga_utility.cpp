@@ -195,7 +195,7 @@ void RgaUtility::genTicker() {
     }
     if(b_isAScan) {
         m_vdDataPos.clear();
-        m_vdDataPos.append(DataHelper::genPPamuPos(i_start, i_stop, i_ppamu));
+        m_vdDataPos.append(DataHelper::gen_ppamu_pos(i_start, i_stop, i_ppamu));
     }
 }
 
@@ -251,7 +251,7 @@ void RgaUtility::initDataFile(bool is_crateFile) {
     }
     m_fileName = "";
     genDataFileName();
-    QString s_fileFolder = DataHelper::getFileFolder("data");
+    QString s_fileFolder = DataHelper::get_file_folder("data");
     QDir d_fileFolder = QDir(s_fileFolder);
     if(!d_fileFolder.exists()) {
         d_fileFolder.mkpath(s_fileFolder);
@@ -259,7 +259,7 @@ void RgaUtility::initDataFile(bool is_crateFile) {
     QString s_filePath = s_fileFolder + '/' + m_fileName;
     m_dataFile = new QFile(s_filePath);
     QString s_fileHeader = genFileHeaders();
-    DataHelper::writeDataToFile(s_fileHeader, m_dataFile);
+    DataHelper::write_data_file(s_fileHeader, m_dataFile);
 }
 
 void RgaUtility::writeScanData(bool final) {
@@ -280,7 +280,7 @@ void RgaUtility::writeScanData(bool final) {
     m_stringData.append(s_data);
     bool b_scanCountTen = m_scanData.i_scanNum % 10 == 0;
     if(b_scanCountTen || final) {
-        DataHelper::writeDataToFile(m_stringData, m_dataFile);
+        DataHelper::write_data_file(m_stringData, m_dataFile);
         m_stringData.clear();
     }
 }

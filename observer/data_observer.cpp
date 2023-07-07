@@ -340,22 +340,22 @@ void TextInfoObserver::update() {
     double d_pressure = ld_values.takeFirst();
     bool b_isCurrent = inst->getRcptInfo(RgaUtility::RcptRptUnit) == "Current";
     QStringList sl_pos = inst->getScanPos();
-    QList<int> li_posSel;
+//    QList<int> li_posSel;
     QStringList sl_hints;
     QStringList sl_vals;
-    QStringList sl_pp;
-    QStringList sl_ppm;
+//    QStringList sl_pp;
+//    QStringList sl_ppm;
     QStringList sl_mzs;
     foreach (int t, StaticContainer::STC_SELMASS) {
         QString s_mz = sl_pos.at(t - 1);
         int i_mz = s_mz.toInt();
         double d_val = ld_values.at(t - 1);
         QString s_val = QString::number(d_val, 'e', 2);
-        sl_hints.append(DataHelper::getPosEl(i_mz));
+        sl_hints.append(DataHelper::get_pos_el(i_mz));
         double d_pp = d_val;
         double d_ppm = 0;
         if(b_isCurrent) {
-            d_pp = DataHelper::calPPVal(
+            d_pp = DataHelper::cal_pp_val(
                        i_mz,
                        d_val,
                        inst->getFcSensVal(),
