@@ -14,9 +14,9 @@ class ObserverSubject {
 
     void removeObserver(DataObserver* obs);
 
-    void notifyObs();
-
     const int countObs();
+
+    void notify_obs();
 
     static QList<DataObserver*> STC_OBS;
 

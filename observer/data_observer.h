@@ -42,8 +42,8 @@ class TbObserver: public DataObserver {
     QPixmap flmt_off = DataHelper::get_pixmap("filament_off", btn_ratio, btn_size);
     QPixmap em_on = DataHelper::get_pixmap("em_on", btn_ratio, btn_size);
     QPixmap em_off = DataHelper::get_pixmap("em_off", btn_ratio, btn_size);
-    QPixmap info_on = DataHelper::get_pixmap("information_a", btn_ratio, btn_size);
-    QPixmap info_off = DataHelper::get_pixmap("information", btn_ratio, btn_size);
+    QPixmap info_have_err = DataHelper::get_pixmap("information_a", btn_ratio, btn_size);
+    QPixmap info_no_err = DataHelper::get_pixmap("information", btn_ratio, btn_size);
     QPixmap link_on = DataHelper::get_pixmap("link", btn_ratio, btn_size);
     QPixmap link_off = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size);
 

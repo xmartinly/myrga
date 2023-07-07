@@ -65,8 +65,10 @@ class MyRga : public QMainWindow
 
   private:
     Ui::MyRga* ui;
-    RgaUtility* rga_inst;
-
+    // RgaUtility
+    RgaUtility* rga_inst = nullptr;
+    // observer subject
+    ObserverSubject* obs_subj = nullptr;
     // recipe dialog pointer
     RecipeDlg* dlg_recipe = nullptr;
     // add rga dialog pointer
@@ -107,12 +109,15 @@ class MyRga : public QMainWindow
     void save_current();
     // read current config
     void read_current_config();
-    // clear rga instance map
-    void clear_rga_map();
+    // setup observers
+    void setup_obs();
+
 
   public slots:
     // receive run from recipe dialog
     void run_from_recipe(int dur);
+    // update observers
+    void update_obs();
 
 };
 

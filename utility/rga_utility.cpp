@@ -1102,6 +1102,10 @@ const bool RgaUtility::getRgaStatus(SysStatusCode status) {
     return (m_stat.i_statusCode & (1 << (31 - static_cast<int>(status))));
 }
 
+const QString RgaUtility::getRgaStatusString() {
+    return "getRgaStatusString";
+}
+
 ///
 /// \brief RgaUtility::setScanData
 /// \param rga_scanData

@@ -399,7 +399,7 @@ void TextInfoObserver::update() {
 //}
 
 TbObserver::TbObserver(QToolButton* btn): m_zone(btn) {
-    btn_name = btn->property("name");
+    btn_name = btn->objectName();
 }
 
 TbObserver::~TbObserver() {
@@ -413,8 +413,18 @@ void TbObserver::update() {
     bool rga_in_ctrl = inst->getInCtrl();
     bool rga_flmt_on = inst->getRgaStatus(RgaUtility::EmissState);
     bool rga_em_on = inst->getRgaStatus(RgaUtility::EmissState);
-    if(m_zone->property("name") == "flmt") {
+    bool rga_err = inst->getErrCount() > 0;
+    qDebug() << btn_name << rga_in_ctrl;
+    if(btn_name == "flmt") {
         m_zone->setIcon(rga_flmt_on ? flmt_on : flmt_off);
     }
-    if(m_zone->property("name") == )
+    if(btn_name == "info") {
+        m_zone->setIcon(rga_err ? info_have_err : info_no_err);
     }
+    if(btn_name == "em") {
+        m_zone->setIcon(rga_em_on ? em_on : em_off);
+    }
+    if(btn_name == "link") {
+        m_zone->setIcon(rga_in_ctrl ? link_on : link_off);
+    }
+}

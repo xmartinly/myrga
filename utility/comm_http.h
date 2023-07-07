@@ -66,7 +66,7 @@ class CommHttp : public QObject {
 
   signals:
 
-    void respArrival();
+    void resp_arrival();
 };
 
 #endif  // COMMHTTP_H

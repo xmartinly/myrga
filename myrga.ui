@@ -20,7 +20,7 @@
    <string>MyRga</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,999">
+   <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,99">
     <item row="0" column="0">
      <widget class="QFrame" name="frm_toolbtns">
       <property name="frameShape">
@@ -30,134 +30,6 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="13">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="20">
-        <spacer name="horizontalSpacer_12">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>15</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="14">
-        <widget class="QToolButton" name="tb_flmt">
-         <property name="toolTip">
-          <string>Toggle Filament</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/filament_off.svg</normaloff>:/Resource/Picture/svg/filament_off.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer_11">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="7">
-        <widget class="QToolButton" name="tb_review">
-         <property name="toolTip">
-          <string>Data Review</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/rollback.svg</normaloff>:/Resource/Picture/svg/rollback.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="19">
-        <widget class="QToolButton" name="tb_info">
-         <property name="toolTip">
-          <string>Information</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/information.svg</normaloff>:/Resource/Picture/svg/information.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="15">
-        <widget class="QToolButton" name="tb_em">
-         <property name="toolTip">
-          <string>Toggle EM</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/em_off.svg</normaloff>:/Resource/Picture/svg/em_off.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="18">
         <spacer name="horizontalSpacer_15">
          <property name="orientation">
@@ -173,42 +45,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer_14">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>15</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1">
-        <widget class="QToolButton" name="tb_menu">
-         <property name="toolTip">
-          <string>Toggle Side</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/menu.svg</normaloff>:/Resource/Picture/svg/menu.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
        </item>
        <item row="0" column="16">
         <spacer name="horizontalSpacer">
@@ -226,17 +62,17 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="5">
-        <widget class="QToolButton" name="tb_comm">
+       <item row="0" column="15">
+        <widget class="QToolButton" name="tb_em">
          <property name="toolTip">
-          <string>Communication</string>
+          <string>Toggle EM</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="resources/resources.qrc">
-           <normaloff>:/Resource/Picture/svg/data_transfer.svg</normaloff>:/Resource/Picture/svg/data_transfer.svg</iconset>
+           <normaloff>:/Resource/Picture/svg/em_off.svg</normaloff>:/Resource/Picture/svg/em_off.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -265,6 +101,94 @@
           </size>
          </property>
         </widget>
+       </item>
+       <item row="0" column="7">
+        <widget class="QToolButton" name="tb_review">
+         <property name="toolTip">
+          <string>Data Review</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/rollback.svg</normaloff>:/Resource/Picture/svg/rollback.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="13">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="3">
+        <spacer name="horizontalSpacer_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="5">
+        <widget class="QToolButton" name="tb_comm">
+         <property name="toolTip">
+          <string>Communication</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/data_transfer.svg</normaloff>:/Resource/Picture/svg/data_transfer.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="11">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>45</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="0" column="12">
         <widget class="QLabel" name="lb_logo">
@@ -306,49 +230,117 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="17">
-        <widget class="QLabel" name="label">
-         <property name="minimumSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
+       <item row="0" column="19">
+        <widget class="QToolButton" name="tb_info">
          <property name="toolTip">
-          <string>RGA offline</string>
+          <string>Information</string>
          </property>
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap resource="resources/resources.qrc">:/Resource/Picture/svg/broken_link.svg</pixmap>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/information.svg</normaloff>:/Resource/Picture/svg/information.svg</iconset>
          </property>
-         <property name="scaledContents">
-          <bool>true</bool>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
          </property>
         </widget>
        </item>
-       <item row="0" column="11">
-        <spacer name="horizontalSpacer_2">
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer_14">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
+          <enum>QSizePolicy::Fixed</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>40</width>
-           <height>45</height>
+           <width>15</width>
+           <height>20</height>
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="0" column="14">
+        <widget class="QToolButton" name="tb_flmt">
+         <property name="toolTip">
+          <string>Toggle Filament</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/filament_off.svg</normaloff>:/Resource/Picture/svg/filament_off.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="20">
+        <spacer name="horizontalSpacer_12">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>15</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QToolButton" name="tb_menu">
+         <property name="toolTip">
+          <string>Toggle Side</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/menu.svg</normaloff>:/Resource/Picture/svg/menu.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="17">
+        <widget class="QToolButton" name="tb_link">
+         <property name="toolTip">
+          <string>Information</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/Resource/Picture/svg/broken_link.svg</normaloff>:/Resource/Picture/svg/broken_link.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>36</width>
+           <height>36</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1217,7 +1209,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1281,7 +1273,7 @@
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>chart_plugin/qcustomplot.h</header>
+   <header>qcustomplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -24,12 +24,17 @@ MyRga::MyRga(QWidget* parent)
     http_cli = CommHttp::GetInstance();
     rga_inst = new RgaUtility;
     StaticContainer::setCrntRga(rga_inst);
+    obs_subj = new ObserverSubject;
+    connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
+    setup_obs();
 }
 ///
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
     delete rga_inst;
+    obs_subj->removeAll();
+    delete obs_subj;
     delete ui;
 }
 
@@ -196,7 +201,6 @@ void MyRga::run_from_recipe(int dur) {
 }
 
 
-
 void MyRga::on_tb_ctrl_clicked() {
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
@@ -261,6 +265,34 @@ void MyRga::read_current_config() {
     inst->setRgaTag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
+
+void MyRga::setup_obs() {
+    //******************************************************************//
+    //** link button
+    DataObserver* link_btn_obs = new TbObserver(ui->tb_link);
+    link_btn_obs->setObjectName("link");
+    obs_subj->addObserver(link_btn_obs);
+    //******************************************************************//
+    //** flmt button
+    DataObserver* flmt_btn_obs = new TbObserver(ui->tb_flmt);
+    flmt_btn_obs->setObjectName("flmt");
+    obs_subj->addObserver(flmt_btn_obs);
+    //******************************************************************//
+    //** em button
+    DataObserver* em_btn_obs = new TbObserver(ui->tb_em);
+    em_btn_obs->setObjectName("em");
+    obs_subj->addObserver(em_btn_obs);
+    //******************************************************************//
+    //** info button
+    DataObserver* info_btn_obs = new TbObserver(ui->tb_info);
+    info_btn_obs->setObjectName("info");
+    obs_subj->addObserver(info_btn_obs);
+}
+
+void MyRga::update_obs() {
+    obs_subj->notify_obs();
+}
+
 
 
 

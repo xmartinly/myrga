@@ -37,7 +37,7 @@ void ObserverSubject::removeObserver(DataObserver* obs) {
 /// \brief ObserverSubject::notifyObs
 /// \param data
 ///
-void ObserverSubject::notifyObs() {
+void ObserverSubject::notify_obs() {
     if(m_obsrvs.count() < 1) {
         return;
     }

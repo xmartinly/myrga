@@ -106,7 +106,6 @@ void CommHttp::sendQueueCmd() {
         return;
     }
     QString s_cmd = m_cmdQ.dequeue();
-    qDebug() << s_cmd;
     d->manager->get(QNetworkRequest(QUrl(s_cmd)));
     if (m_cmdQ.count() > 100) {
         clearCmdQ();
@@ -122,7 +121,6 @@ void CommHttp::clearCmdQ() {
 
 void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     RespType type = static_cast<RespType>(type_);
-//    QString s_id = vm_data.value("rga_id").toString();
     auto inst = StaticContainer::getCrntRga();
     if(inst == nullptr || type == ResRespNone) {
         return;
@@ -172,6 +170,6 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     if(type == SerialNumber) {
         inst->setRgaSn(vm_data.value("data").toString());
     }
-    emit respArrival();
+    emit resp_arrival();
 }
 
