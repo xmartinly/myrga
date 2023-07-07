@@ -1,6 +1,10 @@
 ﻿#ifndef STABLE_H
 #define STABLE_H
 
+
+#include <QList>
+#include <QStringList>
+#include <QString>
 #include <QFile>
 #include <QFileDialog>
 #include <QPixmap>
@@ -23,23 +27,11 @@
 #include <QMessageBox>
 #include <QTableWidget>
 #include <QWidget>
-#include <QHBoxLayout>
 
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
-#include <QList>
-#include <QStringList>
-#include <QString>
-
-//#include <QNetworkAccessManager>
-//#include <QNetworkReply>
-//#include <QNetworkCookieJar>
-//#include <QNetworkCookie>
-//#include <QNetworkRequest>
-//#include <QNetworkProxy>
-//#include <QTcpSocket>
 
 #include <QTimer>
 #include <QDateTime>
@@ -53,9 +45,13 @@
 #include <QLocale>
 
 
-#include <algorithm>
-
-
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkCookieJar>
+#include <QNetworkCookie>
+#include <QNetworkRequest>
+#include <QNetworkProxy>
+#include <QTcpSocket>
 
 #include <QDebug>
 

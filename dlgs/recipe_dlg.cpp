@@ -52,13 +52,6 @@ void RecipeDlg::on_btn_del_clicked() {
 }
 
 ///
-/// \brief RecipeDlg::on_btn_refresh_clicked
-///
-//void RecipeDlg::on_btn_refresh_clicked() {
-//    tblInit();
-//}
-
-///
 /// \brief RecipeDlg::on_btn_save_clicked. Save recipe to config file.
 ///
 void RecipeDlg::on_btn_save_clicked() {
@@ -104,7 +97,6 @@ void RecipeDlg::tblInit() {
     ui->tbl_recipe->setHorizontalHeaderLabels(tblHeader);
     ui->tbl_recipe->verticalHeader()->setVisible(false);
     ui->tbl_recipe->horizontalHeader()->resizeSection(0, 155);
-//    ui->tbl_recipe->horizontalHeader()->resizeSection(1, 75);
     ui->tbl_recipe->horizontalHeader()->setStretchLastSection(true);
     ui->tbl_recipe->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tbl_recipe->setRowCount(i_recipeCount);
@@ -200,30 +192,9 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
 
-///
-/// \brief RecipeDlg::on_btn_clear_clicked
-///
-//void RecipeDlg::on_btn_clear_clicked() {
-//    QTime tm_init;
-//    tm_init.setHMS(0, 10, 0);
-//    ui->cb_emauto->setChecked(false);
-//    ui->cb_method->setCurrentIndex(0);
-//    ui->te_time->setTime(tm_init);
-//    ui->le_name->setText("");
-//    ui->le_points->setText("2/4/16/18/28/32/44");
-//    ui->sb_start->setValue(0);
-//    ui->sb_end->setValue(100);
-//}
 
-
-void RecipeDlg::on_btn_select_clicked() {
-    DataHelper::save_last_config("", ui->le_name->text(), "");
+void RecipeDlg::on_btn_run_clicked() {
+    emit start_recipe(ui->cb_run->currentIndex());
     this->close();
-}
-
-
-void RecipeDlg::on_cb_run_currentIndexChanged(int index)
-{
-
 }
 

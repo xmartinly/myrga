@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Recipe</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/Resource/Picture/svg/tune.svg</normaloff>:/Resource/Picture/svg/tune.svg</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -796,35 +800,16 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_18">
        <item>
-        <widget class="QLabel" name="label_13">
-         <property name="minimumSize">
-          <size>
-           <width>55</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>55</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Run</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="cb_run">
          <property name="minimumSize">
           <size>
-           <width>90</width>
+           <width>100</width>
            <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>80</width>
+           <width>100</width>
            <height>30</height>
           </size>
          </property>
@@ -844,6 +829,25 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_run">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>70</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Run</string>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_5">
@@ -919,6 +923,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

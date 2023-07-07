@@ -3,8 +3,6 @@
 
 #include <QDialog>
 
-//#include "data_helper.h"
-
 namespace Ui {
     class RecipeDlg;
 }
@@ -22,21 +20,15 @@ class RecipeDlg : public QDialog {
 
     void on_btn_del_clicked();
 
-//    void on_btn_refresh_clicked();
-
     void on_btn_save_clicked();
 
     void tblInit();
 
     void on_tbl_recipe_cellClicked(int row, int);
 
-//    void on_btn_clear_clicked();
+    void on_btn_run_clicked();
 
-    void on_btn_select_clicked();
-
-    void on_cb_run_currentIndexChanged(int index);
-
-private:
+  private:
     Ui::RecipeDlg* ui;
 
     bool m_method = false;
@@ -44,6 +36,9 @@ private:
     int m_iRow = 0;
     QStringList m_slRecipes;
     QString m_s_recipePath;
+
+  signals:
+    void start_recipe(int dur);
 };
 
 #endif // RECIPE_DLG_H

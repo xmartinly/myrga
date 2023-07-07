@@ -2,7 +2,8 @@
 #define MYRGA_H
 
 #include "observer/observer_subject.h"
-#include "utility/comm_http.h"
+#include "dlgs/addrga_dlg.h"
+#include "dlgs/recipe_dlg.h"
 #include "utility/rga_utility.h"
 #include <QMainWindow>
 
@@ -40,8 +41,6 @@ class MyRga : public QMainWindow
 
     void on_tb_recipe_clicked();
 
-    void on_tb_start_clicked();
-
     void on_tb_flmt_clicked();
 
     void on_tb_em_clicked();
@@ -62,15 +61,20 @@ class MyRga : public QMainWindow
 
     void on_tb_review_clicked();
 
+    void on_tb_ctrl_clicked();
+
   private:
     Ui::MyRga* ui;
-
+    // recipe dialog pointer
+    RecipeDlg* dlg_recipe = nullptr;
+    // add rga dialog pointer
+    AddRgaDlg* dlg_add = nullptr;
     // acquire command generate timer
     QTimer*                 m_acq_tmr           = nullptr;
     // idle command generate timer
     QTimer*                 m_idle_tmr          = nullptr;
     // http connection instance. singleton
-    CommHttp*               m_http              = nullptr;
+//    CommHttp*               m_http              = nullptr;
     // observer subject
     ObserverSubject         m_subObs;
     // print chart
@@ -97,10 +101,10 @@ class MyRga : public QMainWindow
     void menu_popout();
     // set spec chart x axis ticks and labels
     void set_spec_xaxis();
-    // open add rga comm dialog
-    void open_add_dlg();
-    // open recipe setting dialog
-    void open_recipe_dlg();
+
+  public slots:
+    // receive run from recipe dialog
+    void run_from_recipe(int dur);
 
 };
 

@@ -1,6 +1,7 @@
 #ifndef DATAHELPER_H
 #define DATAHELPER_H
 
+#include "utility/comm_http.h"
 
 class DataHelper {
   public:

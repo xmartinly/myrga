@@ -23,7 +23,14 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Add RGA</string>
+   <string>RGA communication</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/Resource/Picture/svg/data_transfer.svg</normaloff>:/Resource/Picture/svg/data_transfer.svg</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
@@ -290,6 +297,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -14,7 +14,7 @@ class AddRgaDlg : public QDialog {
     explicit AddRgaDlg(QWidget* parent = nullptr);
     ~AddRgaDlg();
 
-    void setRgaTag(const QString& tag);
+    void set_rga_tag(const QString& tag);
 
   private slots:
     void on_btn_save_clicked();
@@ -34,11 +34,11 @@ class AddRgaDlg : public QDialog {
     QString     m_sRecipePath;
     QStringList m_slRgas;
     bool        m_bIsFromEdit = false;
-    void        tblInit();
-    void        initRecipeList();
-    bool        checkConnection();
+    void        tbl_init();
+//    void        initRecipeList();
+    bool        check_conn();
 
-    int         checkSettingConflict(QString tag, QString ip);
+    int         check_setting_conflict(QString tag, QString ip);
 };
 
 #endif // ADDRGA_DLG_H

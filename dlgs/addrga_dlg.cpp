@@ -10,8 +10,8 @@ AddRgaDlg::AddRgaDlg(QWidget* parent) :
     ui->le_port->setText("80");
     m_sRgaPath = DataHelper::getFileFolder("rgas");
     m_sRecipePath = DataHelper::getFileFolder("recipes");
-    initRecipeList();
-    tblInit();
+//    initRecipeList();
+    tbl_init();
 }
 
 ///
@@ -25,7 +25,7 @@ AddRgaDlg::~AddRgaDlg() {
 /// \brief AddRgaDlg::setRgaTag
 /// \param tag
 ///
-void AddRgaDlg::setRgaTag(const QString& tag) {
+void AddRgaDlg::set_rga_tag(const QString& tag) {
     m_bIsFromEdit = true;
     QStringList sl_recipes = DataHelper::listConfFile(m_sRgaPath);
     QMap<QString, QString> qm_values = DataHelper::readConf(tag + ".ini", m_sRgaPath, "Rga");
@@ -43,16 +43,7 @@ void AddRgaDlg::setRgaTag(const QString& tag) {
         return;
     }
     QString s_port = qm_values.find("Port")->toStdString().c_str();
-    //rga Recipe
-    if(!qm_values.contains("Recipe")) {
-        return;
-    }
-    QString s_recipe = qm_values.find("Recipe")->toStdString().c_str();
-    //rga run method
-    if(!qm_values.contains("Run")) {
-        return;
-    }
-    //read Method
+    //read Tag
     if(!qm_values.contains("Tag")) {
         return;
     }
@@ -62,21 +53,12 @@ void AddRgaDlg::setRgaTag(const QString& tag) {
     ui->le_rga_tag->setText(s_tag);
 }
 
-///
-/// \brief AddRgaDlg::initRecipeList
-///
-void AddRgaDlg::initRecipeList() {
-    QStringList sl_recipes = DataHelper::listConfFile(m_sRecipePath);
-    if(sl_recipes.count() < 1) {
-        return;
-    }
-}
 
 ///
 /// \brief AddRgaDlg::checkConnection
 /// \return
 ///
-bool AddRgaDlg::checkConnection() {
+bool AddRgaDlg::check_conn() {
     QString s_ip = ui->ip_widget->getIP();
     if(s_ip.length() < 1) {
         ui->ip_widget->setFocus();
@@ -96,7 +78,7 @@ bool AddRgaDlg::checkConnection() {
 /// \param ip
 /// \return
 ///
-int AddRgaDlg::checkSettingConflict(QString tag, QString ip) {
+int AddRgaDlg::check_setting_conflict(QString tag, QString ip) {
     QStringList sl_rgas = DataHelper::listConfFile(m_sRgaPath);
     foreach (QString _rga, sl_rgas) {
         if(_rga == tag) {
@@ -109,17 +91,16 @@ int AddRgaDlg::checkSettingConflict(QString tag, QString ip) {
 ///
 /// \brief RecipeDlg::tblInit
 ///
-void AddRgaDlg::tblInit() {
+void AddRgaDlg::tbl_init() {
     ui->tbl_rgas->clear();
     m_slRgas = DataHelper::listConfFile(m_sRgaPath);
     int i_rgaLen = m_slRgas.length();
     QStringList tblHeader;
-    tblHeader << tr("No.") << tr("Name");
+    tblHeader << u8"No." << u8"Name";
     ui->tbl_rgas->setColumnCount(2);
     ui->tbl_rgas->setHorizontalHeaderLabels(tblHeader);
     ui->tbl_rgas->verticalHeader()->setVisible(false);
     ui->tbl_rgas->horizontalHeader()->resizeSection(0, 155);
-    //    ui->tbl_recipe->horizontalHeader()->resizeSection(1, 75);
     ui->tbl_rgas->horizontalHeader()->setStretchLastSection(true);
     ui->tbl_rgas->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tbl_rgas->setRowCount(i_rgaLen);
@@ -137,21 +118,19 @@ void AddRgaDlg::tblInit() {
 ///
 void AddRgaDlg::on_btn_save_clicked() {
     QString s_rgaAddr =  ui->ip_widget->getIP() + ":" + ui->le_port->text();
-    if(!checkConnection()) {
+    if(!check_conn()) {
         QMessageBox::warning(nullptr, "Connection error", "Can't connect to the address: \n" + s_rgaAddr);
         return;
     }
-
     QString s_tag = ui->le_rga_tag->text();
     if(s_tag.length() < 1) {
         QMessageBox::warning(nullptr, "Tag error", "Please input RGA tag for indentify.");
         return;
     }
     QString s_ip = ui->ip_widget->getIP();
-    if(!checkSettingConflict(s_tag, s_ip)) {
+    if(!check_setting_conflict(s_tag, s_ip)) {
         return;
     }
-
     QString s_port = ui->le_port->text();
     QMap<QString, QString> qm_rga;
     qm_rga.insert("Tag", s_tag);
@@ -165,7 +144,7 @@ void AddRgaDlg::on_btn_save_clicked() {
     if(m_bIsFromEdit) {
         this->close();
     }
-    tblInit();
+    tbl_init();
 }
 
 void AddRgaDlg::on_tbl_rgas_cellClicked(int row, int) {
@@ -203,7 +182,7 @@ void AddRgaDlg::on_btn_del_clicked() {
     }
     QString s_fileName = m_slRgas.at(m_iRow) + ".ini";
     DataHelper::delFile(s_fileName, m_sRgaPath);
-    tblInit();
+    tbl_init();
     m_iRow = -1;
 }
 

@@ -48,13 +48,12 @@ DataHelper::~DataHelper() {}
 /// \return bool, connect state.
 ///
 bool DataHelper::checkConnect(const QString& ip, uint port) {
-//    QTcpSocket socket;
-//    socket.setProxy(QNetworkProxy::NoProxy);
-//    socket.connectToHost(ip, static_cast<uint>(port));
-//    bool b_connected = socket.waitForConnected(500);
-//    socket.disconnectFromHost();
-//    return b_connected;
-    return false;
+    QTcpSocket socket;
+    socket.setProxy(QNetworkProxy::NoProxy);
+    socket.connectToHost(ip, static_cast<uint>(port));
+    bool b_connected = socket.waitForConnected(500);
+    socket.disconnectFromHost();
+    return b_connected;
 }
 
 void DataHelper::save_last_config(const QString& rga, const QString& recipe, const QString& run) {

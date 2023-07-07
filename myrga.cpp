@@ -1,6 +1,5 @@
 #include "myrga.h"
-#include "dlgs/addrga_dlg.h"
-#include "dlgs/recipe_dlg.h"
+
 #include "ui_myrga.h"
 
 ///
@@ -17,6 +16,9 @@ MyRga::MyRga(QWidget* parent)
     connect(m_idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
     m_acq_tmr  = new QTimer(this);
     connect(m_acq_tmr, &QTimer::timeout, this, &MyRga::acq_tmr_action);
+    dlg_recipe = new RecipeDlg(this);
+    connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
+    dlg_add = new AddRgaDlg(this);
 }
 ///
 /// \brief MyRga::~MyRga
@@ -25,15 +27,11 @@ MyRga::~MyRga() {
     delete ui;
 }
 
-
-
-
-
 ///
 /// \brief MyRga::on_tb_comm_clicked
 ///
 void MyRga::on_tb_comm_clicked() {
-    open_add_dlg();
+    dlg_add->exec();
 }
 
 ///
@@ -48,14 +46,7 @@ void MyRga::on_tb_menu_clicked() {
 /// \brief MyRga::on_tb_recipe_clicked
 ///
 void MyRga::on_tb_recipe_clicked() {
-    RecipeDlg dlg_recipe;
-    dlg_recipe.exec();
-}
-
-///
-/// \brief MyRga::on_tb_start_clicked
-///
-void MyRga::on_tb_start_clicked() {
+    dlg_recipe->exec();
 }
 
 ///
@@ -98,14 +89,14 @@ void MyRga::on_tb_info_clicked() {
 /// \brief MyRga::on_actionRecipe_triggered
 ///
 void MyRga::on_actionRecipe_triggered() {
-    open_recipe_dlg();
+    dlg_recipe->exec();
 }
 
 ///
 /// \brief MyRga::on_actionComm_triggered
 ///
 void MyRga::on_actionComm_triggered() {
-    open_add_dlg();
+    dlg_add->exec();
 }
 
 ///
@@ -151,13 +142,25 @@ void MyRga::init_line_chart() {
 void MyRga::setup_observers() {
 }
 
-void MyRga::open_add_dlg() {
-    open_recipe_dlg();
+void MyRga::save_current() {
+    QString mass_start = ui->sb_start->text();
+    QString mass_stop = ui->sb_end->text();
+    QString mass_points = ui->le_points->text();
+    QString method = QString::number(ui->cb_method->currentIndex());
+    QString ppamu = QString::number(ui->cb_ppamu->currentIndex());
+    QString dwell = QString::number(ui->cb_dwell->currentIndex());
+    QString flmt = QString::number(ui->cb_flmt->currentIndex());
+    QString type = QString::number(ui->cb_unitreport->currentIndex());
+    QString tp_unit = QString::number(ui->cb_unitpressure->currentIndex());
 }
 
-void MyRga::open_recipe_dlg() {
-    AddRgaDlg dlg_addRga;
-    dlg_addRga.exec();
+
+void MyRga::run_from_recipe(int dur) {
+    qDebug() << dur << "run_from_recipe";
 }
 
+
+
+void MyRga::on_tb_ctrl_clicked() {
+}
 

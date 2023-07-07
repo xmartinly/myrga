@@ -8,7 +8,7 @@
 #ifndef CPPHTTPLIB_HTTPLIB_H
 #define CPPHTTPLIB_HTTPLIB_H
 
-#define CPPHTTPLIB_VERSION "0.12.6"
+#define CPPHTTPLIB_VERSION "0.12.3"
 
 /*
  * Configuration
@@ -172,14 +172,8 @@ using socket_t = SOCKET;
 #else // not _WIN32
 
 #include <arpa/inet.h>
-#if !defined(_AIX) && !defined(__MVS__)
+#ifndef _AIX
 #include <ifaddrs.h>
-#endif
-#ifdef __MVS__
-#include <strings.h>
-#ifndef NI_MAXHOST
-#define NI_MAXHOST 1025
-#endif
 #endif
 #include <net/if.h>
 #include <netdb.h>
@@ -229,7 +223,6 @@ using socket_t = int;
 #include <string>
 #include <sys/stat.h>
 #include <thread>
-#include <utility>
 
 #ifdef CPPHTTPLIB_OPENSSL_SUPPORT
 #ifdef _WIN32
@@ -1124,7 +1117,6 @@ public:
   void set_ca_cert_path(const std::string &ca_cert_file_path,
                         const std::string &ca_cert_dir_path = std::string());
   void set_ca_cert_store(X509_STORE *ca_cert_store);
-  X509_STORE *create_ca_cert_store(const char *ca_cert, std::size_t size);
 #endif
 
 #ifdef CPPHTTPLIB_OPENSSL_SUPPORT
@@ -1505,7 +1497,6 @@ public:
                         const std::string &ca_cert_dir_path = std::string());
 
   void set_ca_cert_store(X509_STORE *ca_cert_store);
-  void load_ca_cert_store(const char *ca_cert, std::size_t size);
 
   long get_openssl_verify_result() const;
 
@@ -1565,7 +1556,6 @@ public:
   bool is_valid() const override;
 
   void set_ca_cert_store(X509_STORE *ca_cert_store);
-  void load_ca_cert_store(const char *ca_cert, std::size_t size);
 
   long get_openssl_verify_result() const;
 
@@ -1675,17 +1665,17 @@ inline ssize_t Stream::write_format(const char *fmt, const Args &...args) {
 inline void default_socket_options(socket_t sock) {
   int yes = 1;
 #ifdef _WIN32
-  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR,
-             reinterpret_cast<const char *>(&yes), sizeof(yes));
+  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<char *>(&yes),
+             sizeof(yes));
   setsockopt(sock, SOL_SOCKET, SO_EXCLUSIVEADDRUSE,
-             reinterpret_cast<const char *>(&yes), sizeof(yes));
+             reinterpret_cast<char *>(&yes), sizeof(yes));
 #else
 #ifdef SO_REUSEPORT
-  setsockopt(sock, SOL_SOCKET, SO_REUSEPORT,
-             reinterpret_cast<const void *>(&yes), sizeof(yes));
+  setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<void *>(&yes),
+             sizeof(yes));
 #else
-  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR,
-             reinterpret_cast<const void *>(&yes), sizeof(yes));
+  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<void *>(&yes),
+             sizeof(yes));
 #endif
 #endif
 }
@@ -2013,7 +2003,7 @@ inline bool from_hex_to_i(const std::string &s, size_t i, size_t cnt,
   val = 0;
   for (; cnt; i++, cnt--) {
     if (!s[i]) { return false; }
-    auto v = 0;
+    int v = 0;
     if (is_hex(s[i], v)) {
       val = val * 16 + v;
     } else {
@@ -2024,7 +2014,7 @@ inline bool from_hex_to_i(const std::string &s, size_t i, size_t cnt,
 }
 
 inline std::string from_i_to_hex(size_t n) {
-  static const auto charset = "0123456789abcdef";
+  const char *charset = "0123456789abcdef";
   std::string ret;
   do {
     ret = charset[n & 15] + ret;
@@ -2074,8 +2064,8 @@ inline std::string base64_encode(const std::string &in) {
   std::string out;
   out.reserve(in.size());
 
-  auto val = 0;
-  auto valb = -6;
+  int val = 0;
+  int valb = -6;
 
   for (auto c : in) {
     val = (val << 8) + static_cast<uint8_t>(c);
@@ -2206,7 +2196,7 @@ inline std::string decode_url(const std::string &s,
   for (size_t i = 0; i < s.size(); i++) {
     if (s[i] == '%' && i + 1 < s.size()) {
       if (s[i + 1] == 'u') {
-        auto val = 0;
+        int val = 0;
         if (from_hex_to_i(s, i + 2, 4, val)) {
           // 4 digits Unicode codes
           char buff[4];
@@ -2217,7 +2207,7 @@ inline std::string decode_url(const std::string &s,
           result += s[i];
         }
       } else {
-        auto val = 0;
+        int val = 0;
         if (from_hex_to_i(s, i + 1, 2, val)) {
           // 2 digits hex codes
           result += static_cast<char>(val);
@@ -2364,7 +2354,7 @@ inline int close_socket(socket_t sock) {
 }
 
 template <typename T> inline ssize_t handle_EINTR(T fn) {
-  ssize_t res = 0;
+  ssize_t res = false;
   while (true) {
     res = fn();
     if (res < 0 && errno == EINTR) { continue; }
@@ -2468,7 +2458,7 @@ inline Error wait_until_socket_is_ready(socket_t sock, time_t sec,
   if (poll_res == 0) { return Error::ConnectionTimeout; }
 
   if (poll_res > 0 && pfd_read.revents & (POLLIN | POLLOUT)) {
-    auto error = 0;
+    int error = 0;
     socklen_t len = sizeof(error);
     auto res = getsockopt(sock, SOL_SOCKET, SO_ERROR,
                           reinterpret_cast<char *>(&error), &len);
@@ -2500,7 +2490,7 @@ inline Error wait_until_socket_is_ready(socket_t sock, time_t sec,
   if (ret == 0) { return Error::ConnectionTimeout; }
 
   if (ret > 0 && (FD_ISSET(sock, &fdsr) || FD_ISSET(sock, &fdsw))) {
-    auto error = 0;
+    int error = 0;
     socklen_t len = sizeof(error);
     auto res = getsockopt(sock, SOL_SOCKET, SO_ERROR,
                           reinterpret_cast<char *>(&error), &len);
@@ -2745,27 +2735,17 @@ socket_t create_socket(const std::string &host, const std::string &ip, int port,
 #endif
 
     if (tcp_nodelay) {
-      auto yes = 1;
-#ifdef _WIN32
-      setsockopt(sock, IPPROTO_TCP, TCP_NODELAY,
-                 reinterpret_cast<const char *>(&yes), sizeof(yes));
-#else
-      setsockopt(sock, IPPROTO_TCP, TCP_NODELAY,
-                 reinterpret_cast<const void *>(&yes), sizeof(yes));
-#endif
+      int yes = 1;
+      setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<char *>(&yes),
+                 sizeof(yes));
     }
 
     if (socket_options) { socket_options(sock); }
 
     if (rp->ai_family == AF_INET6) {
-      auto no = 0;
-#ifdef _WIN32
-      setsockopt(sock, IPPROTO_IPV6, IPV6_V6ONLY,
-                 reinterpret_cast<const char *>(&no), sizeof(no));
-#else
-      setsockopt(sock, IPPROTO_IPV6, IPV6_V6ONLY,
-                 reinterpret_cast<const void *>(&no), sizeof(no));
-#endif
+      int no = 0;
+      setsockopt(sock, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<char *>(&no),
+                 sizeof(no));
     }
 
     // bind or connect
@@ -2824,7 +2804,7 @@ inline bool bind_ip_address(socket_t sock, const std::string &host) {
   return ret;
 }
 
-#if !defined _WIN32 && !defined ANDROID && !defined _AIX && !defined __MVS__
+#if !defined _WIN32 && !defined ANDROID && !defined _AIX
 #define USE_IF2IP
 #endif
 
@@ -2908,14 +2888,13 @@ inline socket_t create_client_socket(
 #ifdef _WIN32
           auto timeout = static_cast<uint32_t>(read_timeout_sec * 1000 +
                                                read_timeout_usec / 1000);
-          setsockopt(sock2, SOL_SOCKET, SO_RCVTIMEO,
-                     reinterpret_cast<const char *>(&timeout), sizeof(timeout));
+          setsockopt(sock2, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,
+                     sizeof(timeout));
 #else
           timeval tv;
           tv.tv_sec = static_cast<long>(read_timeout_sec);
           tv.tv_usec = static_cast<decltype(tv.tv_usec)>(read_timeout_usec);
-          setsockopt(sock2, SOL_SOCKET, SO_RCVTIMEO,
-                     reinterpret_cast<const void *>(&tv), sizeof(tv));
+          setsockopt(sock2, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(tv));
 #endif
         }
         {
@@ -2923,14 +2902,13 @@ inline socket_t create_client_socket(
 #ifdef _WIN32
           auto timeout = static_cast<uint32_t>(write_timeout_sec * 1000 +
                                                write_timeout_usec / 1000);
-          setsockopt(sock2, SOL_SOCKET, SO_SNDTIMEO,
-                     reinterpret_cast<const char *>(&timeout), sizeof(timeout));
+          setsockopt(sock2, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout,
+                     sizeof(timeout));
 #else
           timeval tv;
           tv.tv_sec = static_cast<long>(write_timeout_sec);
           tv.tv_usec = static_cast<decltype(tv.tv_usec)>(write_timeout_usec);
-          setsockopt(sock2, SOL_SOCKET, SO_SNDTIMEO,
-                     reinterpret_cast<const void *>(&tv), sizeof(tv));
+          setsockopt(sock2, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(tv));
 #endif
         }
 
@@ -3240,7 +3218,7 @@ inline bool gzip_compressor::compress(const char *data, size_t data_length,
     data += strm_.avail_in;
 
     auto flush = (last && data_length == 0) ? Z_FINISH : Z_NO_FLUSH;
-    auto ret = Z_OK;
+    int ret = Z_OK;
 
     std::array<char, CPPHTTPLIB_COMPRESSION_BUFSIZ> buff{};
     do {
@@ -3284,7 +3262,7 @@ inline bool gzip_decompressor::decompress(const char *data, size_t data_length,
                                           Callback callback) {
   assert(is_valid_);
 
-  auto ret = Z_OK;
+  int ret = Z_OK;
 
   do {
     constexpr size_t max_avail_in =
@@ -3389,7 +3367,7 @@ inline bool brotli_decompressor::decompress(const char *data,
     return 0;
   }
 
-  auto next_in = reinterpret_cast<const uint8_t *>(data);
+  const uint8_t *next_in = (const uint8_t *)data;
   size_t avail_in = data_length;
   size_t total_out;
 
@@ -3932,8 +3910,7 @@ inline bool redirect(T &cli, Request &req, Response &res,
   if (ret) {
     req = new_req;
     res = new_res;
-
-    if (res.location.empty()) res.location = location;
+    res.location = location;
   }
   return ret;
 }
@@ -4494,7 +4471,7 @@ inline std::string message_digest(const std::string &s, const EVP_MD *algo) {
   std::stringstream ss;
   for (auto i = 0u; i < hash_length; ++i) {
     ss << std::hex << std::setw(2) << std::setfill('0')
-       << static_cast<unsigned int>(hash[i]);
+       << (unsigned int)hash[i];
   }
 
   return ss.str();
@@ -4587,7 +4564,7 @@ inline bool retrieve_root_certs_from_keychain(CFObjectPtr<CFArrayRef> &certs) {
 
 inline bool add_certs_to_x509_store(CFArrayRef certs, X509_STORE *store) {
   auto result = false;
-  for (auto i = 0; i < CFArrayGetCount(certs); ++i) {
+  for (int i = 0; i < CFArrayGetCount(certs); ++i) {
     const auto cert = reinterpret_cast<const __SecCertificate *>(
         CFArrayGetValueAtIndex(certs, i));
 
@@ -4805,7 +4782,7 @@ inline void hosted_at(const std::string &hostname,
     const auto &addr =
         *reinterpret_cast<struct sockaddr_storage *>(rp->ai_addr);
     std::string ip;
-    auto dummy = -1;
+    int dummy = -1;
     if (detail::get_ip_and_port(addr, sizeof(struct sockaddr_storage), ip,
                                 dummy)) {
       addrs.push_back(ip);
@@ -5295,6 +5272,7 @@ inline Server &Server::set_logger(Logger logger) {
 inline Server &
 Server::set_expect_100_continue_handler(Expect100ContinueHandler handler) {
   expect_100_continue_handler_ = std::move(handler);
+
   return *this;
 }
 
@@ -5811,14 +5789,13 @@ inline bool Server::listen_internal() {
 #ifdef _WIN32
         auto timeout = static_cast<uint32_t>(read_timeout_sec_ * 1000 +
                                              read_timeout_usec_ / 1000);
-        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO,
-                   reinterpret_cast<const char *>(&timeout), sizeof(timeout));
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,
+                   sizeof(timeout));
 #else
         timeval tv;
         tv.tv_sec = static_cast<long>(read_timeout_sec_);
         tv.tv_usec = static_cast<decltype(tv.tv_usec)>(read_timeout_usec_);
-        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO,
-                   reinterpret_cast<const void *>(&tv), sizeof(tv));
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(tv));
 #endif
       }
       {
@@ -5826,14 +5803,13 @@ inline bool Server::listen_internal() {
 #ifdef _WIN32
         auto timeout = static_cast<uint32_t>(write_timeout_sec_ * 1000 +
                                              write_timeout_usec_ / 1000);
-        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO,
-                   reinterpret_cast<const char *>(&timeout), sizeof(timeout));
+        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout,
+                   sizeof(timeout));
 #else
         timeval tv;
         tv.tv_sec = static_cast<long>(write_timeout_sec_);
         tv.tv_usec = static_cast<decltype(tv.tv_usec)>(write_timeout_usec_);
-        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO,
-                   reinterpret_cast<const void *>(&tv), sizeof(tv));
+        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(tv));
 #endif
       }
 
@@ -5853,7 +5829,7 @@ inline bool Server::routing(Request &req, Response &res, Stream &strm) {
   }
 
   // File handler
-  auto is_head_request = req.method == "HEAD";
+  bool is_head_request = req.method == "HEAD";
   if ((req.method == "GET" || is_head_request) &&
       handle_file_request(req, res, is_head_request)) {
     return true;
@@ -5949,8 +5925,8 @@ inline void Server::apply_ranges(const Request &req, Response &res,
       res.headers.erase(it);
     }
 
-    res.set_header("Content-Type",
-                   "multipart/byteranges; boundary=" + boundary);
+    res.headers.emplace("Content-Type",
+                        "multipart/byteranges; boundary=" + boundary);
   }
 
   auto type = detail::encoding_type(req, res);
@@ -6640,32 +6616,32 @@ inline bool ClientImpl::write_request(Stream &strm, Request &req,
   // Prepare additional headers
   if (close_connection) {
     if (!req.has_header("Connection")) {
-      req.set_header("Connection", "close");
+      req.headers.emplace("Connection", "close");
     }
   }
 
   if (!req.has_header("Host")) {
     if (is_ssl()) {
       if (port_ == 443) {
-        req.set_header("Host", host_);
+        req.headers.emplace("Host", host_);
       } else {
-        req.set_header("Host", host_and_port_);
+        req.headers.emplace("Host", host_and_port_);
       }
     } else {
       if (port_ == 80) {
-        req.set_header("Host", host_);
+        req.headers.emplace("Host", host_);
       } else {
-        req.set_header("Host", host_and_port_);
+        req.headers.emplace("Host", host_and_port_);
       }
     }
   }
 
-  if (!req.has_header("Accept")) { req.set_header("Accept", "*/*"); }
+  if (!req.has_header("Accept")) { req.headers.emplace("Accept", "*/*"); }
 
 #ifndef CPPHTTPLIB_NO_DEFAULT_USER_AGENT
   if (!req.has_header("User-Agent")) {
     auto agent = std::string("cpp-httplib/") + CPPHTTPLIB_VERSION;
-    req.set_header("User-Agent", agent);
+    req.headers.emplace("User-Agent", agent);
   }
 #endif
 
@@ -6674,23 +6650,23 @@ inline bool ClientImpl::write_request(Stream &strm, Request &req,
       if (!req.is_chunked_content_provider_) {
         if (!req.has_header("Content-Length")) {
           auto length = std::to_string(req.content_length_);
-          req.set_header("Content-Length", length);
+          req.headers.emplace("Content-Length", length);
         }
       }
     } else {
       if (req.method == "POST" || req.method == "PUT" ||
           req.method == "PATCH") {
-        req.set_header("Content-Length", "0");
+        req.headers.emplace("Content-Length", "0");
       }
     }
   } else {
     if (!req.has_header("Content-Type")) {
-      req.set_header("Content-Type", "text/plain");
+      req.headers.emplace("Content-Type", "text/plain");
     }
 
     if (!req.has_header("Content-Length")) {
       auto length = std::to_string(req.body.size());
-      req.set_header("Content-Length", length);
+      req.headers.emplace("Content-Length", length);
     }
   }
 
@@ -6758,10 +6734,12 @@ inline std::unique_ptr<Response> ClientImpl::send_with_content_provider(
     ContentProvider content_provider,
     ContentProviderWithoutLength content_provider_without_length,
     const std::string &content_type, Error &error) {
-  if (!content_type.empty()) { req.set_header("Content-Type", content_type); }
+  if (!content_type.empty()) {
+    req.headers.emplace("Content-Type", content_type);
+  }
 
 #ifdef CPPHTTPLIB_ZLIB_SUPPORT
-  if (compress_) { req.set_header("Content-Encoding", "gzip"); }
+  if (compress_) { req.headers.emplace("Content-Encoding", "gzip"); }
 #endif
 
 #ifdef CPPHTTPLIB_ZLIB_SUPPORT
@@ -6822,9 +6800,10 @@ inline std::unique_ptr<Response> ClientImpl::send_with_content_provider(
       req.content_provider_ = detail::ContentProviderAdapter(
           std::move(content_provider_without_length));
       req.is_chunked_content_provider_ = true;
-      req.set_header("Transfer-Encoding", "chunked");
+      req.headers.emplace("Transfer-Encoding", "chunked");
     } else {
       req.body.assign(body, content_length);
+      ;
     }
   }
 
@@ -7444,7 +7423,9 @@ inline Result ClientImpl::Delete(const std::string &path,
   req.headers = headers;
   req.path = path;
 
-  if (!content_type.empty()) { req.set_header("Content-Type", content_type); }
+  if (!content_type.empty()) {
+    req.headers.emplace("Content-Type", content_type);
+  }
   req.body.assign(body, content_length);
 
   return send_(std::move(req));
@@ -7594,7 +7575,9 @@ inline void ClientImpl::set_proxy_digest_auth(const std::string &username,
   proxy_digest_auth_username_ = username;
   proxy_digest_auth_password_ = password;
 }
+#endif
 
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
 inline void ClientImpl::set_ca_cert_path(const std::string &ca_cert_file_path,
                                          const std::string &ca_cert_dir_path) {
   ca_cert_file_path_ = ca_cert_file_path;
@@ -7606,34 +7589,9 @@ inline void ClientImpl::set_ca_cert_store(X509_STORE *ca_cert_store) {
     ca_cert_store_ = ca_cert_store;
   }
 }
+#endif
 
-inline X509_STORE *ClientImpl::create_ca_cert_store(const char *ca_cert,
-                                                    std::size_t size) {
-  auto mem = BIO_new_mem_buf(ca_cert, static_cast<int>(size));
-  if (!mem) return nullptr;
-
-  auto inf = PEM_X509_INFO_read_bio(mem, nullptr, nullptr, nullptr);
-  if (!inf) {
-    BIO_free_all(mem);
-    return nullptr;
-  }
-
-  auto cts = X509_STORE_new();
-  if (cts) {
-    for (auto i = 0; i < static_cast<int>(sk_X509_INFO_num(inf)); i++) {
-      auto itmp = sk_X509_INFO_value(inf, i);
-      if (!itmp) { continue; }
-
-      if (itmp->x509) { X509_STORE_add_cert(cts, itmp->x509); }
-      if (itmp->crl) { X509_STORE_add_crl(cts, itmp->crl); }
-    }
-  }
-
-  sk_X509_INFO_pop_free(inf, X509_INFO_free);
-  BIO_free_all(mem);
-  return cts;
-}
-
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
 inline void ClientImpl::enable_server_certificate_verification(bool enabled) {
   server_certificate_verification_ = enabled;
 }
@@ -7697,7 +7655,7 @@ bool ssl_connect_or_accept_nonblocking(socket_t sock, SSL *ssl,
                                        U ssl_connect_or_accept,
                                        time_t timeout_sec,
                                        time_t timeout_usec) {
-  auto res = 0;
+  int res = 0;
   while ((res = ssl_connect_or_accept(ssl)) != 1) {
     auto err = SSL_get_error(ssl, res);
     switch (err) {
@@ -7778,7 +7736,7 @@ inline ssize_t SSLSocketStream::read(char *ptr, size_t size) {
     auto ret = SSL_read(ssl_, ptr, static_cast<int>(size));
     if (ret < 0) {
       auto err = SSL_get_error(ssl_, ret);
-      auto n = 1000;
+      int n = 1000;
 #ifdef _WIN32
       while (--n >= 0 && (err == SSL_ERROR_WANT_READ ||
                           (err == SSL_ERROR_SYSCALL &&
@@ -7811,7 +7769,7 @@ inline ssize_t SSLSocketStream::write(const char *ptr, size_t size) {
     auto ret = SSL_write(ssl_, ptr, static_cast<int>(handle_size));
     if (ret < 0) {
       auto err = SSL_get_error(ssl_, ret);
-      auto n = 1000;
+      int n = 1000;
 #ifdef _WIN32
       while (--n >= 0 && (err == SSL_ERROR_WANT_WRITE ||
                           (err == SSL_ERROR_SYSCALL &&
@@ -7866,9 +7824,8 @@ inline SSLServer::SSLServer(const char *cert_path, const char *private_key_path,
 
     // add default password callback before opening encrypted private key
     if (private_key_password != nullptr && (private_key_password[0] != '\0')) {
-      SSL_CTX_set_default_passwd_cb_userdata(
-          ctx_,
-          reinterpret_cast<void *>(const_cast<char *>(private_key_password)));
+      SSL_CTX_set_default_passwd_cb_userdata(ctx_,
+                                             (char *)private_key_password);
     }
 
     if (SSL_CTX_use_certificate_chain_file(ctx_, cert_path) != 1 ||
@@ -8032,11 +7989,6 @@ inline void SSLClient::set_ca_cert_store(X509_STORE *ca_cert_store) {
   }
 }
 
-inline void SSLClient::load_ca_cert_store(const char *ca_cert,
-                                          std::size_t size) {
-  set_ca_cert_store(ClientImpl::create_ca_cert_store(ca_cert, size));
-}
-
 inline long SSLClient::get_openssl_verify_result() const {
   return verify_result_;
 }
@@ -8182,10 +8134,6 @@ inline bool SSLClient::initialize_ssl(Socket &socket, Error &error) {
         return true;
       },
       [&](SSL *ssl2) {
-        // NOTE: With -Wold-style-cast, this can produce a warning, since
-        //  SSL_set_tlsext_host_name is a macro (in OpenSSL), which contains
-        //  an old style cast. Short of doing compiler specific pragma's
-        //  here, we can't get rid of this warning. :'(
         SSL_set_tlsext_host_name(ssl2, host_.c_str());
         return true;
       });
@@ -8286,9 +8234,8 @@ SSLClient::verify_host_with_subject_alt_name(X509 *server_cert) const {
     for (decltype(count) i = 0; i < count && !dsn_matched; i++) {
       auto val = sk_GENERAL_NAME_value(alt_names, i);
       if (val->type == type) {
-        auto name =
-            reinterpret_cast<const char *>(ASN1_STRING_get0_data(val->d.ia5));
-        auto name_len = static_cast<size_t>(ASN1_STRING_length(val->d.ia5));
+        auto name = (const char *)ASN1_STRING_get0_data(val->d.ia5);
+        auto name_len = (size_t)ASN1_STRING_length(val->d.ia5);
 
         switch (type) {
         case GEN_DNS: dsn_matched = check_host_name(name, name_len); break;
@@ -8306,8 +8253,7 @@ SSLClient::verify_host_with_subject_alt_name(X509 *server_cert) const {
     if (dsn_matched || ip_matched) { ret = true; }
   }
 
-  GENERAL_NAMES_free(const_cast<STACK_OF(GENERAL_NAME) *>(
-      reinterpret_cast<const STACK_OF(GENERAL_NAME) *>(alt_names)));
+  GENERAL_NAMES_free((STACK_OF(GENERAL_NAME) *)alt_names);
   return ret;
 }
 
@@ -8808,9 +8754,7 @@ inline void Client::enable_server_certificate_verification(bool enabled) {
 }
 #endif
 
-inline void Client::set_logger(Logger logger) {
-  cli_->set_logger(std::move(logger));
-}
+inline void Client::set_logger(Logger logger) { cli_->set_logger(logger); }
 
 #ifdef CPPHTTPLIB_OPENSSL_SUPPORT
 inline void Client::set_ca_cert_path(const std::string &ca_cert_file_path,
@@ -8824,10 +8768,6 @@ inline void Client::set_ca_cert_store(X509_STORE *ca_cert_store) {
   } else {
     cli_->set_ca_cert_store(ca_cert_store);
   }
-}
-
-inline void Client::load_ca_cert_store(const char *ca_cert, std::size_t size) {
-  set_ca_cert_store(cli_->create_ca_cert_store(ca_cert, size));
 }
 
 inline long Client::get_openssl_verify_result() const {

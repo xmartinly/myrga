@@ -1,8 +1,8 @@
-QT       += core gui printsupport
+QT       += core gui printsupport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -25,6 +25,7 @@ SOURCES += \
     utility/static_container.cpp
 
 HEADERS += \
+    thirdparty/httplib.h \
     myrga.h \
     data_helper.h \
     chart_plugin/qcp_modify.h \
@@ -32,7 +33,6 @@ HEADERS += \
     dlgs/addrga_dlg.h \
     dlgs/ipaddress.h \
     dlgs/recipe_dlg.h \
-    thirdparty/httplib.h \
     observer/data_observer.h \
     observer/observer_subject.h \
     utility/comm_http.h \

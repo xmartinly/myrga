@@ -2,19 +2,18 @@
 #define COMMHTTP_H
 
 #include <QObject>
-#include "thirdparty/httplib.h"
 
 ///
 /// \brief The CommHttp class
 ///
 class CommHttp : public QObject {
     Q_OBJECT
+
   private:
     explicit CommHttp(QObject* parent = nullptr);
-    httplib::Client* http = nullptr;
-//    QNetworkAccessManager*  m_qnaHttp = nullptr;
-//    QNetworkRequest         m_req;
-//    QList<QNetworkCookie>   m_allCookies;
+    QNetworkAccessManager*  m_qnaHttp = nullptr;
+    QNetworkRequest         m_req;
+    QList<QNetworkCookie>   m_allCookies;
     QTimer*                 m_tmr = nullptr;
     QQueue<QString>         m_cmdQ;
     QThreadPool*            m_pool;
@@ -31,9 +30,28 @@ class CommHttp : public QObject {
     Private* d;
 
   private slots:
-//    void replyFinishedSlot(QNetworkReply* reply);
+    void replyFinishedSlot(QNetworkReply* reply);
 
   public:
+
+    enum RespType {
+        ResRespNone,
+        AmInControl,
+        SerialNumber,
+        ErrorLog,
+        IssueLog,
+        ScanData,
+        FilamentSelected,
+        TPunits,
+        SystemStatus,
+        PpSensitivityFactor,
+        EmGain,
+        ScanStart,
+        ScanStop,
+        ScanTimeTotal,
+        ScanStatus,
+    };
+
     void cmdEnQueue(QVariant cmd, bool is_str_list = false);
     static CommHttp* GetInstance();
     void execCmd(QString cmd);
@@ -43,6 +61,8 @@ class CommHttp : public QObject {
     void sendQueueCmd();
 
     void clearCmdQ();
+
+    void getCalcResp(int type_, const QVariantMap& vm_data);
 
   signals:
 
