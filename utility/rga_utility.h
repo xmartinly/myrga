@@ -133,48 +133,48 @@ class RgaUtility {
     };
 
     QLabel*       m_lb              = nullptr;
-    QFile*        m_dataFile        = nullptr;
+    QFile*        data_file_ptr     = nullptr;
 
     //em manual operation
-    bool          m_bEmManual      = false;
+    bool          is_em_man         = false;
     //acquire set
-    bool          m_bAcqSet         = false;
+    bool          acquire_set       = false;
     //if save data to file.
-    bool          m_bSaveData       = false;
+    bool          is_save_data      = false;
     //count for get last scan data
-    int           m_acqCnt          = 0;
+    int           scan_count        = 0;
     //label stars count interval
-    double        m_starIntvl       = 0;
+    double        stars_intvl       = 0;
     //low limit value for show
-    double        m_dLimitVal       = 0;
+    double        scan_val_low      = 0;
     //local timestamp
-    qint64        m_localTS         = 0;
+    qint64        local_tmstamp     = 0;
     //rga acquire run time total
-    qint64        m_iRunTm          = 0;
+    qint64        recipe_run_tm     = 0;
 
     //spec chart data positions for analog scan
-    QVector<double> m_vdDataPos     = {};
+    QVector<double> spec_data_pos   = {};
     //spec chart x axis ticks
-    QVector<double> m_vdTicks       = {};
+    QVector<double> spec_x_ticks    = {};
     //spec chart x axis labels
-    QVector<QString> m_vsLabels     = {};
+    QVector<QString> spec_x_labels  = {};
 
     //rga address. eg. http://192.168.1.100:80
-    QString       m_addr            = "";
+    QString       rga_addr          = "";
     //rga tag.
-    QString       m_tag             = "";
+    QString       rga_tag           = "";
     //rga electronic box serial number
-    QString       m_sn              = "";
+    QString       rga_sn            = "";
     //data file name
-    QString       m_fileName        = "";
+    QString       data_file_name    = "";
     //data file headers. contains misc information like start time,ppamu, etc.
-    QString       m_fileHeader      = "";
+    QString       data_file_header  = "";
     //main widget label text.
-    QString       m_lbText          = "";
+    QString       lb_text           = "";
     //data in string format and store into file every ten scans or stop triggered.
-    QString       m_stringData      = "";
+    QString       string_data       = "";
 
-    QString s_flmtIdx;
+    QString       flmt_idx;
 
     //HttpCommand string generate function pointer define
     typedef const QString (*cmdStrFPtr)(QString);
@@ -185,8 +185,6 @@ class RgaUtility {
   public:
 
     void resetAll();
-
-
 
     //*************************************************************************************//
     //**  em gain

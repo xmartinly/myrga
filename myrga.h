@@ -70,11 +70,11 @@ class MyRga : public QMainWindow
     // add rga dialog pointer
     AddRgaDlg* dlg_add = nullptr;
     // acquire command generate timer
-    QTimer*                 m_acq_tmr           = nullptr;
+    QTimer*                 acq_tmr           = nullptr;
     // idle command generate timer
-    QTimer*                 m_idle_tmr          = nullptr;
+    QTimer*                 idle_tmr          = nullptr;
     // http connection instance. singleton
-//    CommHttp*               m_http              = nullptr;
+    CommHttp*               http_cli          = nullptr;
     // observer subject
     ObserverSubject         m_subObs;
     // print chart
@@ -101,8 +101,12 @@ class MyRga : public QMainWindow
     void menu_popout();
     // set spec chart x axis ticks and labels
     void set_spec_xaxis();
-
+    // save current scan settings
     void save_current();
+    // read current config
+    void read_current_config();
+    // clear rga instance map
+    void clear_rga_map();
 
   public slots:
     // receive run from recipe dialog

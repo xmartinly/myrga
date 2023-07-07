@@ -110,5 +110,6 @@ void ResponseCalc::run() {
         resp_type = CommHttp::SerialNumber;
         vm_data.insert("data", m_objData.value("data").toString());
     }
+    qDebug() << vm_data;
     emit sendCalcResult(static_cast<int>(resp_type), vm_data);
 }

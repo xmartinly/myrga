@@ -1,6 +1,8 @@
 #include "myrga.h"
 
 #include "ui_myrga.h"
+#include "utility/static_container.h"
+
 
 ///
 /// \brief MyRga::MyRga
@@ -12,18 +14,20 @@ MyRga::MyRga(QWidget* parent)
     ui->setupUi(this);
     ui->frame_points->setHidden(true);
     ui->tw_info->setVisible(false);
-    m_idle_tmr = new QTimer(this);
-    connect(m_idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
-    m_acq_tmr  = new QTimer(this);
-    connect(m_acq_tmr, &QTimer::timeout, this, &MyRga::acq_tmr_action);
+    idle_tmr = new QTimer(this);
+    connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
+    acq_tmr  = new QTimer(this);
+    connect(acq_tmr, &QTimer::timeout, this, &MyRga::acq_tmr_action);
     dlg_recipe = new RecipeDlg(this);
     connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
     dlg_add = new AddRgaDlg(this);
+    http_cli = CommHttp::GetInstance();
 }
 ///
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
+    clear_rga_map();
     delete ui;
 }
 
@@ -116,6 +120,31 @@ void MyRga::acq_tmr_action() {
 /// \brief MyRga::idle_tmr_action
 ///
 void MyRga::idle_tmr_action() {
+    StaticContainer::STC_ISINACQ = acq_tmr->isActive();
+    if(StaticContainer::STC_RGAMAP.count() < 1) {
+        idle_tmr->stop();
+        return;
+    }
+    RgaUtility* inst = StaticContainer::STC_RGAMAP.first();
+    http_cli->cmdEnQueue(inst->getIdlSet(), true);
+    if(!inst->getInCtrl()) {
+        http_cli->cmdEnQueue(inst->genRgaAction(RgaUtility::ForceCtrl));
+        http_cli->cmdEnQueue(inst->genRgaAction(RgaUtility::AmInCtrl));
+        return;
+    }
+    bool b_run = inst->getRunSet();
+    int i_overTm = inst->getOverTime();
+    bool b_saveData = inst->getIsSaveData();
+    if(!b_run && i_overTm < 0) {
+        inst->setAcquireState(false);
+    }
+    if(b_run && i_overTm < 0 && b_saveData) {
+        inst->resetOverTime();
+    }
+    if(idle_tmr->isActive()) {
+        return;
+    }
+    idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 
 ///
@@ -184,5 +213,61 @@ void MyRga::on_tb_ctrl_clicked() {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
         return;
     }
+    read_current_config();
 }
+
+void MyRga::read_current_config() {
+    QString file_name = "lastrun.ini";
+    QString file_folder = DataHelper::get_file_folder("");
+    QMap<QString, QString> qm_rcp, qm_rga_conn;
+    qm_rcp = DataHelper::read_config(file_name, file_folder, "Recipe");
+    qm_rga_conn = DataHelper::read_config(file_name, file_folder, "Rga");
+    RecipeSet recpt;
+    recpt.s_rcpName     = "myRGA";
+    recpt.i_period      = qm_rcp.value("Peroid").toInt() * 1000;
+    recpt.s_method      = qm_rcp.value("Method").toStdString().c_str();
+    recpt.s_dwell       = qm_rcp.value("Dwell").toStdString().c_str();
+    recpt.s_rUnit       = qm_rcp.value("ReportUnit").toStdString().c_str();
+    recpt.s_pUnit       = qm_rcp.value("PressureUnit").toStdString().c_str();
+    recpt.s_emOpt       = qm_rcp.value("EmOpt").toStdString().c_str();
+    recpt.s_ppamu       = qm_rcp.value("PPAmu").toStdString().c_str();
+    recpt.s_flmtIdx     = qm_rcp.value("Flmt").toStdString().c_str();
+    recpt.s_startMass   = qm_rcp.value("StartMass").toStdString().c_str();
+    recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
+    QString s_points    = qm_rcp.value("Points").toStdString().c_str();
+    recpt.sl_points     = s_points.split("/");
+    QString s_ip = "";
+    QString s_tag = "";
+    QString s_port = "";
+    if(!qm_rga_conn.contains("IP")) {
+        return;
+    }
+    s_ip = qm_rga_conn.value("IP").toStdString().c_str();
+    if(!qm_rga_conn.contains("Tag")) {
+        return;
+    }
+    s_tag = qm_rga_conn.value("Tag").toStdString().c_str();
+    if(!qm_rga_conn.contains("Port")) {
+        return;
+    }
+    s_port = qm_rga_conn.value("Port").toStdString().c_str();
+    RgaUtility* inst = new RgaUtility("http://" +  s_ip + ":" + s_port, recpt);
+//    inst->setRunSet(s_run); //set run type
+    inst->resetAll();
+    inst->setRgaTag(s_tag);
+    QString s_id = s_ip.replace(".", "");
+    clear_rga_map();
+    StaticContainer::STC_RGAMAP.insert(s_id, inst);
+    idle_tmr->start(StaticContainer::STC_IDLINTVL);
+}
+
+void MyRga::clear_rga_map() {
+    idle_tmr->stop();
+    if( StaticContainer::STC_RGAMAP.count() > 0) {
+        foreach (RgaUtility* inst, StaticContainer::STC_RGAMAP) {
+            delete inst;
+        }
+    }
+}
+
 

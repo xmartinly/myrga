@@ -3,7 +3,7 @@
 #include <QDateTime>
 #include <QTime>
 
-RgaUtility::RgaUtility(QString addr, RecipeSet recipe): m_rcpt(recipe), m_addr(addr) {
+RgaUtility::RgaUtility(QString addr, RecipeSet recipe): m_rcpt(recipe), rga_addr(addr) {
     cmdStrArr[0]    = &HttpCommand::noAction;   //return the address without 'http://'
     cmdStrArr[1]    = &HttpCommand::setForceCtrl;
     cmdStrArr[2]    = &HttpCommand::getAmInCtrl;
@@ -34,11 +34,11 @@ RgaUtility::~RgaUtility() {
 }
 
 bool RgaUtility::emManual() const {
-    return m_bEmManual;
+    return is_em_man;
 }
 
 void RgaUtility::setEmManual(bool newbEmManual) {
-    m_bEmManual = newbEmManual;
+    is_em_man = newbEmManual;
 }
 
 QString RgaUtility::flmtIdxSet() const {
@@ -54,7 +54,7 @@ void RgaUtility::setFlmtIdxSet(const QString& news_flmtIdx) {
 /// \return
 ///
 bool RgaUtility::acquireSet() const {
-    return m_bAcqSet;
+    return acquire_set;
 }
 
 ///
@@ -62,17 +62,17 @@ bool RgaUtility::acquireSet() const {
 /// \param newb_acq_set
 ///
 void RgaUtility::setAcquireSet(bool newb_acq_set) {
-    m_bAcqSet = newb_acq_set;
+    acquire_set = newb_acq_set;
 }
 
 
 double RgaUtility::dLimitVal() const {
-    return m_dLimitVal;
+    return scan_val_low;
 }
 
 void RgaUtility::setDLimitVal(double newDLimitVal) {
     Q_ASSERT_X(newDLimitVal > 0, Q_FUNC_INFO, "d_val error");
-    m_dLimitVal = newDLimitVal;
+    scan_val_low = newDLimitVal;
 }
 
 ///
@@ -81,7 +81,7 @@ void RgaUtility::setDLimitVal(double newDLimitVal) {
 /// \return
 ///
 QVector<double> RgaUtility::getDataPos() const {
-    return m_vdDataPos;
+    return spec_data_pos;
 }
 
 ///
@@ -89,7 +89,7 @@ QVector<double> RgaUtility::getDataPos() const {
 /// \param new_dataPos
 ///
 void RgaUtility::setDataPos(const QVector<double>& new_dataPos) {
-    m_vdDataPos = new_dataPos;
+    spec_data_pos = new_dataPos;
 }
 
 ///
@@ -97,7 +97,7 @@ void RgaUtility::setDataPos(const QVector<double>& new_dataPos) {
 /// \return
 ///
 QString RgaUtility::getRunTm() const {
-    return  QTime::fromMSecsSinceStartOfDay(m_iRunTm).toString("HH:mm:ss");
+    return  QTime::fromMSecsSinceStartOfDay(recipe_run_tm).toString("HH:mm:ss");
 }
 
 ///
@@ -105,7 +105,7 @@ QString RgaUtility::getRunTm() const {
 ///
 void RgaUtility::addRunTm() {
     if(acquireState()) {
-        m_iRunTm += StaticContainer::STC_IDLINTVL;
+        recipe_run_tm += StaticContainer::STC_IDLINTVL;
     }
 }
 
@@ -157,7 +157,7 @@ void RgaUtility::setFcSensVal(double d_val) {
 /// \return
 ///
 const QVector<double> RgaUtility::getVdTicks() {
-    return m_vdTicks;
+    return spec_x_ticks;
 }
 
 ///
@@ -165,16 +165,16 @@ const QVector<double> RgaUtility::getVdTicks() {
 /// \return
 ///
 const QVector<QString> RgaUtility::getVsLabels() {
-    return m_vsLabels;
+    return spec_x_labels;
 }
 
 ///
 /// \brief RgaUtility::genTicker
 ///
 void RgaUtility::genTicker() {
-    m_vsLabels.clear();
-    m_vdTicks.clear();
-    m_vdDataPos.clear();
+    spec_x_labels.clear();
+    spec_x_ticks.clear();
+    spec_data_pos.clear();
     QStringList sl_points = getScanPos();
     bool b_isSweep = getIsSweep();
     bool b_isAScan = getIsAScan();
@@ -189,13 +189,13 @@ void RgaUtility::genTicker() {
 //            b_isLbShow = (var % 5 == 0);
 //        }
 //        m_vsLabels.append(b_isLbShow ? sl_points.at(var) : "");
-        m_vsLabels.append(sl_points.at(var));
-        m_vdTicks.append(++i_idx);
-        m_vdDataPos.append(var);
+        spec_x_labels.append(sl_points.at(var));
+        spec_x_ticks.append(++i_idx);
+        spec_data_pos.append(var);
     }
     if(b_isAScan) {
-        m_vdDataPos.clear();
-        m_vdDataPos.append(DataHelper::gen_ppamu_pos(i_start, i_stop, i_ppamu));
+        spec_data_pos.clear();
+        spec_data_pos.append(DataHelper::gen_ppamu_pos(i_start, i_stop, i_ppamu));
     }
 }
 
@@ -229,7 +229,7 @@ const bool RgaUtility::acquireState() {
 ///
 void RgaUtility::setRgaLabel(QLabel* lb) {
     m_lb = lb;
-    m_lbText = lb->text() + "\n\n";
+    lb_text = lb->text() + "\n\n";
 }
 
 ///
@@ -243,27 +243,27 @@ QLabel* RgaUtility::getRgaLabel() {
 
 void RgaUtility::initDataFile(bool is_crateFile) {
     if(!is_crateFile) {
-        delete m_dataFile;
-        m_dataFile = nullptr;
-        m_fileHeader.clear();
-        m_fileName.clear();
+        delete data_file_ptr;
+        data_file_ptr = nullptr;
+        data_file_header.clear();
+        data_file_name.clear();
         return;
     }
-    m_fileName = "";
+    data_file_name = "";
     genDataFileName();
     QString s_fileFolder = DataHelper::get_file_folder("data");
     QDir d_fileFolder = QDir(s_fileFolder);
     if(!d_fileFolder.exists()) {
         d_fileFolder.mkpath(s_fileFolder);
     }
-    QString s_filePath = s_fileFolder + '/' + m_fileName;
-    m_dataFile = new QFile(s_filePath);
+    QString s_filePath = s_fileFolder + '/' + data_file_name;
+    data_file_ptr = new QFile(s_filePath);
     QString s_fileHeader = genFileHeaders();
-    DataHelper::write_data_file(s_fileHeader, m_dataFile);
+    DataHelper::write_data_file(s_fileHeader, data_file_ptr);
 }
 
 void RgaUtility::writeScanData(bool final) {
-    if(m_dataFile == nullptr) {
+    if(data_file_ptr == nullptr) {
         return;
     }
     QStringList sl_data = getScanValuesSL();
@@ -277,11 +277,11 @@ void RgaUtility::writeScanData(bool final) {
     s_data.prepend(QString::number(getScanTS()) + ",");
     s_data.prepend(QString::number(getScanNum()) + ",");
     s_data.append("\n");
-    m_stringData.append(s_data);
+    string_data.append(s_data);
     bool b_scanCountTen = m_scanData.i_scanNum % 10 == 0;
     if(b_scanCountTen || final) {
-        DataHelper::write_data_file(m_stringData, m_dataFile);
-        m_stringData.clear();
+        DataHelper::write_data_file(string_data, data_file_ptr);
+        string_data.clear();
     }
 }
 
@@ -290,18 +290,18 @@ void RgaUtility::writeScanData(bool final) {
 /// \param finish_scan. bool
 ///
 void RgaUtility::setLbText(bool finish_scan) {
-    int i_starts = static_cast<int>(m_starIntvl) * m_acqCnt;
+    int i_starts = static_cast<int>(stars_intvl) * scan_count;
     if(finish_scan) {
         i_starts = 0;
-        m_acqCnt = 0;
+        scan_count = 0;
     }
     m_lb->setText("");
     QString s_lb = "";
     for (int var = 0; var < i_starts; ++var) {
         s_lb.append(">");
     }
-    m_acqCnt++;
-    m_lb->setText(m_lbText + s_lb);
+    scan_count++;
+    m_lb->setText(lb_text + s_lb);
 }
 
 ///
@@ -312,7 +312,7 @@ const QString RgaUtility::genFileHeaders() {
     QString s_sweepRange = m_rcpt.s_startMass + " - " + m_rcpt.s_stopMass;
     QString s_points = m_rcpt.sl_points.join(",");
     QStringList sl_rcptInfo;
-    QString ss_addr = m_addr;
+    QString ss_addr = rga_addr;
     ss_addr.replace("http://", "");
     bool b_isSweep = m_rcpt.s_method == "Sweep";
     QString s_range = b_isSweep ? s_sweepRange : s_points;
@@ -375,8 +375,8 @@ const QStringList RgaUtility::getCloseSet() {
 }
 
 const QStringList RgaUtility::getStopSet() {
-    m_localTS = 0;
-    m_iRunTm = 0;
+    local_tmstamp = 0;
+    recipe_run_tm = 0;
     QList<RgaActions> actions = {StopAcquire};
     QStringList sl_stop = {};
     foreach (auto act, actions) {
@@ -401,7 +401,7 @@ void RgaUtility::genCloseSet() {
 /// \return
 ///
 const QString RgaUtility::getFileName() {
-    return m_fileName;
+    return data_file_name;
 }
 
 ///
@@ -430,7 +430,7 @@ void RgaUtility::setIsSaveData(bool save_data) {
     if(save_data) {
         initDataFile();
     }
-    m_bSaveData = save_data;
+    is_save_data = save_data;
 }
 
 ///
@@ -438,7 +438,7 @@ void RgaUtility::setIsSaveData(bool save_data) {
 /// \return
 ///
 const bool RgaUtility::getIsSaveData() {
-    return m_bSaveData;
+    return is_save_data;
 }
 
 ///
@@ -446,7 +446,7 @@ const bool RgaUtility::getIsSaveData() {
 /// \param count
 ///
 void RgaUtility::setAcquireCnt(int count) {
-    m_acqCnt = count;
+    scan_count = count;
 }
 
 ///
@@ -454,15 +454,15 @@ void RgaUtility::setAcquireCnt(int count) {
 /// \return
 ///
 const int RgaUtility::getAcqireCnt() {
-    return m_acqCnt;
+    return scan_count;
 }
 
 ///
 /// \brief RgaUtility::genDataFileName
 ///
 void RgaUtility::genDataFileName() {
-    if(m_fileName == "") {
-        m_fileName = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss_") + m_tag + "_" + m_rcpt.s_rcpName + ".csv";
+    if(data_file_name == "") {
+        data_file_name = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss_") + rga_tag + "_" + m_rcpt.s_rcpName + ".csv";
     }
 }
 
@@ -492,14 +492,14 @@ bool RgaUtility::getIsAScan() const {
 
 int RgaUtility::getOverTime() {
     qint64 i_now = QDateTime::currentMSecsSinceEpoch();
-    if(!m_localTS) {
+    if(!local_tmstamp) {
         return false;
     }
-    return m_localTS - i_now;
+    return local_tmstamp - i_now;
 }
 
 void RgaUtility::resetOverTime() {
-    m_localTS = QDateTime::currentMSecsSinceEpoch() + m_rcpt.i_period;
+    local_tmstamp = QDateTime::currentMSecsSinceEpoch() + m_rcpt.i_period;
 }
 
 ///
@@ -536,7 +536,7 @@ void RgaUtility::genIdlSet() {
     foreach (auto act, idl_actions) {
         m_idlSet.append(genRgaAction(act));
     }
-    if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && !m_bEmManual) {
+    if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && !is_em_man) {
         m_idlSet.append(genRgaAction(OpenEm));
     }
     if(!getEmGainVal()) {
@@ -562,7 +562,7 @@ void RgaUtility::genScanSet() {
     }
     m_scanSet.append(genRgaAction(StopAcquire));
     m_scanSet = m_cmd.setupScanChs(
-                    m_addr,
+                    rga_addr,
                     m_rcpt.s_startMass,
                     m_rcpt.s_stopMass,
                     m_rcpt.s_ppamu,
@@ -572,10 +572,10 @@ void RgaUtility::genScanSet() {
                     m_rcpt.sl_points,
                     i_headList
                 );
-    m_scanSet.append(m_cmd.setChannelsRange(m_addr, QString::number(m_scanSet.count())));
+    m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
     RgaActions flmt_idx = flmtIdxSet() == "1" ? SetFlmt1st : SetFlmt2nd;
     m_scanSet.append(genRgaAction(flmt_idx));
-    m_scanSet.append(m_cmd.setTpUnits(m_addr, m_rcpt.s_pUnit));
+    m_scanSet.append(m_cmd.setTpUnits(rga_addr, m_rcpt.s_pUnit));
     m_scanSet.append(genRgaAction(SetScanCnt));
     m_scanSet.append(genRgaAction(OpenFlmt));
     m_scanSet.append(genRgaAction(StartAcquire));
@@ -589,7 +589,7 @@ void RgaUtility::genScanSet() {
 /// \return
 ///
 const QString RgaUtility::genRgaAction(RgaActions action) {
-    return (cmdStrArr[static_cast<int>(action)])(m_addr);
+    return (cmdStrArr[static_cast<int>(action)])(rga_addr);
 }
 
 ///
@@ -710,7 +710,7 @@ const QStringList RgaUtility::getTblCol(bool b_isChartPage) {
 /// \param addr
 ///
 void RgaUtility::setRgaAddr(QString addr) {
-    m_addr = addr;
+    rga_addr = addr;
 }
 
 ///
@@ -718,7 +718,7 @@ void RgaUtility::setRgaAddr(QString addr) {
 /// \return
 ///
 const QString RgaUtility::getRgaAddr() {
-    return m_addr;
+    return rga_addr;
 }
 
 ///
@@ -726,7 +726,7 @@ const QString RgaUtility::getRgaAddr() {
 /// \param s_tag
 ///
 void RgaUtility::setRgaTag(QString s_tag) {
-    m_tag = s_tag;
+    rga_tag = s_tag;
 }
 
 ///
@@ -734,7 +734,7 @@ void RgaUtility::setRgaTag(QString s_tag) {
 /// \return
 ///
 const QString RgaUtility::getRgaTag() {
-    return m_tag;
+    return rga_tag;
 }
 
 ///
@@ -742,7 +742,7 @@ const QString RgaUtility::getRgaTag() {
 /// \param rga_sn
 ///
 void RgaUtility::setRgaSn(QString rga_sn) {
-    m_sn = rga_sn;
+    rga_sn = rga_sn;
 }
 
 ///
@@ -750,7 +750,7 @@ void RgaUtility::setRgaSn(QString rga_sn) {
 /// \return
 ///
 const QString RgaUtility::getRgaSn() {
-    return m_sn;
+    return rga_sn;
 }
 
 ///
