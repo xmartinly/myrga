@@ -16,10 +16,9 @@ void ResponseCalc::setData(const QJsonObject& data) {
 }
 
 void ResponseCalc::run() {
-    QString s_id = m_objData.value("id").toString();
     CommHttp::RespType resp_type = CommHttp::RespType::ResRespNone;
     QVariantMap vm_data;
-    vm_data.insert("rga_id", s_id);
+//    vm_data.insert("rga_id", s_id);
     QString s_origin = m_objData.value("origin").toString();
     //am in controll
     if(s_origin.indexOf("amInControl") > -1) {
@@ -76,13 +75,12 @@ void ResponseCalc::run() {
     }
     //scan data
     if(s_origin.indexOf("scans") > -1) {
-        RgaUtility* inst = nullptr;
-        if(!StaticContainer::STC_RGAMAP.contains(s_id)) {
+        auto* inst = StaticContainer::getCrntRga();
+        if(inst == nullptr) {
             return;
         }
         QJsonObject jo_data_temp = {};
         jo_data_temp = m_objData.value("data").toObject();
-        inst = StaticContainer::STC_RGAMAP.value(s_id);
         QJsonObject jo_scan = {};
         jo_scan = m_objData.value("data").toObject();
         if(jo_data_temp.value("scannum").toInt() > inst->getScanNum()) {
@@ -101,7 +99,6 @@ void ResponseCalc::run() {
     //issue log
     if(s_origin.indexOf("errorLog") > -1 || s_origin.indexOf("issueLog") > -1) {
         QJsonObject jo_data = m_objData.value("data").toObject();
-        QJsonArray ja_err = jo_data.value("errors").toArray();
         resp_type = CommHttp::ErrorLog;
         jo_data.insert("data", jo_data.value("errors").toArray());
     }

@@ -382,18 +382,39 @@ void TextInfoObserver::update() {
     m_zone->setText(s_info);
 }
 
-TBFlmtObserver::TBFlmtObserver(QToolButton* chart_btn): m_zone(chart_btn) {
+//TBFlmtObserver::TBFlmtObserver(QToolButton* chart_btn): m_zone(chart_btn) {
+//}
+
+//TBFlmtObserver::~TBFlmtObserver() {
+//    m_zone = nullptr;
+//    delete m_zone;
+//}
+
+//void TBFlmtObserver::update() {
+//    if(m_zone == nullptr || StaticContainer::STC_ISCHARTPAGE) {
+//        return;
+//    }
+//    RgaUtility* inst = StaticContainer::getCrntRga();
+//    m_zone->setDisabled(inst->getScanNum() < 3);
+//}
+
+TbObserver::TbObserver(QToolButton* btn): m_zone(btn) {
+    btn_name = btn->property("name");
 }
 
-TBFlmtObserver::~TBFlmtObserver() {
-    m_zone = nullptr;
-    delete m_zone;
+TbObserver::~TbObserver() {
 }
 
-void TBFlmtObserver::update() {
-    if(m_zone == nullptr || StaticContainer::STC_ISCHARTPAGE) {
+void TbObserver::update() {
+    auto inst = StaticContainer::getCrntRga();
+    if(inst == nullptr || btn_name == "") {
         return;
     }
-    RgaUtility* inst = StaticContainer::getCrntRga();
-    m_zone->setDisabled(inst->getScanNum() < 3);
-}
+    bool rga_in_ctrl = inst->getInCtrl();
+    bool rga_flmt_on = inst->getRgaStatus(RgaUtility::EmissState);
+    bool rga_em_on = inst->getRgaStatus(RgaUtility::EmissState);
+    if(m_zone->property("name") == "flmt") {
+        m_zone->setIcon(rga_flmt_on ? flmt_on : flmt_off);
+    }
+    if(m_zone->property("name") == )
+    }

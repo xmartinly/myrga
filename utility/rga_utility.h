@@ -8,6 +8,7 @@
 class RgaUtility {
   public:
     explicit RgaUtility(QString addr, RecipeSet recipe);
+    RgaUtility();
     ~RgaUtility();
 
     ///
@@ -184,7 +185,11 @@ class RgaUtility {
 
   public:
 
+    void setScanRecipe(const RecipeSet& rcpt);
+
     void resetAll();
+
+    void setupFuncPtrs();
 
     //*************************************************************************************//
     //**  em gain

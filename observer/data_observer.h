@@ -27,16 +27,31 @@ class TextInfoObserver: public DataObserver {
     QTextBrowser*       m_zone = nullptr;
 };
 
-
-class TBFlmtObserver: public DataObserver {
+class TbObserver: public DataObserver {
   public:
-    TBFlmtObserver(QToolButton* chart_btn);
-    ~TBFlmtObserver();
+    explicit TbObserver(QToolButton* btn);
+    ~TbObserver();
     void update();
-  private:
-    QToolButton* m_zone             = nullptr;
 
+
+
+    const QSize btn_size = {1, 1};
+    const double btn_ratio = 1;
+
+    QPixmap flmt_on = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size);
+    QPixmap flmt_off = DataHelper::get_pixmap("filament_off", btn_ratio, btn_size);
+    QPixmap em_on = DataHelper::get_pixmap("em_on", btn_ratio, btn_size);
+    QPixmap em_off = DataHelper::get_pixmap("em_off", btn_ratio, btn_size);
+    QPixmap info_on = DataHelper::get_pixmap("information_a", btn_ratio, btn_size);
+    QPixmap info_off = DataHelper::get_pixmap("information", btn_ratio, btn_size);
+    QPixmap link_on = DataHelper::get_pixmap("link", btn_ratio, btn_size);
+    QPixmap link_off = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size);
+
+  private:
+    QToolButton* m_zone = nullptr;
+    QString btn_name = "";
 };
+
 
 ///
 /// \brief The ValuesObserver class

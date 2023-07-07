@@ -121,7 +121,7 @@
         <file>Resource/Picture/svg/Done.svg</file>
         <file>Resource/Picture/svg/loader.svg</file>
         <file>Resource/Picture/gif/loading.gif</file>
-        <file>Resource/Picture/svg/information _a.svg</file>
         <file>Resource/Picture/svg/information.svg</file>
+        <file>Resource/Picture/svg/information_a.svg</file>
     </qresource>
 </RCC>

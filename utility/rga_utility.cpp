@@ -4,33 +4,18 @@
 #include <QTime>
 
 RgaUtility::RgaUtility(QString addr, RecipeSet recipe): m_rcpt(recipe), rga_addr(addr) {
-    cmdStrArr[0]    = &HttpCommand::noAction;   //return the address without 'http://'
-    cmdStrArr[1]    = &HttpCommand::setForceCtrl;
-    cmdStrArr[2]    = &HttpCommand::getAmInCtrl;
-    cmdStrArr[3]    = &HttpCommand::setReleaseCtrl;
-    cmdStrArr[4]    = &HttpCommand::setScanStop;
-    cmdStrArr[5]    = &HttpCommand::setScanStart;
-    cmdStrArr[6]    = &HttpCommand::setFlmtOn;
-    cmdStrArr[7]    = &HttpCommand::setFlmtOff;
-    cmdStrArr[8]    = &HttpCommand::setEmOn;
-    cmdStrArr[9]    = &HttpCommand::setEmOff;
-    cmdStrArr[10]   = &HttpCommand::getSn;
-    cmdStrArr[11]   = &HttpCommand::getSysStatus;
-    cmdStrArr[12]   = &HttpCommand::getErrLog;
-    cmdStrArr[13]   = &HttpCommand::getLastScanDouble;
-    cmdStrArr[14]   = &HttpCommand::setReboot;
-    cmdStrArr[15]   = &HttpCommand::getIssueLog;
-    cmdStrArr[16]   = &HttpCommand::getCurrentFlmts;
-    cmdStrArr[17]   = &HttpCommand::setFlmt1st;
-    cmdStrArr[18]   = &HttpCommand::setFlmt2nd;
-    cmdStrArr[19]   = &HttpCommand::setMeasBegin;
-    cmdStrArr[20]   = &HttpCommand::getTotalTm;
-    cmdStrArr[21]   = &HttpCommand::setScanCnt;
-    cmdStrArr[22]   = &HttpCommand::getEmGainReq;
-    cmdStrArr[23]   = &HttpCommand::getFcSensReq;
+    setupFuncPtrs();
+}
+
+RgaUtility::RgaUtility() {
+    setupFuncPtrs();
 }
 
 RgaUtility::~RgaUtility() {
+}
+
+void RgaUtility::setScanRecipe(const RecipeSet& rcpt) {
+    m_rcpt = rcpt;
 }
 
 bool RgaUtility::emManual() const {
@@ -116,6 +101,33 @@ void RgaUtility::resetAll() {
     m_errLog.resetErrList();
     m_stat.resetStatus();
     m_scanData.resetData();
+}
+
+void RgaUtility::setupFuncPtrs() {
+    cmdStrArr[0]    = &HttpCommand::noAction;   //return the address without 'http://'
+    cmdStrArr[1]    = &HttpCommand::setForceCtrl;
+    cmdStrArr[2]    = &HttpCommand::getAmInCtrl;
+    cmdStrArr[3]    = &HttpCommand::setReleaseCtrl;
+    cmdStrArr[4]    = &HttpCommand::setScanStop;
+    cmdStrArr[5]    = &HttpCommand::setScanStart;
+    cmdStrArr[6]    = &HttpCommand::setFlmtOn;
+    cmdStrArr[7]    = &HttpCommand::setFlmtOff;
+    cmdStrArr[8]    = &HttpCommand::setEmOn;
+    cmdStrArr[9]    = &HttpCommand::setEmOff;
+    cmdStrArr[10]   = &HttpCommand::getSn;
+    cmdStrArr[11]   = &HttpCommand::getSysStatus;
+    cmdStrArr[12]   = &HttpCommand::getErrLog;
+    cmdStrArr[13]   = &HttpCommand::getLastScanDouble;
+    cmdStrArr[14]   = &HttpCommand::setReboot;
+    cmdStrArr[15]   = &HttpCommand::getIssueLog;
+    cmdStrArr[16]   = &HttpCommand::getCurrentFlmts;
+    cmdStrArr[17]   = &HttpCommand::setFlmt1st;
+    cmdStrArr[18]   = &HttpCommand::setFlmt2nd;
+    cmdStrArr[19]   = &HttpCommand::setMeasBegin;
+    cmdStrArr[20]   = &HttpCommand::getTotalTm;
+    cmdStrArr[21]   = &HttpCommand::setScanCnt;
+    cmdStrArr[22]   = &HttpCommand::getEmGainReq;
+    cmdStrArr[23]   = &HttpCommand::getFcSensReq;
 }
 
 ///

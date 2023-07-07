@@ -106,6 +106,7 @@ void CommHttp::sendQueueCmd() {
         return;
     }
     QString s_cmd = m_cmdQ.dequeue();
+    qDebug() << s_cmd;
     d->manager->get(QNetworkRequest(QUrl(s_cmd)));
     if (m_cmdQ.count() > 100) {
         clearCmdQ();
@@ -121,14 +122,12 @@ void CommHttp::clearCmdQ() {
 
 void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     RespType type = static_cast<RespType>(type_);
-    QString s_id = vm_data.value("rga_id").toString();
-    if(!StaticContainer::STC_RGAMAP.contains(s_id) || type == ResRespNone) {
+//    QString s_id = vm_data.value("rga_id").toString();
+    auto inst = StaticContainer::getCrntRga();
+    if(inst == nullptr || type == ResRespNone) {
         return;
     }
-//    if(!vm_data.value("data").isValid()) {
-//        qDebug() << __FUNCTION__ << vm_data;
-//    }
-    RgaUtility* inst = StaticContainer::STC_RGAMAP.value(s_id);
+//    RgaUtility* inst = StaticContainer::STC_RGAMAP.value(s_id);
     //am in controll
     if(type == AmInControl) {
         inst->setInCtrl(vm_data.value("data").toBool());

@@ -22,12 +22,14 @@ MyRga::MyRga(QWidget* parent)
     connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
     dlg_add = new AddRgaDlg(this);
     http_cli = CommHttp::GetInstance();
+    rga_inst = new RgaUtility;
+    StaticContainer::setCrntRga(rga_inst);
 }
 ///
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
-    clear_rga_map();
+    delete rga_inst;
     delete ui;
 }
 
@@ -36,6 +38,8 @@ MyRga::~MyRga() {
 ///
 void MyRga::on_tb_comm_clicked() {
     dlg_add->exec();
+    qDebug() << "on_tb_comm_clicked";
+    read_current_config();
 }
 
 ///
@@ -121,11 +125,10 @@ void MyRga::acq_tmr_action() {
 ///
 void MyRga::idle_tmr_action() {
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
-    if(StaticContainer::STC_RGAMAP.count() < 1) {
-        idle_tmr->stop();
+    RgaUtility* inst = StaticContainer::getCrntRga();
+    if(inst == nullptr) {
         return;
     }
-    RgaUtility* inst = StaticContainer::STC_RGAMAP.first();
     http_cli->cmdEnQueue(inst->getIdlSet(), true);
     if(!inst->getInCtrl()) {
         http_cli->cmdEnQueue(inst->genRgaAction(RgaUtility::ForceCtrl));
@@ -217,6 +220,7 @@ void MyRga::on_tb_ctrl_clicked() {
 }
 
 void MyRga::read_current_config() {
+    RgaUtility* inst = StaticContainer::getCrntRga();
     QString file_name = "lastrun.ini";
     QString file_folder = DataHelper::get_file_folder("");
     QMap<QString, QString> qm_rcp, qm_rga_conn;
@@ -251,23 +255,12 @@ void MyRga::read_current_config() {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
-    RgaUtility* inst = new RgaUtility("http://" +  s_ip + ":" + s_port, recpt);
-//    inst->setRunSet(s_run); //set run type
+    inst->setScanRecipe(recpt);
     inst->resetAll();
+    inst->setRgaAddr("http://" + s_ip + ":" + s_port);
     inst->setRgaTag(s_tag);
-    QString s_id = s_ip.replace(".", "");
-    clear_rga_map();
-    StaticContainer::STC_RGAMAP.insert(s_id, inst);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 
-void MyRga::clear_rga_map() {
-    idle_tmr->stop();
-    if( StaticContainer::STC_RGAMAP.count() > 0) {
-        foreach (RgaUtility* inst, StaticContainer::STC_RGAMAP) {
-            delete inst;
-        }
-    }
-}
 
 
