@@ -425,6 +425,14 @@ class HttpCommand {
         return rga_addr + "/mmsp/scanSetup/scanTimeTotal/get";
     }
 
+    static const QString setThrehold(const QString& rga_addr, const QString& value) {
+        return rga_addr + "/mmsp/sensorIonSource/set?tPThresholdCurrent=" + value;
+    }
+
+    static const QString getThrehold(const QString& rga_addr) {
+        return rga_addr + "/mmsp/sensorIonSource/get?tPThresholdCurrent";
+    }
+
 };
 
 
