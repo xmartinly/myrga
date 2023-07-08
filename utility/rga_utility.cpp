@@ -34,24 +34,8 @@ void RgaUtility::setFlmtIdxSet(const QString& news_flmtIdx) {
     m_rcpt.s_flmtIdx = news_flmtIdx;
 }
 
-///
-/// \brief RgaUtility::acqSet
-/// \return
-///
-bool RgaUtility::acquireSet() const {
-    return acquire_set;
-}
 
-///
-/// \brief RgaUtility::setAcqSet
-/// \param newb_acq_set
-///
-void RgaUtility::setAcquireSet(bool newb_acq_set) {
-    acquire_set = newb_acq_set;
-}
-
-
-double RgaUtility::dLimitVal() const {
+double RgaUtility::getDLimitVal() const {
     return scan_val_low;
 }
 
