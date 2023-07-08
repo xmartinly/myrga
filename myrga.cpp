@@ -123,9 +123,9 @@ void MyRga::on_tb_link_clicked() {
 ///
 void MyRga::on_tb_ctrl_clicked() {
     if(rga_inst->getAcquireState()) {
-        rga_inst->getAcquireState() = false;
+        rga_inst->setAcquireState(false);
         acq_tmr->stop();
-        rga_inst->acquireSet();
+//        rga_inst->acquireSet();
         return;
     }
     QMap<QString, QString> recipe;
