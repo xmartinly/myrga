@@ -412,19 +412,18 @@ void TbObserver::update() {
     }
     bool rga_in_ctrl = inst->getInCtrl();
     bool rga_flmt_on = inst->getRgaStatus(RgaUtility::EmissState);
-    bool rga_em_on = inst->getRgaStatus(RgaUtility::EmissState);
+    bool rga_em_on = inst->getRgaStatus(RgaUtility::EMState);
     bool rga_err = inst->getErrCount() > 0;
-    qDebug() << btn_name << rga_in_ctrl;
-    if(btn_name == "flmt") {
+    if(btn_name == "tb_flmt") {
         m_zone->setIcon(rga_flmt_on ? flmt_on : flmt_off);
     }
-    if(btn_name == "info") {
+    if(btn_name == "tb_info") {
         m_zone->setIcon(rga_err ? info_have_err : info_no_err);
     }
-    if(btn_name == "em") {
+    if(btn_name == "tb_em") {
         m_zone->setIcon(rga_em_on ? em_on : em_off);
     }
-    if(btn_name == "link") {
+    if(btn_name == "tb_link") {
         m_zone->setIcon(rga_in_ctrl ? link_on : link_off);
     }
 }

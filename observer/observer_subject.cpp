@@ -42,6 +42,7 @@ void ObserverSubject::notify_obs() {
         return;
     }
     foreach (auto obs, m_obsrvs) {
+        qDebug() << obs->objectName();
         obs->update();
     }
 }
@@ -50,6 +51,6 @@ void ObserverSubject::notify_obs() {
 /// \brief ObserverSubject::countObs
 /// \return const int, m_obsrvs count.
 ///
-const int ObserverSubject::countObs(){
+const int ObserverSubject::countObs() {
     return m_obsrvs.count();
 }

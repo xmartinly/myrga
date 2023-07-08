@@ -43,7 +43,6 @@ MyRga::~MyRga() {
 ///
 void MyRga::on_tb_comm_clicked() {
     dlg_add->exec();
-    qDebug() << "on_tb_comm_clicked";
     read_current_config();
 }
 
@@ -270,22 +269,22 @@ void MyRga::setup_obs() {
     //******************************************************************//
     //** link button
     DataObserver* link_btn_obs = new TbObserver(ui->tb_link);
-    link_btn_obs->setObjectName("link");
+//    link_btn_obs->setObjectName("link");
     obs_subj->addObserver(link_btn_obs);
     //******************************************************************//
     //** flmt button
     DataObserver* flmt_btn_obs = new TbObserver(ui->tb_flmt);
-    flmt_btn_obs->setObjectName("flmt");
+//    flmt_btn_obs->setObjectName("flmt");
     obs_subj->addObserver(flmt_btn_obs);
     //******************************************************************//
     //** em button
     DataObserver* em_btn_obs = new TbObserver(ui->tb_em);
-    em_btn_obs->setObjectName("em");
+//    em_btn_obs->setObjectName("em");
     obs_subj->addObserver(em_btn_obs);
     //******************************************************************//
     //** info button
     DataObserver* info_btn_obs = new TbObserver(ui->tb_info);
-    info_btn_obs->setObjectName("info");
+//    info_btn_obs->setObjectName("info");
     obs_subj->addObserver(info_btn_obs);
 }
 
@@ -295,4 +294,9 @@ void MyRga::update_obs() {
 
 
 
+
+
+void MyRga::on_tb_link_clicked() {
+    read_current_config();
+}
 

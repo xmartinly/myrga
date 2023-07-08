@@ -35,7 +35,7 @@ class TbObserver: public DataObserver {
 
 
 
-    const QSize btn_size = {1, 1};
+    const QSize btn_size = {36, 36};
     const double btn_ratio = 1;
 
     QPixmap flmt_on = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size);

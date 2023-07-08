@@ -63,6 +63,8 @@ class MyRga : public QMainWindow
 
     void on_tb_ctrl_clicked();
 
+    void on_tb_link_clicked();
+
   private:
     Ui::MyRga* ui;
     // RgaUtility

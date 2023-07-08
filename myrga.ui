@@ -325,7 +325,7 @@
        <item row="0" column="17">
         <widget class="QToolButton" name="tb_link">
          <property name="toolTip">
-          <string>Information</string>
+          <string>Link</string>
          </property>
          <property name="text">
           <string/>
