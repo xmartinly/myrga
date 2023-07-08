@@ -92,7 +92,6 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     row_count = row;
     QStringList sl_recipes = DataHelper::list_config_file(recipe_config_path);
     QMap<QString, QString> qm_values = DataHelper::read_config(sl_recipes.at(row) + ".ini", recipe_config_path, "Recipe");
-    qDebug() << sl_recipes.at(row);
     if(!qm_values.count()) {
         QMessageBox::warning(nullptr, "Read Failed", "No value readed.");
         return;

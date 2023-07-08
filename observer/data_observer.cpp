@@ -289,7 +289,6 @@ void SpecChartObserver::update() {
     if(!inst->getIsNewData() && !StaticContainer::STC_CELLCLICKED) {
         return;
     }
-//    qDebug() << "SpecChartObserver::update()" << StaticContainer::STC_ISCHARTPAGE;
     bool b_isAScan = inst->getIsAScan();
     m_qcpLine->setVisible(b_isAScan);
     QVector<double> ld_values = inst->getScanValues();
@@ -335,7 +334,6 @@ void TextInfoObserver::update() {
     if(ld_values.isEmpty() || StaticContainer::STC_SELMASS.isEmpty()) {
         return;
     }
-//    qDebug() << "TextInfoObserver::update()" << StaticContainer::STC_CELLCLICKED;
     QString s_info = "";
     double d_pressure = ld_values.takeFirst();
     bool b_isCurrent = inst->getRcptInfo(RgaUtility::RcptRptUnit) == "Current";

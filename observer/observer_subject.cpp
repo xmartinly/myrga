@@ -42,7 +42,6 @@ void ObserverSubject::notify_obs() {
         return;
     }
     foreach (auto obs, m_obsrvs) {
-        qDebug() << obs->objectName();
         obs->update();
     }
 }

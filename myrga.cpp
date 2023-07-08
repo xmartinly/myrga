@@ -65,12 +65,28 @@ void MyRga::on_tb_recipe_clicked() {
 /// \brief MyRga::on_tb_flmt_clicked
 ///
 void MyRga::on_tb_flmt_clicked() {
+    if(rga_inst == nullptr) {
+        return;
+    }
+    if(!rga_inst->getInCtrl()) {
+        return;
+    }
+    bool flmt_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EmissState);
+    http_cli->cmdEnQueue(rga_inst->genRgaAction(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
 }
 
 ///
 /// \brief MyRga::on_tb_em_clicked
 ///
 void MyRga::on_tb_em_clicked() {
+    if(rga_inst == nullptr) {
+        return;
+    }
+    if(!rga_inst->getInCtrl()) {
+        return;
+    }
+    bool em_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EMState);
+    http_cli->cmdEnQueue(rga_inst->genRgaAction(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
 }
 
 ///
