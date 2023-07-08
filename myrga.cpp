@@ -32,7 +32,7 @@ MyRga::MyRga(QWidget* parent)
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
-    obs_subj->removeAll();
+    obs_subj->remove_all_obs();
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -73,6 +73,7 @@ void MyRga::on_tb_flmt_clicked() {
     }
     bool flmt_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EmissState);
     http_cli->cmdEnQueue(rga_inst->genRgaAction(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
+    update_obs();
 }
 
 ///
@@ -87,6 +88,7 @@ void MyRga::on_tb_em_clicked() {
     }
     bool em_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EMState);
     http_cli->cmdEnQueue(rga_inst->genRgaAction(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
+    update_obs();
 }
 
 ///
@@ -297,23 +299,23 @@ void MyRga::setup_obs() {
     //******************************************************************//
     //** link button
     DataObserver* link_btn_obs = new TbObserver(ui->tb_link);
-//    link_btn_obs->setObjectName("link");
-    obs_subj->addObserver(link_btn_obs);
+    link_btn_obs->setObjectName("link");
+    obs_subj->add_obs(link_btn_obs);
     //******************************************************************//
     //** flmt button
     DataObserver* flmt_btn_obs = new TbObserver(ui->tb_flmt);
-//    flmt_btn_obs->setObjectName("flmt");
-    obs_subj->addObserver(flmt_btn_obs);
+    flmt_btn_obs->setObjectName("flmt");
+    obs_subj->add_obs(flmt_btn_obs);
     //******************************************************************//
     //** em button
     DataObserver* em_btn_obs = new TbObserver(ui->tb_em);
-//    em_btn_obs->setObjectName("em");
-    obs_subj->addObserver(em_btn_obs);
+    em_btn_obs->setObjectName("em");
+    obs_subj->add_obs(em_btn_obs);
     //******************************************************************//
     //** info button
     DataObserver* info_btn_obs = new TbObserver(ui->tb_info);
-//    info_btn_obs->setObjectName("info");
-    obs_subj->addObserver(info_btn_obs);
+    info_btn_obs->setObjectName("info");
+    obs_subj->add_obs(info_btn_obs);
 }
 
 ///
@@ -329,11 +331,13 @@ void MyRga::update_obs() {
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
     QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
-                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                                         QMessageBox::Yes | QMessageBox::No,
                                          QMessageBox::No);
     if (result == QMessageBox::Yes) {
-        http_cli->execCmd(rga_inst->genRgaAction(RgaUtility::CloseFlmt));
-        http_cli->execCmd(rga_inst->genRgaAction(RgaUtility::RleaseCtrl));
+        QStringList exit_sets = rga_inst->getCloseSet();
+        foreach (auto cmd, exit_sets) {
+            http_cli->execCmd(cmd);
+        }
         event->accept();
     } else {
         event->ignore();

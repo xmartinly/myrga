@@ -15,11 +15,11 @@ ObserverSubject::~ObserverSubject() {
 /// \brief ObserverSubject::addObserver
 /// \param obs
 ///
-void ObserverSubject::addObserver(DataObserver* obs) {
+void ObserverSubject::add_obs(DataObserver* obs) {
     m_obsrvs.append(obs);
 }
 
-int ObserverSubject::removeAll() {
+int ObserverSubject::remove_all_obs() {
     qDeleteAll(m_obsrvs.begin(), m_obsrvs.end());
     m_obsrvs.clear();
     return m_obsrvs.count();
@@ -29,7 +29,7 @@ int ObserverSubject::removeAll() {
 /// \brief ObserverSubject::removeObserver
 /// \param obs
 ///
-void ObserverSubject::removeObserver(DataObserver* obs) {
+void ObserverSubject::remove_obs(DataObserver* obs) {
     m_obsrvs.removeOne(obs);
 }
 
@@ -50,6 +50,6 @@ void ObserverSubject::notify_obs() {
 /// \brief ObserverSubject::countObs
 /// \return const int, m_obsrvs count.
 ///
-const int ObserverSubject::countObs() {
+const int ObserverSubject::count_obs() {
     return m_obsrvs.count();
 }

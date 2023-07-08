@@ -284,6 +284,9 @@
            <height>36</height>
           </size>
          </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
         </widget>
        </item>
        <item row="0" column="20">

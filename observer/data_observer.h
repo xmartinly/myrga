@@ -37,15 +37,15 @@ class TbObserver: public DataObserver {
 
     const QSize btn_size = {36, 36};
     const double btn_ratio = 1;
-    QPixmap icon_pending = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size);
-    QPixmap flmt_on = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size);
-    QPixmap flmt_off = DataHelper::get_pixmap("filament_off", btn_ratio, btn_size);
-    QPixmap em_on = DataHelper::get_pixmap("em_on", btn_ratio, btn_size);
-    QPixmap em_off = DataHelper::get_pixmap("em_off", btn_ratio, btn_size);
-    QPixmap info_have_err = DataHelper::get_pixmap("information_a", btn_ratio, btn_size);
-    QPixmap info_no_err = DataHelper::get_pixmap("information", btn_ratio, btn_size);
-    QPixmap link_on = DataHelper::get_pixmap("link", btn_ratio, btn_size);
-    QPixmap link_off = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size);
+    QPixmap pd_svg = DataHelper::get_pixmap("flash_on", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap flmt_on_svg = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap flmt_off_svg = DataHelper::get_pixmap("filament_off", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap em_on_svg = DataHelper::get_pixmap("em_on", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap em_off_svg = DataHelper::get_pixmap("em_off", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap info_have_err_svg = DataHelper::get_pixmap("information_a", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap info_no_err_svg = DataHelper::get_pixmap("information", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap link_on_svg = DataHelper::get_pixmap("link", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap link_off_svg = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size, DataHelper::SVG);
 
   private:
     QToolButton* m_zone = nullptr;

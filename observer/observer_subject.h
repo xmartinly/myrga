@@ -8,13 +8,13 @@ class ObserverSubject {
     ObserverSubject();
     ~ObserverSubject();
 
-    void addObserver(DataObserver* obs);
+    void add_obs(DataObserver* obs);
 
-    int removeAll();
+    int remove_all_obs();
 
-    void removeObserver(DataObserver* obs);
+    void remove_obs(DataObserver* obs);
 
-    const int countObs();
+    const int count_obs();
 
     void notify_obs();
 

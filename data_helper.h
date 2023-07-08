@@ -5,6 +5,14 @@
 
 class DataHelper {
   public:
+    enum PictureType {
+        SVG,
+        JPG,
+        JPEG,
+        ICO,
+        PNG
+    };
+
     DataHelper();
 
     ~DataHelper();
@@ -38,7 +46,7 @@ class DataHelper {
 
     static double   cal_pp_val (int i_amu, double d_crnt_val, double d_s_sen, bool b_em_state, double d_em_gain = 1000, int i_unit = 0);
 
-    static QPixmap  get_pixmap (const QString& name, const qreal& ratio, const QSize& size);
+    static QPixmap  get_pixmap (const QString& name, const qreal& ratio = 1, const QSize& size = {36, 36}, PictureType type = SVG);
 
     static QStringList  list_config_file (const QString& file_folder);
 

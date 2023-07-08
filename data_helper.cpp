@@ -412,9 +412,24 @@ double DataHelper::cal_pp_val(int i_amu, double d_crnt_val, double d_s_sen, bool
 /// \return
 ///
 QPixmap DataHelper::get_pixmap(const QString& name, const qreal& ratio,
-                               const QSize& size) {
-    QString s_path = ":/Resource/Picture/svg/";
-    const QIcon& icon = QIcon(s_path + name + ".svg");
+                               const QSize& size, PictureType type) {
+    QString pic_path = ":/Resource/Picture/%1/%2.%3";
+    QString pic_meta = "";
+    switch (type) {
+        case SVG:
+            pic_meta = "svg";
+            break;
+        case JPG:
+            pic_meta = "jpg";
+            break;
+        case PNG:
+            pic_meta = "png";
+            break;
+        default:
+            pic_meta = "ico";
+            break;
+    }
+    const QIcon& icon = QIcon(pic_path.arg(pic_meta).arg(name).arg(pic_meta));
     QPixmap pixmap =
         icon.pixmap(size * ratio)
         .scaled(size * ratio, Qt::KeepAspectRatio, Qt::SmoothTransformation);

@@ -753,8 +753,8 @@ const QString RgaUtility::getRgaTag() {
 /// \brief RgaUtility::setRgaSn
 /// \param rga_sn
 ///
-void RgaUtility::setRgaSn(QString rga_sn) {
-    rga_sn = rga_sn;
+void RgaUtility::setRgaSn(const QString& sn) {
+    rga_sn = sn;
 }
 
 ///

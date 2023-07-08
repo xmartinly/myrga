@@ -304,7 +304,7 @@ class RgaUtility {
 
     //*************************************************************************************//
     //**  rga serial number
-    void setRgaSn(QString rga_sn);
+    void setRgaSn(const QString& sn);
     const QString getRgaSn();
 
     //*************************************************************************************//
