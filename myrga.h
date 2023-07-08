@@ -89,14 +89,14 @@ class MyRga : public QMainWindow
     QAction*                m_action_rescale    = nullptr;
     // y axis ticker type switch
     QAction*                m_action_yaxis      = nullptr;
+    // padding svg
+    QPixmap pd_svg = DataHelper::get_pixmap("flash_on");
     // initialize data table
     void init_data_tbl();
     // initialize spec chart
     void init_spec_chart();
     // initialize line chart
     void init_line_chart();
-    // setup data observers
-    void setup_observers();
     // initialize rga scan setup.
     void init_scan(RgaUtility* inst);
     // menu action when right click on rga label
@@ -110,7 +110,7 @@ class MyRga : public QMainWindow
     // save current scan settings
     void save_current();
     // read current config
-    void read_current_config();
+    void read_current_config(bool only_rcpt = false);
     // setup observers
     void setup_obs();
     // close event. disconnect rga, close filament, release control

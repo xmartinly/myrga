@@ -89,7 +89,7 @@ QString RgaUtility::getRunTm() const {
 /// \brief RgaUtility::addRunTm
 ///
 void RgaUtility::addRunTm() {
-    if(acquireState()) {
+    if(getAcquireState()) {
         recipe_run_tm += StaticContainer::STC_IDLINTVL;
     }
 }
@@ -231,7 +231,7 @@ void RgaUtility::setAcquireState(bool is_in_acq) {
 /// \brief RgaUtility::getRgaAcqState
 /// \return
 ///
-const bool RgaUtility::acquireState() {
+const bool RgaUtility::getAcquireState() {
     return m_stat.b_isInAcquire;
 }
 

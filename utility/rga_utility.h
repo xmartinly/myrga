@@ -217,7 +217,7 @@ class RgaUtility {
     //*************************************************************************************//
     //**  rga acquire state
     void setAcquireState(bool is_in_acq = false);
-    const bool acquireState();
+    const bool getAcquireState();
 
     //*************************************************************************************//
     //**  rga main widget label
@@ -416,13 +416,9 @@ class RgaUtility {
 
     //*************************************************************************************//
     //**  limit value
-    double dLimitVal() const;
+    double getDLimitVal() const;
     void setDLimitVal(double newDLimitVal);
 
-    //*************************************************************************************//
-    //**  acquire set
-    bool acquireSet() const;
-    void setAcquireSet(bool newb_acq_set);
 
     QString flmtIdxSet() const;
     void setFlmtIdxSet(const QString& news_flmtIdx);

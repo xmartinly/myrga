@@ -27,12 +27,17 @@ MyRga::MyRga(QWidget* parent)
     obs_subj = new ObserverSubject;
     connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
     setup_obs();
+    read_current_config();
 }
 ///
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
+    QStringList exit_sets = rga_inst->getCloseSet();
+    foreach (auto cmd, exit_sets) {
+        http_cli->execCmd(cmd);
+    }
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -72,8 +77,8 @@ void MyRga::on_tb_flmt_clicked() {
         return;
     }
     bool flmt_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EmissState);
-    http_cli->cmdEnQueue(rga_inst->genRgaAction(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
-    update_obs();
+    http_cli->execCmd(rga_inst->genRgaAction(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
+    ui->tb_flmt->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -87,8 +92,8 @@ void MyRga::on_tb_em_clicked() {
         return;
     }
     bool em_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EMState);
-    http_cli->cmdEnQueue(rga_inst->genRgaAction(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
-    update_obs();
+    http_cli->execCmd(rga_inst->genRgaAction(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
+    ui->tb_em->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -117,6 +122,12 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
+    if(rga_inst->getAcquireState()) {
+        rga_inst->getAcquireState() = false;
+        acq_tmr->stop();
+        rga_inst->acquireSet();
+        return;
+    }
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
                  "Off",
@@ -136,6 +147,17 @@ void MyRga::on_tb_ctrl_clicked() {
         return;
     }
     read_current_config();
+    int try_count = 0;
+    while(!rga_inst->getInCtrl() && try_count > 50) {
+        QThread::msleep(100);
+        ++try_count;
+    }
+    http_cli->cmdEnQueue(rga_inst->getScanSet(), true);
+    rga_inst->setEmManual(true);
+    if(acq_tmr->isActive()) {
+        return;
+    }
+    acq_tmr->start(StaticContainer::STC_ACQINTVL);
 }
 
 ///
@@ -150,12 +172,6 @@ void MyRga::on_actionRecipe_triggered() {
 ///
 void MyRga::on_actionComm_triggered() {
     dlg_add->exec();
-}
-
-///
-/// \brief MyRga::acq_tmr_action
-///
-void MyRga::acq_tmr_action() {
 }
 
 ///
@@ -205,6 +221,22 @@ void MyRga::idle_tmr_action() {
 }
 
 ///
+/// \brief MyRga::acq_tmr_action
+///
+void MyRga::acq_tmr_action() {
+    if(rga_inst->getScanTmTotal() < 1) {
+        return;
+    }
+    if(!rga_inst->getRgaStatus(RgaUtility::EmissState)) {
+        return;
+    }
+    if(rga_inst->getAcquireState() && rga_inst->getAcquireState()) {
+        http_cli->cmdEnQueue(rga_inst->genRgaAction(RgaUtility::GetLastScan));
+    }
+}
+
+
+///
 /// \brief MyRga::initDataTbl
 ///
 void MyRga::init_data_tbl() {
@@ -223,11 +255,8 @@ void MyRga::init_line_chart() {
 }
 
 ///
-/// \brief MyRga::setupObsrvs
+/// \brief MyRga::save_current
 ///
-void MyRga::setup_observers() {
-}
-
 void MyRga::save_current() {
     QMap<QString, QString> recipe = DataHelper::gen_recipe_config(
                                         "Off",
@@ -244,15 +273,18 @@ void MyRga::save_current() {
     DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
 }
 
-
+///
+/// \brief MyRga::run_from_recipe
+/// \param dur
+///
 void MyRga::run_from_recipe(int dur) {
     qDebug() << Q_FUNC_INFO << "run_from_recipe";
 }
 
-
-
-
-void MyRga::read_current_config() {
+///
+/// \brief MyRga::read_current_config
+///
+void MyRga::read_current_config(bool only_rcpt) {
     RgaUtility* inst = StaticContainer::getCrntRga();
     QString file_name = "lastrun.ini";
     QString file_folder = DataHelper::get_file_folder("");
@@ -273,6 +305,10 @@ void MyRga::read_current_config() {
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
+    inst->setScanRecipe(recpt);
+    if(only_rcpt) {
+        return;
+    }
     QString s_ip = "";
     QString s_tag = "";
     QString s_port = "";
@@ -288,13 +324,15 @@ void MyRga::read_current_config() {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
-    inst->setScanRecipe(recpt);
     inst->resetAll();
     inst->setRgaAddr("http://" + s_ip + ":" + s_port);
     inst->setRgaTag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 
+///
+/// \brief MyRga::setup_obs
+///
 void MyRga::setup_obs() {
     //******************************************************************//
     //** link button
@@ -330,18 +368,14 @@ void MyRga::update_obs() {
 /// \param event
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
-    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
-                                         QMessageBox::Yes | QMessageBox::No,
-                                         QMessageBox::No);
-    if (result == QMessageBox::Yes) {
-        QStringList exit_sets = rga_inst->getCloseSet();
-        foreach (auto cmd, exit_sets) {
-            http_cli->execCmd(cmd);
-        }
-        event->accept();
-    } else {
-        event->ignore();
-    }
+//    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
+//                                         QMessageBox::Yes | QMessageBox::No,
+//                                         QMessageBox::No);
+//    if (result == QMessageBox::Yes) {
+//        event->accept();
+//    } else {
+//        event->ignore();
+//    }
 }
 
 

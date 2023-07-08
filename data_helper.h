@@ -3,6 +3,9 @@
 
 #include "utility/comm_http.h"
 
+extern QString border_toolbtn;
+extern QString border_none;
+
 class DataHelper {
   public:
     enum PictureType {

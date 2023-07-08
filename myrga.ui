@@ -64,6 +64,18 @@
        </item>
        <item row="0" column="15">
         <widget class="QToolButton" name="tb_em">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Toggle EM</string>
          </property>
@@ -76,14 +88,26 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
        </item>
        <item row="0" column="4">
         <widget class="QToolButton" name="tb_recipe">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Recipe</string>
          </property>
@@ -96,14 +120,26 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
        </item>
        <item row="0" column="7">
         <widget class="QToolButton" name="tb_review">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Data Review</string>
          </property>
@@ -116,8 +152,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -156,6 +192,18 @@
        </item>
        <item row="0" column="5">
         <widget class="QToolButton" name="tb_comm">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Communication</string>
          </property>
@@ -168,8 +216,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -200,14 +248,14 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>355</width>
-           <height>39</height>
+           <width>375</width>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>355</width>
-           <height>39</height>
+           <width>375</width>
+           <height>50</height>
           </size>
          </property>
          <property name="baseSize">
@@ -232,6 +280,18 @@
        </item>
        <item row="0" column="19">
         <widget class="QToolButton" name="tb_info">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Information</string>
          </property>
@@ -244,8 +304,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -268,8 +328,23 @@
        </item>
        <item row="0" column="14">
         <widget class="QToolButton" name="tb_flmt">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Toggle Filament</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="text">
           <string/>
@@ -280,8 +355,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
          <property name="toolButtonStyle">
@@ -307,6 +382,18 @@
        </item>
        <item row="0" column="1">
         <widget class="QToolButton" name="tb_menu">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Toggle Side</string>
          </property>
@@ -319,14 +406,26 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
        </item>
        <item row="0" column="17">
         <widget class="QToolButton" name="tb_link">
+         <property name="minimumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>46</width>
+           <height>46</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Link</string>
          </property>
@@ -339,8 +438,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>36</width>
-           <height>36</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -1276,7 +1375,7 @@
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header location="global">chart_plugin/qcustomplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

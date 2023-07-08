@@ -35,7 +35,10 @@ class TbObserver: public DataObserver {
 
 
 
-    const QSize btn_size = {36, 36};
+  private:
+    QToolButton* m_zone = nullptr;
+    QString btn_name = "";
+    const QSize btn_size = {40, 40};
     const double btn_ratio = 1;
     QPixmap pd_svg = DataHelper::get_pixmap("flash_on", btn_ratio, btn_size, DataHelper::SVG);
     QPixmap flmt_on_svg = DataHelper::get_pixmap("filament_on", btn_ratio, btn_size, DataHelper::SVG);
@@ -47,9 +50,8 @@ class TbObserver: public DataObserver {
     QPixmap link_on_svg = DataHelper::get_pixmap("link", btn_ratio, btn_size, DataHelper::SVG);
     QPixmap link_off_svg = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size, DataHelper::SVG);
 
-  private:
-    QToolButton* m_zone = nullptr;
-    QString btn_name = "";
+    bool is_flmt_on = false;
+    bool is_em_on = false;
 };
 
 

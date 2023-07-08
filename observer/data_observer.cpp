@@ -411,27 +411,31 @@ void TbObserver::update() {
     bool rga_in_ctrl = inst->getInCtrl();
     bool rga_flmt_on = inst->getRgaStatus(RgaUtility::EmissState);
     bool rga_em_on = inst->getRgaStatus(RgaUtility::EMState);
-    bool rga_flmt_pd = inst->getRgaStatus(RgaUtility::EmissPd);
-    bool rga_em_pd = inst->getRgaStatus(RgaUtility::EMPd);
+//    bool rga_flmt_pd = inst->getRgaStatus(RgaUtility::EmissPd);
+//    bool rga_em_pd = inst->getRgaStatus(RgaUtility::EMPd);
     bool rga_err = inst->getErrCount() > 0;
     if(btn_name == "tb_flmt") {
-        if(rga_flmt_pd) {
-            m_zone->setIcon(pd_svg);
+        if(is_flmt_on == rga_flmt_on) {
             return;
+        } else {
+            is_flmt_on = rga_flmt_on;
+            m_zone->setStyleSheet(border_none);
         }
         m_zone->setIcon(rga_flmt_on ? flmt_on_svg : flmt_off_svg);
         return;
     }
-    if(btn_name == "tb_info") {
-        m_zone->setIcon(rga_err ? info_have_err_svg : info_no_err_svg);
-        return;
-    }
     if(btn_name == "tb_em") {
-        if(rga_em_pd) {
-            m_zone->setIcon(pd_svg);
+        if(is_em_on == rga_em_on) {
             return;
+        } else {
+            is_em_on = rga_em_on;
+            m_zone->setStyleSheet(border_none);
         }
         m_zone->setIcon(rga_em_on ? em_on_svg : em_off_svg);
+        return;
+    }
+    if(btn_name == "tb_info") {
+        m_zone->setIcon(rga_err ? info_have_err_svg : info_no_err_svg);
         return;
     }
     if(btn_name == "tb_link") {
@@ -439,8 +443,5 @@ void TbObserver::update() {
         if(rga_in_ctrl) {
             m_zone->setToolTip(inst->getRgaSn() + "\n" + inst->getRgaAddr().mid(7, -1));
         }
-    }
-    if(rga_flmt_pd && btn_name == "tb_flmt") {
-        m_zone->setIcon(flmt_on_svg);
     }
 }

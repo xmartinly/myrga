@@ -1,5 +1,7 @@
 #include "data_helper.h"
 
+QString border_toolbtn = "border: 2px dashed darkMagenta; border-radius = 2px;";
+QString border_none = "border: none;";
 
 const QMap<int, QString> DataHelper::C_POSELEMAP  = {
     {1, u8"Hydrogenium"},
@@ -182,8 +184,8 @@ DataHelper::read_config(const QString& file_name, const QString& file_folder, co
     QString s_iniFile = file_folder + '/' + file_name;
     QFile file(s_iniFile);
     if (!file.exists()) {
-        QMessageBox::warning(nullptr, "Read Error",
-                             "Config not found. " + file_name);
+        QMessageBox::warning(nullptr, u8"Read Error",
+                             u8"Config not found. " + file_name);
         return qm_values;
     }
     QSettings f_iniFile(s_iniFile, QSettings::IniFormat);

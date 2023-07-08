@@ -10,20 +10,9 @@
     #include "vld.h"
 #endif
 
+
+
 int main(int argc, char* argv[]) {
-//    QApplication a(argc, argv);
-//    QTranslator translator;
-//    const QStringList uiLanguages = QLocale::system().uiLanguages();
-//    for (const QString &locale : uiLanguages) {
-//        const QString baseName = "myrga_" + QLocale(locale).name();
-//        if (translator.load(":/i18n/" + baseName)) {
-//            a.installTranslator(&translator);
-//            break;
-//        }
-//    }
-//    MyRga w;
-//    w.show();
-//    return a.exec();
 #ifdef Q_OS_WIN32
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
