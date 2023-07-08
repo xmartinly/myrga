@@ -32,9 +32,9 @@ MyRga::MyRga(QWidget* parent)
 /// \brief MyRga::~MyRga
 ///
 MyRga::~MyRga() {
-    delete rga_inst;
     obs_subj->removeAll();
     delete obs_subj;
+    delete rga_inst;
     delete ui;
 }
 
@@ -90,27 +90,50 @@ void MyRga::on_tb_em_clicked() {
 }
 
 ///
-/// \brief MyRga::on_actionExit_triggered
-///
-void MyRga::on_actionExit_triggered() {
-    this->close();
-}
-
-///
-/// \brief MyRga::on_cb_method_currentIndexChanged
-/// \param index
-///
-void MyRga::on_cb_method_currentIndexChanged(int index) {
-    ui->frame_points->setVisible(index);
-    ui->frame_range->setVisible(!index);
-}
-
-///
 /// \brief MyRga::on_tb_info_clicked
 ///
 void MyRga::on_tb_info_clicked() {
     bool tw_info_visable = ui->tw_info->isVisible();
     ui->tw_info->setVisible(!tw_info_visable);
+}
+
+
+///
+/// \brief MyRga::on_tb_review_clicked
+///
+void MyRga::on_tb_review_clicked() {
+}
+
+///
+/// \brief MyRga::on_tb_link_clicked
+///
+void MyRga::on_tb_link_clicked() {
+    read_current_config();
+}
+
+///
+/// \brief MyRga::on_tb_ctrl_clicked
+///
+void MyRga::on_tb_ctrl_clicked() {
+    QMap<QString, QString> recipe;
+    recipe = DataHelper::gen_recipe_config(
+                 "Off",
+                 QString::number(ui->cb_unitpressure->currentIndex()),
+                 QString::number(ui->sb_start->value()),
+                 QString::number(ui->sb_end->value()),
+                 ui->le_points->text(),
+                 ui->cb_method->currentText(),
+                 ui->cb_dwell->currentText(),
+                 ui->cb_flmt->currentText(),
+                 ui->cb_ppamu->currentText(),
+                 ui->cb_unitreport->currentText(),
+                 "-1"
+             );
+    if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
+        QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
+        return;
+    }
+    read_current_config();
 }
 
 ///
@@ -128,16 +151,25 @@ void MyRga::on_actionComm_triggered() {
 }
 
 ///
-/// \brief MyRga::on_tb_review_clicked
-///
-void MyRga::on_tb_review_clicked() {
-}
-
-
-///
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
+}
+
+///
+/// \brief MyRga::on_actionExit_triggered
+///
+void MyRga::on_actionExit_triggered() {
+    this->close();
+}
+
+///
+/// \brief MyRga::on_cb_method_currentIndexChanged
+/// \param index
+///
+void MyRga::on_cb_method_currentIndexChanged(int index) {
+    ui->frame_points->setVisible(index);
+    ui->frame_range->setVisible(!index);
 }
 
 ///
@@ -212,31 +244,11 @@ void MyRga::save_current() {
 
 
 void MyRga::run_from_recipe(int dur) {
-    qDebug() << dur << "run_from_recipe";
+    qDebug() << Q_FUNC_INFO << "run_from_recipe";
 }
 
 
-void MyRga::on_tb_ctrl_clicked() {
-    QMap<QString, QString> recipe;
-    recipe = DataHelper::gen_recipe_config(
-                 "Off",
-                 QString::number(ui->cb_unitpressure->currentIndex()),
-                 QString::number(ui->sb_start->value()),
-                 QString::number(ui->sb_end->value()),
-                 ui->le_points->text(),
-                 ui->cb_method->currentText(),
-                 ui->cb_dwell->currentText(),
-                 ui->cb_flmt->currentText(),
-                 ui->cb_ppamu->currentText(),
-                 ui->cb_unitreport->currentText(),
-                 "-1"
-             );
-    if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
-        QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
-        return;
-    }
-    read_current_config();
-}
+
 
 void MyRga::read_current_config() {
     RgaUtility* inst = StaticContainer::getCrntRga();
@@ -304,15 +316,28 @@ void MyRga::setup_obs() {
     obs_subj->addObserver(info_btn_obs);
 }
 
+///
+/// \brief MyRga::update_obs
+///
 void MyRga::update_obs() {
     obs_subj->notify_obs();
 }
 
-
-
-
-
-void MyRga::on_tb_link_clicked() {
-    read_current_config();
+///
+/// \brief MyRga::closeEvent
+/// \param event
+///
+void MyRga::closeEvent(QCloseEvent* event) {
+    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
+                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                                         QMessageBox::No);
+    if (result == QMessageBox::Yes) {
+        http_cli->execCmd(rga_inst->genRgaAction(RgaUtility::CloseFlmt));
+        http_cli->execCmd(rga_inst->genRgaAction(RgaUtility::RleaseCtrl));
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
+
 

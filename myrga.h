@@ -113,6 +113,8 @@ class MyRga : public QMainWindow
     void read_current_config();
     // setup observers
     void setup_obs();
+    // close event. disconnect rga, close filament, release control
+    void closeEvent(QCloseEvent* event);
 
 
   public slots:
