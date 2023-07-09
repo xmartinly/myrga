@@ -165,7 +165,7 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     }
     //issue log
     if(type == ScanStatus) {
-        qDebug() << __FUNCTION__ << vm_data;
+//        qDebug() << __FUNCTION__ << vm_data;
         inst->set_acquire_state(vm_data.value("data").toBool());
     }
     //serial number

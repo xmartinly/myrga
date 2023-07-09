@@ -169,6 +169,7 @@ class RgaUtility {
     void set_scan_rcpt(const RecipeSet& rcpt);
     void reset_all();
     void setup_func_ptrs();
+    void reset_scan_data();
 
     //*************************************************************************************//
     //**  em gain
@@ -369,7 +370,6 @@ class RgaUtility {
     void set_scan_val(const QVector<double>& values);
     void reset_err_list();
     void reset_status();
-    void reset_scan_data();
     void set_is_new_data(bool is_new_data = false);
     const QString gen_file_header();
     void gen_file_name();
