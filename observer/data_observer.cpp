@@ -30,7 +30,7 @@ void TableObserver::update() {
         return;
     }
     RgaUtility* inst = StaticContainer::getCrntRga();
-    if(StaticContainer::STC_ISMISCINFO) {
+    if(m_zone->objectName() == "tw_info") {
         if(!m_zone->rowCount()) {
             return;
         }
@@ -72,6 +72,7 @@ void TableObserver::update() {
         //        "ScanNum"   //12
         //addr  0
         m_zone->item(0, 1)->setText(inst->get_rga_addr());
+        m_zone->item(0, 1)->setToolTip(inst->get_rga_addr());
         //sn    1
         m_zone->item(1, 1)->setText(inst->get_rga_sn());
         m_zone->item(1, 1)->setBackground(b_isInCtrl ? Qt::darkGreen : Qt::white);
@@ -107,7 +108,8 @@ void TableObserver::update() {
                                      inst->get_rcpt_info(RgaUtility::RcptTPUnit));
         //scan number
         m_zone->item(12, 1)->setText(QString::number(inst->get_scan_num()));
-    } else {
+    }
+    if(m_zone->objectName() == "tw_data") {
         QStringList sl_data = inst->get_scan_sl_val(false);
         int i_dataCnt = sl_data.count();
         if(!i_dataCnt) {

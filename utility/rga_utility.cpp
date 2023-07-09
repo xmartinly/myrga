@@ -61,7 +61,8 @@ void RgaUtility::set_data_pos(const QVector<double>& new_dataPos) {
 /// \return
 ///
 QString RgaUtility::get_str_runtm() const {
-    return  QTime::fromMSecsSinceStartOfDay(recipe_run_tm).toString("HH:mm:ss");
+    qint64 time_elapsed = QDateTime::currentMSecsSinceEpoch() - start_tmstamp;
+    return QTime::fromMSecsSinceStartOfDay(time_elapsed).toString("HH:mm:ss");
 }
 
 ///
@@ -203,6 +204,7 @@ const bool RgaUtility::get_is_sweep() const {
 /// \param is_in_acq
 ///
 void RgaUtility::set_acquire_state(bool is_in_acq) {
+    start_tmstamp = QDateTime::currentMSecsSinceEpoch();
     m_stat.b_isInAcquire = is_in_acq;
 }
 
@@ -517,7 +519,6 @@ void RgaUtility::set_run_set(int i_run) {
 void RgaUtility::set_run_set(const QString& s_run) {
     m_rcpt.s_run = s_run;
 }
-
 
 ///
 /// \brief RgaUtility::genIdlSet

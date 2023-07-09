@@ -20,7 +20,7 @@
    <string>MyRga</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,99">
+   <layout class="QGridLayout" name="gridLayout_7" rowstretch="1,1,99">
     <item row="0" column="0">
      <widget class="QFrame" name="frm_toolbtns">
       <property name="frameShape">
@@ -464,7 +464,7 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,8,3">
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,99,1">
       <item>
        <widget class="QFrame" name="frm_left">
         <property name="frameShape">
@@ -1280,25 +1280,67 @@
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="tw_info">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QFrame" name="frm_misc">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>290</width>
           <height>0</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>280</width>
-          <height>16777215</height>
-         </size>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>8</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QSplitter" name="splitter">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="handleWidth">
+            <number>0</number>
+           </property>
+           <widget class="QTableWidget" name="tw_info">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+           <widget class="QTextBrowser" name="tb_misc"/>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

@@ -188,19 +188,11 @@ QScrollArea {
 /* =============================================== */
 /* QTableWidget                                    */
 /* =============================================== */
-QTableWidget,
-QListWidget {
-    /* border: 1px solid #2196F3;*/
+QTableWidget,QListWidget {
     border: 1px dashed #2E598A;
-    margin-right: 5px;
-/*    margin-top: 10px;*/
-    /*selection-color: white;*/
-    /*    alternate-background-color:#e3edf9;*/
 }
 
-QTableWidget::item:selected,
-QListWidget::item:selected{
-    /*background-color: #2E598A;*/
+QTableWidget::item:selected, QListWidget::item:selected{
     background-color: #b2ebf2;
     color: #2E598A;
 }
@@ -215,8 +207,6 @@ QHeaderView::section{
      border: 2px solid #E1E1E1;
      background:#2E598A;
      color:white;
-
-
 }
 
 
@@ -383,6 +373,12 @@ QTextEdit:focus {
 QTextBrowser{
     /*border: 1px dashed #2196F3;*/
     border: none;
+}
+QTextEdit:hover {
+    border: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 /* =============================================== */

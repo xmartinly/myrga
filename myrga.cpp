@@ -13,8 +13,8 @@ MyRga::MyRga(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MyRga) {
     ui->setupUi(this);
-    ui->frame_points->setHidden(true);
-    ui->tw_info->setVisible(false);
+    ui->frame_points->setVisible(false);
+    ui->frm_misc->setVisible(false);
     rga_inst = new RgaUtility;
     idle_tmr = new QTimer(this);
     connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
@@ -30,6 +30,7 @@ MyRga::MyRga(QWidget* parent)
     setup_obs();
     read_current_config();
     set_last_rcpt();
+    init_data_tbl(true);
 }
 ///
 /// \brief MyRga::~MyRga
@@ -96,8 +97,8 @@ void MyRga::on_tb_em_clicked() {
 /// \brief MyRga::on_tb_info_clicked
 ///
 void MyRga::on_tb_info_clicked() {
-    tw_info_visable = !ui->tw_info->isVisible();
-    ui->tw_info->setVisible(tw_info_visable);
+    tw_info_visable = !ui->frm_misc->isVisible();
+    ui->frm_misc->setVisible(tw_info_visable);
     StaticContainer::STC_ISMISCINFO = tw_info_visable;
 }
 
@@ -218,30 +219,38 @@ void MyRga::acq_tmr_action() {
 ///
 /// \brief MyRga::initDataTbl
 ///
-void MyRga::init_data_tbl() {
-    connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
+void MyRga::init_data_tbl(bool is_misc_info) {
+    if(!is_misc_info) {
+        disconnect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click);
+    }
     StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
-    ui->tw_data->clear();
-    ui->tw_data->setRowCount(0);
-    ui->tw_data->setColumnCount(2);
+    QTableWidget* tbl = is_misc_info ? ui->tw_info : ui->tw_data;
+    tbl->clear();
+    tbl->setRowCount(0);
+    tbl->setColumnCount(2);
     QStringList tblHeader_main = {"Item", "Value"};
-    ui->tw_data->setHorizontalHeaderLabels(tblHeader_main);
-    ui->tw_data->verticalHeader()->setVisible(false);
-    ui->tw_data->horizontalHeader()->setStretchLastSection(true);
-    ui->tw_data->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tw_data->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->tw_data->horizontalHeader()->resizeSection(0, 160);
-    QStringList sl_tblCol = rga_inst->get_tbl_col(true);
+    tbl->setHorizontalHeaderLabels(tblHeader_main);
+    tbl->verticalHeader()->setVisible(false);
+    tbl->horizontalHeader()->setStretchLastSection(true);
+    tbl->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tbl->setSelectionMode(QAbstractItemView::NoSelection);
+    tbl->horizontalHeader()->resizeSection(0, 160);
+    QStringList sl_tblCol = rga_inst->get_tbl_col(!is_misc_info);
     int i_colCnt = sl_tblCol.count();
     for (int var = 0; var < i_colCnt; ++var) {
-        ui->tw_data->insertRow(var);
+        tbl->insertRow(var);
         QTableWidgetItem* item = new QTableWidgetItem(sl_tblCol.at(var));
-        item->setCheckState(var ? Qt::Unchecked : Qt::Checked);
-        ui->tw_data->setItem(var, 0, item);
-        ui->tw_data->setItem(var, 1, new QTableWidgetItem("na"));
+        if(!is_misc_info) {
+            item->setCheckState(var ? Qt::Unchecked : Qt::Checked);
+        }
+        tbl->setItem(var, 0, item);
+        tbl->setItem(var, 1, new QTableWidgetItem("na"));
     }
-    connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
+    if(!is_misc_info) {
+        connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
+    }
 }
+
 void MyRga::tbl_click(int row, int col) {
 }
 
@@ -393,10 +402,15 @@ void MyRga::setup_obs() {
     ctrl_btn_obs->setObjectName("ctrl");
     obs_subj->add_obs(ctrl_btn_obs);
     //******************************************************************//
-    //** tbl_data
+    //** tw_data
     DataObserver* tw_data = new TableObserver(ui->tw_data);
     tw_data->setObjectName("tw_data");
     obs_subj->add_obs(tw_data);
+    //******************************************************************//
+    //** tw_info
+    DataObserver* tw_info = new TableObserver(ui->tw_info);
+    tw_info->setObjectName("tw_info");
+    obs_subj->add_obs(tw_info);
 }
 
 ///

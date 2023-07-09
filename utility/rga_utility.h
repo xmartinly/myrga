@@ -142,6 +142,8 @@ class RgaUtility {
     double        scan_val_low      = 0;
     //local timestamp
     qint64        local_tmstamp     = 0;
+    //scan timestamp
+    qint64        start_tmstamp     = 0;
     //rga acquire run time total
     qint64        recipe_run_tm     = 0;
     //spec chart data positions for analog scan

@@ -99,7 +99,8 @@ class MyRga : public QMainWindow
 
   private:
     // initialize data table
-    void init_data_tbl();
+    void init_data_tbl(bool is_misc_info = false);
+
     // initialize spec chart
     void init_spec_chart();
     // initialize line chart
