@@ -1,4 +1,4 @@
-#include "myrga.h"
+﻿#include "myrga.h"
 
 #include "ui_myrga.h"
 #include "utility/static_container.h"
@@ -150,6 +150,7 @@ void MyRga::on_tb_ctrl_clicked() {
     http_cli->cmdEnQueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
+//    rga_inst->set_acquire_state(true);
     if(acq_tmr->isActive()) {
         return;
     }
@@ -191,6 +192,7 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
+//    qDebug() << __FUNCTION__ << rga_inst->get_acquire_state();
     RgaUtility* inst = StaticContainer::getCrntRga();
     if(inst == nullptr) {
         return;
@@ -250,6 +252,9 @@ void MyRga::init_spec_chart() {
 void MyRga::init_line_chart() {
 }
 
+void MyRga::init_scan() {
+}
+
 ///
 /// \brief MyRga::save_current
 ///
@@ -274,7 +279,10 @@ void MyRga::save_current() {
 /// \param dur
 ///
 void MyRga::run_from_recipe(int dur) {
-    qDebug() << Q_FUNC_INFO << "run_from_recipe";
+    if(!rga_inst) {
+        return;
+    }
+    rga_inst->set_run_set(dur);
 }
 
 ///
@@ -312,7 +320,7 @@ void MyRga::read_current_config(bool only_rcpt) {
     QString s_ip = "";
     QString s_tag = "";
     QString s_port = "";
-    if(!qm_rga_conn.contains("IP")) {
+    if(!qm_rga_conn.contains("IP")) { //ip
         return;
     }
     s_ip = qm_rga_conn.value("IP").toStdString().c_str();
@@ -390,6 +398,9 @@ void MyRga::closeEvent(QCloseEvent* event) {
     }
 }
 
+///
+/// \brief MyRga::set_last_rcpt
+///
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
     if(!qm_values.count()) {

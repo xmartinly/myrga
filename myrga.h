@@ -98,7 +98,7 @@ class MyRga : public QMainWindow
     // initialize line chart
     void init_line_chart();
     // initialize rga scan setup.
-    void init_scan(RgaUtility* inst);
+    void init_scan();
     // menu action when right click on rga label
     void menu_action(MenuActions action = AcquireCtrl);
     // menu text modify
@@ -115,8 +115,7 @@ class MyRga : public QMainWindow
     void setup_obs();
     // close event. disconnect rga, close filament, release control
     void closeEvent(QCloseEvent* event);
-
-
+    // read last rcpt and setup the checkbox, line_edit,etc
     void set_last_rcpt();
 
 

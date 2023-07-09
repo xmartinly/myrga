@@ -505,6 +505,13 @@ const bool RgaUtility::get_run_set() {
 
 ///
 /// \brief RgaUtility::setRunSet
+/// \param i_run
+///
+void RgaUtility::set_run_set(int i_run) {
+    m_rcpt.s_run = QString::number(i_run);
+}
+///
+/// \brief RgaUtility::setRunSet
 /// \param s_run
 ///
 void RgaUtility::set_run_set(const QString& s_run) {

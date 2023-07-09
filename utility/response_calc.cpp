@@ -32,16 +32,16 @@ void ResponseCalc::run() {
             vm_data.insert("data", m_objData.value("data").toDouble());
         } else {
             QJsonObject obj_data = m_objData.value("data").toObject();
+            resp_type = CommHttp::ScanStatus;
+//            qDebug() << __FUNCTION__ << obj_data;
             bool b_started = false;
             bool b_stopped = false;
             if(obj_data.contains("scanStart")) {
                 b_started = obj_data.value("scanStart").toInt();
             }
             if(obj_data.contains("scanStop")) {
-                ;
                 b_stopped = obj_data.value("scanStop").toString() == "EndOfScan";
             }
-            resp_type = CommHttp::ScanStatus;
             vm_data.insert("data", b_started || !b_stopped);
         }
     }

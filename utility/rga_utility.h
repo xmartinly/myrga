@@ -243,6 +243,7 @@ class RgaUtility {
     //**  run set, continious/one time
     const bool get_run_set();
     void set_run_set(const QString& s_run);
+    void set_run_set(int i_run);
 
     //*************************************************************************************//
     //**  data table colums
