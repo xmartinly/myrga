@@ -11,6 +11,7 @@ CONFIG += c++20
 SOURCES += \
     chart_plugin/qcp_modify.cpp \
     chart_plugin/qcustomplot.cpp \
+    utility/comm_httplib.cpp \
     dlgs/addrga_dlg.cpp \
     dlgs/ipaddress.cpp \
     dlgs/recipe_dlg.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     utility/static_container.cpp
 
 HEADERS += \
+    utility/comm_httplib.h \
     thirdparty/httplib.h \
     myrga.h \
     data_helper.h \

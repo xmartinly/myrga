@@ -1,5 +1,6 @@
-﻿#include "myrga.h"
+﻿#define WIN32_LEAN_AND_MEAN
 
+#include "myrga.h"
 #include "ui_myrga.h"
 #include "utility/static_container.h"
 
@@ -21,11 +22,12 @@ MyRga::MyRga(QWidget* parent)
     dlg_recipe = new RecipeDlg(this);
     connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
     dlg_add = new AddRgaDlg(this);
-    http_cli = CommHttp::GetInstance();
+    http_cli = new CommHttpLib(this);
     rga_inst = new RgaUtility;
     StaticContainer::setCrntRga(rga_inst);
     obs_subj = new ObserverSubject;
-    connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
+    connect(http_cli, &CommHttpLib::resp_arrival, this, &MyRga::update_obs);
+    http_cli->start();
     setup_obs();
     read_current_config();
     set_last_rcpt();
@@ -35,6 +37,9 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
+    http_cli->wait(500);
+    http_cli->quit();
+    delete http_cli;
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -74,7 +79,7 @@ void MyRga::on_tb_flmt_clicked() {
         return;
     }
     bool flmt_on = rga_inst->get_status(RgaUtility::SysStatusCode::EmissState);
-    http_cli->execCmd(rga_inst->gen_rga_action(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
+    http_cli->cmd_exec(rga_inst->gen_rga_action(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
 }
 
 ///
@@ -88,7 +93,7 @@ void MyRga::on_tb_em_clicked() {
         return;
     }
     bool em_on = rga_inst->get_status(RgaUtility::SysStatusCode::EMState);
-    http_cli->execCmd(rga_inst->gen_rga_action(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
+    http_cli->cmd_exec(rga_inst->gen_rga_action(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
 }
 
 ///
@@ -178,10 +183,10 @@ void MyRga::idle_tmr_action() {
     if(rga_inst == nullptr) {
         return;
     }
-    http_cli->cmdEnQueue(rga_inst->get_idle_set(), true);
+    http_cli->cmd_enqueue(rga_inst->get_idle_set(), true);
     if(!rga_inst->get_in_ctrl()) {
-        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::ForceCtrl));
-        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::AmInCtrl));
+        http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::ForceCtrl));
+        http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::AmInCtrl));
         return;
     }
     bool run_set = rga_inst->get_run_set();
@@ -206,7 +211,7 @@ void MyRga::acq_tmr_action() {
         return;
     }
     if(rga_inst->get_acquire_state()) {
-        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
+        http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
     }
 }
 
@@ -231,7 +236,7 @@ void MyRga::init_line_chart() {
 
 void MyRga::init_scan() {
     if(rga_inst->get_acquire_state()) {
-        http_cli->cmdEnQueue(rga_inst->get_stop_set(), true);
+        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
         rga_inst->set_acquire_state(false);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
@@ -239,7 +244,7 @@ void MyRga::init_scan() {
     }
     read_current_config(true);
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
-    http_cli->cmdEnQueue(rga_inst->get_scan_set(), true);
+    http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
     if(acq_tmr->isActive()) {
@@ -326,8 +331,9 @@ void MyRga::read_current_config(bool only_rcpt) {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
+    QString rga_addr = s_ip + ":" + s_port;
     rga_inst->reset_all();
-    rga_inst->set_rga_addr("http://" + s_ip + ":" + s_port);
+    rga_inst->set_rga_addr(rga_addr);
     rga_inst->set_rga_tag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
@@ -383,7 +389,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
         setAttribute(Qt::WA_TranslucentBackground);         //背景透明
         QStringList exit_sets = rga_inst->get_close_set();
         foreach (auto cmd, exit_sets) {
-            http_cli->execCmd(cmd);
+            http_cli->cmd_exec(cmd);
             QThread::msleep(200);
         }
         event->accept();

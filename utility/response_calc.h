@@ -10,13 +10,13 @@ class ResponseCalc: public QObject, public QRunnable {
   public:
     ResponseCalc(const QJsonObject& data, QObject*        m_pObj);
     ~ResponseCalc();
-    void setData(const QJsonObject& data);
+    void set_json_obj(const QJsonObject& data);
 
   private:
     QJsonObject     m_objData;
     QObject*        m_pObj = nullptr;
   signals:
-    void sendCalcResult(int, const QVariantMap&);
+    void send_calc_res(int, const QVariantMap&);
 
   protected:
     void run();

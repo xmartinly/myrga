@@ -161,7 +161,7 @@ class RgaUtility {
     //data in string format and store into file every ten scans or stop triggered.
     QString       string_data       = "";
     //HttpCommand string generate function pointer define
-    typedef const QString (*cmd_str_func_ptr)(QString);
+    typedef const QString (*cmd_str_func_ptr)(const QString&);
     //HttpCommand string generate function pointer array
     cmd_str_func_ptr cmd_str_arr[24];
 

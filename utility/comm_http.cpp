@@ -73,7 +73,7 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
             QJsonObject data_obj = json_data.object();
             data_obj.insert("id", s_rgaIp.replace(".", ""));
             ResponseCalc* calc = new ResponseCalc(data_obj, this);
-            connect(calc, &ResponseCalc::sendCalcResult, this, &CommHttp::getCalcResp);
+            connect(calc, &ResponseCalc::send_calc_res, this, &CommHttp::getCalcResp);
             m_pool->start(calc);
         }
     }
@@ -125,7 +125,6 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     if(inst == nullptr || type == ResRespNone) {
         return;
     }
-//    RgaUtility* inst = StaticContainer::STC_RGAMAP.value(s_id);
     //am in controll
     if(type == AmInControl) {
         inst->set_in_ctrl(vm_data.value("data").toBool());
@@ -153,7 +152,6 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     //scan data
     if(type == ScanData) {
         QJsonObject jo_scan_data = vm_data.value("data").toJsonObject();
-        qDebug() << __FUNCTION__ << jo_scan_data;
         inst->set_scan_data(jo_scan_data);
         if(inst->get_is_save_data()) {
             inst->write_scan_data();
@@ -165,7 +163,6 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
     }
     //issue log
     if(type == ScanStatus) {
-//        qDebug() << __FUNCTION__ << vm_data;
         inst->set_acquire_state(vm_data.value("data").toBool());
     }
     //serial number

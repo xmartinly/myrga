@@ -5,6 +5,7 @@
 #include "dlgs/addrga_dlg.h"
 #include "dlgs/recipe_dlg.h"
 #include "utility/rga_utility.h"
+#include "utility/comm_httplib.h"
 #include <QMainWindow>
 
 
@@ -79,8 +80,10 @@ class MyRga : public QMainWindow
     QTimer*                 acq_tmr           = nullptr;
     // idle command generate timer
     QTimer*                 idle_tmr          = nullptr;
+    // worker thread
+    QThread*                work_thread = nullptr;
     // http connection instance. singleton
-    CommHttp*               http_cli          = nullptr;
+    CommHttpLib*            http_cli          = nullptr;
     // observer subject
     ObserverSubject         m_subObs;
     // print chart

@@ -11,7 +11,7 @@ ResponseCalc::~ResponseCalc() {
 //    qDebug() << __FUNCTION__;
 }
 
-void ResponseCalc::setData(const QJsonObject& data) {
+void ResponseCalc::set_json_obj(const QJsonObject& data) {
     m_objData = data;
 }
 
@@ -107,5 +107,5 @@ void ResponseCalc::run() {
         resp_type = CommHttp::SerialNumber;
         vm_data.insert("data", m_objData.value("data").toString());
     }
-    emit sendCalcResult(static_cast<int>(resp_type), vm_data);
+    emit send_calc_res(static_cast<int>(resp_type), vm_data);
 }
