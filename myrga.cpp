@@ -75,7 +75,6 @@ void MyRga::on_tb_flmt_clicked() {
     }
     bool flmt_on = rga_inst->get_status(RgaUtility::SysStatusCode::EmissState);
     http_cli->execCmd(rga_inst->gen_rga_action(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
-//    ui->tb_flmt->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -90,7 +89,6 @@ void MyRga::on_tb_em_clicked() {
     }
     bool em_on = rga_inst->get_status(RgaUtility::SysStatusCode::EMState);
     http_cli->execCmd(rga_inst->gen_rga_action(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
-//    ui->tb_em->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -119,14 +117,6 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
-    if(rga_inst->get_acquire_state()) {
-        http_cli->cmdEnQueue(rga_inst->get_stop_set(), true);
-        rga_inst->set_acquire_state(false);
-        acq_tmr->stop();
-        idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
-        return;
-    }
-    idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
                  "Off",
@@ -146,15 +136,7 @@ void MyRga::on_tb_ctrl_clicked() {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
         return;
     }
-    read_current_config(true);
-    http_cli->cmdEnQueue(rga_inst->get_scan_set(), true);
-    rga_inst->set_em_manual(true);
-    rga_inst->reset_scan_data();
-//    rga_inst->set_acquire_state(true);
-    if(acq_tmr->isActive()) {
-        return;
-    }
-    acq_tmr->start(StaticContainer::STC_ACQINTVL);
+    init_scan();
 }
 
 ///
@@ -192,30 +174,25 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
-//    qDebug() << __FUNCTION__ << rga_inst->get_acquire_state();
-    RgaUtility* inst = StaticContainer::getCrntRga();
-    if(inst == nullptr) {
+//    RgaUtility* inst = StaticContainer::getCrntRga();
+    if(rga_inst == nullptr) {
         return;
     }
-    http_cli->cmdEnQueue(inst->get_idle_set(), true);
-    if(!inst->get_in_ctrl()) {
-        http_cli->cmdEnQueue(inst->gen_rga_action(RgaUtility::ForceCtrl));
-        http_cli->cmdEnQueue(inst->gen_rga_action(RgaUtility::AmInCtrl));
+    http_cli->cmdEnQueue(rga_inst->get_idle_set(), true);
+    if(!rga_inst->get_in_ctrl()) {
+        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::ForceCtrl));
+        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::AmInCtrl));
         return;
     }
-    bool run_set = inst->get_run_set();
-    int over_tm = inst->get_over_tm();
-    bool save_data = inst->get_is_save_data();
+    bool run_set = rga_inst->get_run_set();
+    int over_tm = rga_inst->get_over_tm();
+    bool save_data = rga_inst->get_is_save_data();
     if(!run_set && over_tm < 0) {
-        inst->set_acquire_state(false);
+        rga_inst->set_acquire_state(false);
     }
     if(run_set && over_tm < 0 && save_data) {
-        inst->reset_over_tm();
+        rga_inst->reset_over_tm();
     }
-    if(idle_tmr->isActive()) {
-        return;
-    }
-    idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 
 ///
@@ -253,6 +230,22 @@ void MyRga::init_line_chart() {
 }
 
 void MyRga::init_scan() {
+    if(rga_inst->get_acquire_state()) {
+        http_cli->cmdEnQueue(rga_inst->get_stop_set(), true);
+        rga_inst->set_acquire_state(false);
+        acq_tmr->stop();
+        idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
+        return;
+    }
+    read_current_config(true);
+    idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
+    http_cli->cmdEnQueue(rga_inst->get_scan_set(), true);
+    rga_inst->set_em_manual(true);
+    rga_inst->reset_scan_data();
+    if(acq_tmr->isActive()) {
+        return;
+    }
+    acq_tmr->start(StaticContainer::STC_ACQINTVL);
 }
 
 ///
@@ -283,6 +276,7 @@ void MyRga::run_from_recipe(int dur) {
         return;
     }
     rga_inst->set_run_set(dur);
+    init_scan();
 }
 
 ///
