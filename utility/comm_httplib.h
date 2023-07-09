@@ -57,7 +57,6 @@ class CommHttpLib : public QThread {
     QQueue<QString>         cmd_queue = {};
     QThreadPool*            calc_poll = nullptr;
     bool                    stop_cli = false;
-
     QMutex                  dequeue_mutex;
 
   private slots:

@@ -135,6 +135,11 @@ void CommHttpLib::set_stop_cli() {
     stop_cli = true;
 }
 
+void CommHttpLib::resp_handle(const QJsonObject &data)
+{
+
+}
+
 void CommHttpLib::send_cmd() {
     if (!cmd_queue.count()) {
         return;
