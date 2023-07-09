@@ -28,6 +28,7 @@ MyRga::MyRga(QWidget* parent)
     connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
     setup_obs();
     read_current_config();
+    set_last_rcpt();
 }
 ///
 /// \brief MyRga::~MyRga
@@ -390,6 +391,69 @@ void MyRga::closeEvent(QCloseEvent* event) {
     } else {
         event->ignore();
     }
+}
+
+void MyRga::set_last_rcpt() {
+    QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
+    if(!qm_values.count()) {
+        QMessageBox::warning(nullptr, u8"Read Failed", u8"No value readed.");
+        return;
+    }
+    //read Method
+    if(!qm_values.contains("Method")) {
+        return;
+    }
+    QString s_method = qm_values.find("Method")->toStdString().c_str();
+    //read StartMass
+    if(!qm_values.contains("StartMass")) {
+        return;
+    }
+    int i_startMass = qm_values.find("StartMass")->toInt();
+    //read StopMass
+    if(!qm_values.contains("StopMass")) {
+        return;
+    }
+    int i_stopMass = qm_values.find("StopMass")->toInt();
+    //read Points
+    if(!qm_values.contains("Points")) {
+        return;
+    }
+    QString s_points = qm_values.find("Points")->toStdString().c_str();
+    //read Dwell
+    if(!qm_values.contains("Dwell")) {
+        return;
+    }
+    QString s_dwell = qm_values.find("Dwell")->toStdString().c_str();
+    //read PPAmu
+    if(!qm_values.contains("PPAmu")) {
+        return;
+    }
+    QString s_ppamu = qm_values.find("PPAmu")->toStdString().c_str();
+    //read Pressure unit
+    if(!qm_values.contains("PressureUnit")) {
+        return;
+    }
+    int i_pressureUnit = qm_values.find("PressureUnit")->toInt();
+    //read Data Type
+    if(!qm_values.contains("ReportUnit")) {
+        return;
+    }
+    QString s_reportUnit = qm_values.find("ReportUnit")->toStdString().c_str();
+    if(!qm_values.contains("Flmt")) {
+        return;
+    }
+    QString s_flmt = qm_values.find("Flmt")->toStdString().c_str();
+    bool b_isSweep  = s_method  == "Sweep";
+    on_cb_method_currentIndexChanged(!b_isSweep);
+    ui->cb_method->setCurrentIndex(!b_isSweep);
+    ui->le_points->setText(s_points);
+    ui->sb_start->setValue(i_startMass);
+    ui->sb_end->setValue(i_stopMass);
+    ui->cb_dwell->setCurrentText(s_dwell);
+    ui->cb_flmt->setCurrentText(s_flmt);
+    ui->cb_ppamu->setCurrentText(s_ppamu);
+    ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
+    ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
 
 

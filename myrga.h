@@ -117,6 +117,9 @@ class MyRga : public QMainWindow
     void closeEvent(QCloseEvent* event);
 
 
+    void set_last_rcpt();
+
+
   public slots:
     // receive run from recipe dialog
     void run_from_recipe(int dur);
