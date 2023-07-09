@@ -37,8 +37,6 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
-    http_cli->wait(500);
-    http_cli->quit();
     delete http_cli;
     delete obs_subj;
     delete rga_inst;
@@ -392,6 +390,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
             http_cli->cmd_exec(cmd);
             QThread::msleep(200);
         }
+        http_cli->set_stop_cli();
         event->accept();
     } else {
         event->ignore();

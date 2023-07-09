@@ -81,7 +81,7 @@ class MyRga : public QMainWindow
     // idle command generate timer
     QTimer*                 idle_tmr          = nullptr;
     // worker thread
-    QThread*                work_thread = nullptr;
+    QThread*                work_thread       = nullptr;
     // http connection instance. singleton
     CommHttpLib*            http_cli          = nullptr;
     // observer subject

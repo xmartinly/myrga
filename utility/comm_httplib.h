@@ -46,7 +46,6 @@ class CommHttpLib : public QThread {
 
     int clear_cmd_queue();
 
-    bool get_stop_cli() const;
     void set_stop_cli();
 
 
