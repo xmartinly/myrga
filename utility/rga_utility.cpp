@@ -4,26 +4,29 @@
 #include <QTime>
 
 RgaUtility::RgaUtility(QString addr, RecipeSet recipe): m_rcpt(recipe), rga_addr(addr) {
-    setupFuncPtrs();
+    setup_func_ptrs();
 }
 
 RgaUtility::RgaUtility() {
-    setupFuncPtrs();
+    setup_func_ptrs();
 }
 
 RgaUtility::~RgaUtility() {
 }
 
-void RgaUtility::setScanRecipe(const RecipeSet& rcpt) {
+void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
     m_rcpt = rcpt;
 }
 
 bool RgaUtility::get_em_manual() const {
-    return is_em_man;
+    return m_rcpt.s_emOpt == "1";
 }
 
-void RgaUtility::set_em_manual(bool newbEmManual) {
-    is_em_man = newbEmManual;
+void RgaUtility::set_em_manual(int em_manual) {
+    if((em_manual < 0) || (em_manual > 1)) {
+        return;
+    }
+    m_rcpt.s_emOpt = QString::number(em_manual);
 }
 
 
@@ -31,9 +34,9 @@ double RgaUtility::get_limit_val() const {
     return scan_val_low;
 }
 
-void RgaUtility::set_limit_val(double newDLimitVal) {
-    Q_ASSERT_X(newDLimitVal > 0, Q_FUNC_INFO, "d_val error");
-    scan_val_low = newDLimitVal;
+void RgaUtility::set_limit_val(double new_limit) {
+    Q_ASSERT_X(new_limit > 0, Q_FUNC_INFO, "d_val error");
+    scan_val_low = new_limit;
 }
 
 ///
@@ -73,37 +76,37 @@ void RgaUtility::add_runtm() {
 ///
 /// \brief RgaUtility::resetAll
 ///
-void RgaUtility::resetAll() {
+void RgaUtility::reset_all() {
     m_errLog.resetErrList();
     m_stat.resetStatus();
     m_scanData.resetData();
 }
 
-void RgaUtility::setupFuncPtrs() {
-    cmdStrArr[0]    = &HttpCommand::noAction;   //return the address without 'http://'
-    cmdStrArr[1]    = &HttpCommand::setForceCtrl;
-    cmdStrArr[2]    = &HttpCommand::getAmInCtrl;
-    cmdStrArr[3]    = &HttpCommand::setReleaseCtrl;
-    cmdStrArr[4]    = &HttpCommand::setScanStop;
-    cmdStrArr[5]    = &HttpCommand::setScanStart;
-    cmdStrArr[6]    = &HttpCommand::setFlmtOn;
-    cmdStrArr[7]    = &HttpCommand::setFlmtOff;
-    cmdStrArr[8]    = &HttpCommand::setEmOn;
-    cmdStrArr[9]    = &HttpCommand::setEmOff;
-    cmdStrArr[10]   = &HttpCommand::getSn;
-    cmdStrArr[11]   = &HttpCommand::getSysStatus;
-    cmdStrArr[12]   = &HttpCommand::getErrLog;
-    cmdStrArr[13]   = &HttpCommand::getLastScanDouble;
-    cmdStrArr[14]   = &HttpCommand::setReboot;
-    cmdStrArr[15]   = &HttpCommand::getIssueLog;
-    cmdStrArr[16]   = &HttpCommand::getCurrentFlmts;
-    cmdStrArr[17]   = &HttpCommand::setFlmt1st;
-    cmdStrArr[18]   = &HttpCommand::setFlmt2nd;
-    cmdStrArr[19]   = &HttpCommand::setMeasBegin;
-    cmdStrArr[20]   = &HttpCommand::getTotalTm;
-    cmdStrArr[21]   = &HttpCommand::setScanCnt;
-    cmdStrArr[22]   = &HttpCommand::getEmGainReq;
-    cmdStrArr[23]   = &HttpCommand::getFcSensReq;
+void RgaUtility::setup_func_ptrs() {
+    cmd_str_arr[0]    = &HttpCommand::noAction;   //return the address without 'http://'
+    cmd_str_arr[1]    = &HttpCommand::setForceCtrl;
+    cmd_str_arr[2]    = &HttpCommand::getAmInCtrl;
+    cmd_str_arr[3]    = &HttpCommand::setReleaseCtrl;
+    cmd_str_arr[4]    = &HttpCommand::setScanStop;
+    cmd_str_arr[5]    = &HttpCommand::setScanStart;
+    cmd_str_arr[6]    = &HttpCommand::setFlmtOn;
+    cmd_str_arr[7]    = &HttpCommand::setFlmtOff;
+    cmd_str_arr[8]    = &HttpCommand::setEmOn;
+    cmd_str_arr[9]    = &HttpCommand::setEmOff;
+    cmd_str_arr[10]   = &HttpCommand::getSn;
+    cmd_str_arr[11]   = &HttpCommand::getSysStatus;
+    cmd_str_arr[12]   = &HttpCommand::getErrLog;
+    cmd_str_arr[13]   = &HttpCommand::getLastScanDouble;
+    cmd_str_arr[14]   = &HttpCommand::setReboot;
+    cmd_str_arr[15]   = &HttpCommand::getIssueLog;
+    cmd_str_arr[16]   = &HttpCommand::getCurrentFlmts;
+    cmd_str_arr[17]   = &HttpCommand::setFlmt1st;
+    cmd_str_arr[18]   = &HttpCommand::setFlmt2nd;
+    cmd_str_arr[19]   = &HttpCommand::setMeasBegin;
+    cmd_str_arr[20]   = &HttpCommand::getTotalTm;
+    cmd_str_arr[21]   = &HttpCommand::setScanCnt;
+    cmd_str_arr[22]   = &HttpCommand::getEmGainReq;
+    cmd_str_arr[23]   = &HttpCommand::getFcSensReq;
 }
 
 ///
@@ -215,25 +218,24 @@ const bool RgaUtility::get_acquire_state() {
 /// \brief RgaUtility::setRgaLabel
 /// \param lb
 ///
-void RgaUtility::set_rga_label(QLabel* lb) {
-    m_lb = lb;
-    lb_text = lb->text() + "\n\n";
-}
+//void RgaUtility::set_rga_label(QLabel* lb) {
+//    m_lb = lb;
+//    lb_text = lb->text() + "\n\n";
+//}
 
 ///
 /// \brief RgaUtility::getRgaLabel
 /// \return
 ///
-QLabel* RgaUtility::get_rga_label() {
-    return m_lb;
-}
+//QLabel* RgaUtility::get_rga_label() {
+//    return m_lb;
+//}
 
 
 void RgaUtility::int_data_file(bool is_crateFile) {
     if(!is_crateFile) {
         delete data_file_ptr;
         data_file_ptr = nullptr;
-        data_file_header.clear();
         data_file_name.clear();
         return;
     }
@@ -277,20 +279,20 @@ void RgaUtility::write_scan_data(bool final) {
 /// \brief RgaUtility::setLbText. set text label
 /// \param finish_scan. bool
 ///
-void RgaUtility::set_label_text(bool finish_scan) {
-    int i_starts = static_cast<int>(stars_intvl) * scan_count;
-    if(finish_scan) {
-        i_starts = 0;
-        scan_count = 0;
-    }
-    m_lb->setText("");
-    QString s_lb = "";
-    for (int var = 0; var < i_starts; ++var) {
-        s_lb.append(">");
-    }
-    scan_count++;
-    m_lb->setText(lb_text + s_lb);
-}
+//void RgaUtility::set_label_text(bool finish_scan) {
+//    int i_starts = static_cast<int>(stars_intvl) * scan_count;
+//    if(finish_scan) {
+//        i_starts = 0;
+//        scan_count = 0;
+//    }
+//    m_lb->setText("");
+//    QString s_lb = "";
+//    for (int var = 0; var < i_starts; ++var) {
+//        s_lb.append(">");
+//    }
+//    scan_count++;
+//    m_lb->setText(lb_text + s_lb);
+//}
 
 ///
 /// \brief RgaUtility::genFileHeaders
@@ -479,9 +481,12 @@ bool RgaUtility::get_is_alg_scan() const {
 }
 
 int RgaUtility::get_over_tm() {
+    if(m_rcpt.s_run == "1") {
+        return 1;
+    }
     qint64 i_now = QDateTime::currentMSecsSinceEpoch();
     if(!local_tmstamp) {
-        return false;
+        return 0;
     }
     return local_tmstamp - i_now;
 }
@@ -524,7 +529,7 @@ void RgaUtility::gen_idle_set() {
     foreach (auto act, idl_actions) {
         m_idlSet.append(gen_rga_action(act));
     }
-    if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && !is_em_man) {
+    if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && m_rcpt.s_emOpt == "1") {
         m_idlSet.append(gen_rga_action(OpenEm));
     }
     if(!get_em_gain_val()) {
@@ -577,15 +582,7 @@ void RgaUtility::gen_scan_set() {
 /// \return
 ///
 const QString RgaUtility::gen_rga_action(RgaActions action) {
-    return (cmdStrArr[static_cast<int>(action)])(rga_addr);
-}
-
-///
-/// \brief RgaUtility::getRcpt
-/// \return
-///
-const RecipeSet RgaUtility::get_rcpt() {
-    return m_rcpt;
+    return (cmd_str_arr[static_cast<int>(action)])(rga_addr);
 }
 
 ///

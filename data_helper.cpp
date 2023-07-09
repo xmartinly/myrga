@@ -199,31 +199,32 @@ DataHelper::read_config(const QString& file_name, const QString& file_folder, co
     return qm_values;
 }
 
-QMap<QString, QString> DataHelper::gen_recipe_config(
-    const QString& em_opt,
-    const QString& pre_unit,
-    const QString& mass_start,
-    const QString& mass_stop,
-    const QString& points,
-    const QString& method,
-    const QString& dwell,
-    const QString& flmt,
-    const QString& ppamu,
-    const QString& rpt_uint,
-    const QString& peroid) {
-    QMap<QString, QString> recipe;
-    recipe.insert("EmOpt",      em_opt);
-    recipe.insert("PressureUnit", pre_unit);
-    recipe.insert("Peroid",     peroid);
-    recipe.insert("StartMass",  mass_start);
-    recipe.insert("StopMass",   mass_stop);
-    recipe.insert("Points",     points);
-    recipe.insert("Method",     method);
-    recipe.insert("Dwell",      dwell);
-    recipe.insert("Flmt",       flmt);
-    recipe.insert("PPAmu",      ppamu);
-    recipe.insert("ReportUnit", rpt_uint);
-    return recipe;
+QMap<QString, QString> DataHelper::gen_recipe_config(const QString& em_opt,
+        const QString& pre_unit,
+        const QString& mass_start,
+        const QString& mass_stop,
+        const QString& points,
+        const QString& method,
+        const QString& dwell,
+        const QString& flmt,
+        const QString& ppamu,
+        const QString& rpt_uint,
+        const QString& peroid,
+        const QString& run) {
+    QMap<QString, QString> rcpt;
+    rcpt.insert("EmOpt",      em_opt);
+    rcpt.insert("PressureUnit", pre_unit);
+    rcpt.insert("Peroid",     peroid);
+    rcpt.insert("StartMass",  mass_start);
+    rcpt.insert("StopMass",   mass_stop);
+    rcpt.insert("Points",     points);
+    rcpt.insert("Method",     method);
+    rcpt.insert("Dwell",      dwell);
+    rcpt.insert("Flmt",       flmt);
+    rcpt.insert("PPAmu",      ppamu);
+    rcpt.insert("ReportUnit", rpt_uint);
+    rcpt.insert("Run", run);
+    return rcpt;
 }
 
 QVector<double> DataHelper::gen_ppamu_pos(int i_start, int i_stop, int i_ppamu) {

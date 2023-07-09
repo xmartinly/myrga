@@ -123,6 +123,7 @@ void MyRga::on_tb_link_clicked() {
 ///
 void MyRga::on_tb_ctrl_clicked() {
     if(rga_inst->get_acquire_state()) {
+        http_cli->cmdEnQueue(rga_inst->get_stop_set(), true);
         rga_inst->set_acquire_state(false);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
@@ -141,7 +142,8 @@ void MyRga::on_tb_ctrl_clicked() {
                  ui->cb_flmt->currentText(),
                  ui->cb_ppamu->currentText(),
                  ui->cb_unitreport->currentText(),
-                 "-1"
+                 "0",
+                 "1"
              );
     if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
@@ -201,13 +203,13 @@ void MyRga::idle_tmr_action() {
         http_cli->cmdEnQueue(inst->gen_rga_action(RgaUtility::AmInCtrl));
         return;
     }
-    bool b_run = inst->get_run_set();
-    int i_overTm = inst->get_over_tm();
-    bool b_saveData = inst->get_is_save_data();
-    if(!b_run && i_overTm < 0) {
+    bool run_set = inst->get_run_set();
+    int over_tm = inst->get_over_tm();
+    bool save_data = inst->get_is_save_data();
+    if(!run_set && over_tm < 0) {
         inst->set_acquire_state(false);
     }
-    if(b_run && i_overTm < 0 && b_saveData) {
+    if(run_set && over_tm < 0 && save_data) {
         inst->reset_over_tm();
     }
     if(idle_tmr->isActive()) {
@@ -283,7 +285,9 @@ void MyRga::run_from_recipe(int dur) {
 /// \param only_rcpt
 ///
 void MyRga::read_current_config(bool only_rcpt) {
-    RgaUtility* inst = StaticContainer::getCrntRga();
+    if(rga_inst == nullptr) {
+        rga_inst = new RgaUtility;
+    }
     QString file_name = "lastrun.ini";
     QString file_folder = DataHelper::get_file_folder("");
     QMap<QString, QString> qm_rcp, qm_rga_conn;
@@ -301,9 +305,10 @@ void MyRga::read_current_config(bool only_rcpt) {
     recpt.s_flmtIdx     = qm_rcp.value("Flmt").toStdString().c_str();
     recpt.s_startMass   = qm_rcp.value("StartMass").toStdString().c_str();
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
+    recpt.s_run         = qm_rcp.value("Run").toStdString().c_str();
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
-    inst->setScanRecipe(recpt);
+    rga_inst->set_scan_rcpt(recpt);
     if(only_rcpt) { // don't reset the connection and status when only read recipe
         return;
     }
@@ -322,9 +327,9 @@ void MyRga::read_current_config(bool only_rcpt) {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
-    inst->resetAll();
-    inst->set_rga_addr("http://" + s_ip + ":" + s_port);
-    inst->set_rga_tag(s_tag);
+    rga_inst->reset_all();
+    rga_inst->set_rga_addr("http://" + s_ip + ":" + s_port);
+    rga_inst->set_rga_tag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 

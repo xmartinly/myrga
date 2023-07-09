@@ -66,7 +66,8 @@ class DataHelper {
         const QString& flmt,
         const QString& ppamu,
         const QString& rpt_uint,
-        const QString& peroid = "0");
+        const QString& peroid = "0",
+        const QString& run = "1");
 
     static QVector<double> gen_ppamu_pos(int i_start, int i_stop, int i_ppamu = 1);
 

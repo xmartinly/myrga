@@ -119,7 +119,7 @@ struct RecipeSet {
     QString         s_rUnit         = "Current";
     //total pressure unit. 0: Torr; 1: mBar; 2: Pa
     QString         s_pUnit         = "0";
-    //em auto on. 1: auto on
+    //em auto operation. 0: manual; 1: auto on
     QString         s_emOpt         = "0";
     //scan ppamu set
     QString         s_ppamu         = "1";

@@ -118,48 +118,38 @@ class RgaUtility {
     QStringList   m_closeSet;
     //table headers
     QStringList   m_mainTblHead = {
-        "Addr",     //0
-        "SN",       //1
-        "Recipe",   //2
-        "Filament", //3
-        "EM",       //4
-        "Dwell",    //5
-        "RptUnit",  //6
-        "Datalog",  //7
-        "Error",    //8
-        "RunTm",    //9
-        "ScanTm",   //10
-        "TotalPressure",    //11
-        "ScanNum"   //12
+        u8"Addr",     //0
+        u8"SN",       //1
+        u8"Recipe",   //2
+        u8"Filament", //3
+        u8"EM",       //4
+        u8"Dwell",    //5
+        u8"RptUnit",  //6
+        u8"Datalog",  //7
+        u8"Error",    //8
+        u8"RunTm",    //9
+        u8"ScanTm",   //10
+        u8"TotalPressure",    //11
+        u8"ScanNum"   //12
     };
 
-    QLabel*       m_lb              = nullptr;
     QFile*        data_file_ptr     = nullptr;
-
-    //em manual operation
-    bool          is_em_man         = false;
-    //acquire set
-    bool          acquire_set       = false;
     //if save data to file.
     bool          is_save_data      = false;
     //count for get last scan data
     int           scan_count        = 0;
-    //label stars count interval
-    double        stars_intvl       = 0;
     //low limit value for show
     double        scan_val_low      = 0;
     //local timestamp
     qint64        local_tmstamp     = 0;
     //rga acquire run time total
     qint64        recipe_run_tm     = 0;
-
     //spec chart data positions for analog scan
     QVector<double> spec_data_pos   = {};
     //spec chart x axis ticks
     QVector<double> spec_x_ticks    = {};
     //spec chart x axis labels
     QVector<QString> spec_x_labels  = {};
-
     //rga address. eg. http://192.168.1.100:80
     QString       rga_addr          = "";
     //rga tag.
@@ -168,28 +158,17 @@ class RgaUtility {
     QString       rga_sn            = "";
     //data file name
     QString       data_file_name    = "";
-    //data file headers. contains misc information like start time,ppamu, etc.
-    QString       data_file_header  = "";
-    //main widget label text.
-    QString       lb_text           = "";
     //data in string format and store into file every ten scans or stop triggered.
     QString       string_data       = "";
-
-    QString       flmt_idx;
-
     //HttpCommand string generate function pointer define
-    typedef const QString (*cmdStrFPtr)(QString);
+    typedef const QString (*cmd_str_func_ptr)(QString);
     //HttpCommand string generate function pointer array
-    cmdStrFPtr    cmdStrArr[24];
-
+    cmd_str_func_ptr cmd_str_arr[24];
 
   public:
-
-    void setScanRecipe(const RecipeSet& rcpt);
-
-    void resetAll();
-
-    void setupFuncPtrs();
+    void set_scan_rcpt(const RecipeSet& rcpt);
+    void reset_all();
+    void setup_func_ptrs();
 
     //*************************************************************************************//
     //**  em gain
@@ -211,10 +190,6 @@ class RgaUtility {
     int get_data_points_cnt();
 
     //*************************************************************************************//
-    //**  is sweep mode
-    const bool get_is_sweep() const;
-
-    //*************************************************************************************//
     //**  rga acquire state
     void set_acquire_state(bool is_in_acq = false);
     const bool get_acquire_state();
@@ -229,9 +204,8 @@ class RgaUtility {
     //**  data file operations
     void int_data_file(bool is_crateFile = true);
     void write_scan_data(bool final = false);
-    const QString gen_file_header();
     const QString get_file_name();
-    void gen_file_name();
+
 
     //*************************************************************************************//
     //**  controll commands
@@ -255,7 +229,6 @@ class RgaUtility {
     void set_acquier_cnt(int count = 0);
     const int get_acquire_cnt();
 
-
     //*************************************************************************************//
     //**  is analog scan
     bool get_is_alg_scan() const;
@@ -276,7 +249,6 @@ class RgaUtility {
 
     //*************************************************************************************//
     //**  recipe
-    const RecipeSet get_rcpt();
     const QString get_rcpt_info(RecipeInfo info_code);
 
     //*************************************************************************************//
@@ -318,14 +290,8 @@ class RgaUtility {
     const bool get_in_ctrl();
 
     //*************************************************************************************//
-    //**  scan timestamp
-    void set_scan_tmstmp(qint64 i_tmStmp);
-    const qint64 get_scan_tmstmp();
-
-    //*************************************************************************************//
     //**  local timestamp
     void set_local_tmstmp(qint64 i_tmStmp);
-    const qint64 get_local_tmstmp();
 
     //*************************************************************************************//
     //**  scan number
@@ -373,31 +339,18 @@ class RgaUtility {
     const double get_elctr_enrg() const;
 
     //*************************************************************************************//
-    //**  filament current
-    void set_flmt_curnt(double value = 0);
-    const double get_flmt_curnt();
-
-    //*************************************************************************************//
-    //**  scan size
-    void set_scan_size(int scan_size = 0);
-    const int get_scan_size() const;
-
-    //*************************************************************************************//
     //**  scan values
-    void set_scan_val(const QVector<double>& values);
     const QStringList get_scan_sl_val(bool is_all = true);
     const QVector<double> get_scan_val(bool is_all = false);
 
     //*************************************************************************************//
     //**  error list
     void set_err_list(const QJsonArray& err_list);
-    void reset_err_list();
     const int get_err_cnt();
     const QStringList get_err_list();
 
     //*************************************************************************************//
     //**  status
-    void reset_status();
     void set_status(double status_code);
     const bool get_status(SysStatusCode status = EmissState);
     const QString get_str_status();
@@ -405,23 +358,46 @@ class RgaUtility {
     //*************************************************************************************//
     //**  scan data
     void set_scan_data(const QJsonObject& rga_scanData);
-    void reset_scan_data();
-    void set_is_new_data(bool is_new_data = false);
     const bool get_is_new_data();
-
     //*************************************************************************************//
     //**  run time
     QString get_str_runtm() const;
+
+    void set_em_manual(int em_manual);
+
+  private:
+    void set_scan_val(const QVector<double>& values);
+    void reset_err_list();
+    void reset_status();
+    void reset_scan_data();
+    void set_is_new_data(bool is_new_data = false);
+    const QString gen_file_header();
+    void gen_file_name();
+    bool get_em_manual() const;
     void add_runtm();
+    //*************************************************************************************//
+    //**  is sweep mode
+    const bool get_is_sweep() const;
 
     //*************************************************************************************//
     //**  limit value
     double get_limit_val() const;
-    void set_limit_val(double newDLimitVal);
+    void set_limit_val(double new_limit);
 
+    //*************************************************************************************//
+    //**  scan size
+    void set_scan_size(int scan_size = 0);
+    const int get_scan_size() const;
 
-    bool get_em_manual() const;
-    void set_em_manual(bool newbEmManual);
+    //*************************************************************************************//
+    //**  filament current
+    void set_flmt_curnt(double value = 0);
+    const double get_flmt_curnt();
+
+    //*************************************************************************************//
+    //**  scan timestamp
+    void set_scan_tmstmp(qint64 i_tmStmp);
+    const qint64 get_scan_tmstmp();
 };
 
 #endif // RGAUTILITY_H
