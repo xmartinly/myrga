@@ -10,7 +10,9 @@ bool StaticContainer::STC_ISINACQ       = false;
 
 int StaticContainer::STC_ACQINTVL       = 250;
 
-int StaticContainer::STC_IDLINTVL       = 2000;
+int StaticContainer::STC_IDLINTVL       = 500;
+
+int StaticContainer::STC_LONGINTVL      = 2000;
 
 QString StaticContainer::STC_CRNTID     = "";
 

@@ -31,6 +31,8 @@ class StaticContainer: public QObject {
 
     static int     STC_IDLINTVL;
 
+    static int     STC_LONGINTVL;
+
     static RgaUtility* getCrntRga();
     static void setCrntRga(RgaUtility* new_crntRga);
 

@@ -18,28 +18,20 @@ void RgaUtility::setScanRecipe(const RecipeSet& rcpt) {
     m_rcpt = rcpt;
 }
 
-bool RgaUtility::emManual() const {
+bool RgaUtility::get_em_manual() const {
     return is_em_man;
 }
 
-void RgaUtility::setEmManual(bool newbEmManual) {
+void RgaUtility::set_em_manual(bool newbEmManual) {
     is_em_man = newbEmManual;
 }
 
-QString RgaUtility::flmtIdxSet() const {
-    return m_rcpt.s_flmtIdx;
-}
 
-void RgaUtility::setFlmtIdxSet(const QString& news_flmtIdx) {
-    m_rcpt.s_flmtIdx = news_flmtIdx;
-}
-
-
-double RgaUtility::getDLimitVal() const {
+double RgaUtility::get_limit_val() const {
     return scan_val_low;
 }
 
-void RgaUtility::setDLimitVal(double newDLimitVal) {
+void RgaUtility::set_limit_val(double newDLimitVal) {
     Q_ASSERT_X(newDLimitVal > 0, Q_FUNC_INFO, "d_val error");
     scan_val_low = newDLimitVal;
 }
@@ -49,7 +41,7 @@ void RgaUtility::setDLimitVal(double newDLimitVal) {
 /// \param is_all
 /// \return
 ///
-QVector<double> RgaUtility::getDataPos() const {
+QVector<double> RgaUtility::get_data_pos() const {
     return spec_data_pos;
 }
 
@@ -57,7 +49,7 @@ QVector<double> RgaUtility::getDataPos() const {
 /// \brief RgaUtility::setDataPos
 /// \param new_dataPos
 ///
-void RgaUtility::setDataPos(const QVector<double>& new_dataPos) {
+void RgaUtility::set_data_pos(const QVector<double>& new_dataPos) {
     spec_data_pos = new_dataPos;
 }
 
@@ -65,15 +57,15 @@ void RgaUtility::setDataPos(const QVector<double>& new_dataPos) {
 /// \brief RgaUtility::getRunTm
 /// \return
 ///
-QString RgaUtility::getRunTm() const {
+QString RgaUtility::get_str_runtm() const {
     return  QTime::fromMSecsSinceStartOfDay(recipe_run_tm).toString("HH:mm:ss");
 }
 
 ///
 /// \brief RgaUtility::addRunTm
 ///
-void RgaUtility::addRunTm() {
-    if(getAcquireState()) {
+void RgaUtility::add_runtm() {
+    if(get_acquire_state()) {
         recipe_run_tm += StaticContainer::STC_IDLINTVL;
     }
 }
@@ -118,7 +110,7 @@ void RgaUtility::setupFuncPtrs() {
 /// \brief RgaUtility::getEmGainVal
 /// \return
 ///
-const double RgaUtility::getEmGainVal() {
+const double RgaUtility::get_em_gain_val() {
     return m_stat.d_emGain;
 }
 
@@ -126,7 +118,7 @@ const double RgaUtility::getEmGainVal() {
 /// \brief RgaUtility::setEmGainVal
 /// \param d_val
 ///
-void RgaUtility::setEmGainVal(double d_val) {
+void RgaUtility::set_em_gain_val(double d_val) {
     Q_ASSERT_X(d_val > 0, Q_FUNC_INFO, "d_val error");
     m_stat.d_emGain = d_val;
 }
@@ -135,7 +127,7 @@ void RgaUtility::setEmGainVal(double d_val) {
 /// \brief RgaUtility::getFcSensVal
 /// \return
 ///
-const double RgaUtility::getFcSensVal() {
+const double RgaUtility::get_fc_sens_val() {
     return m_stat.d_fcSens;
 }
 
@@ -143,7 +135,7 @@ const double RgaUtility::getFcSensVal() {
 /// \brief RgaUtility::setFcSensVal
 /// \param d_val
 ///
-void RgaUtility::setFcSensVal(double d_val) {
+void RgaUtility::set_fc_sens_val(double d_val) {
     Q_ASSERT_X(d_val > 0, Q_FUNC_INFO, "d_val error");
     m_stat.d_fcSens = d_val;
 }
@@ -152,7 +144,7 @@ void RgaUtility::setFcSensVal(double d_val) {
 /// \brief RgaUtility::getVdTicks
 /// \return
 ///
-const QVector<double> RgaUtility::getVdTicks() {
+const QVector<double> RgaUtility::get_vd_ticks() {
     return spec_x_ticks;
 }
 
@@ -160,21 +152,21 @@ const QVector<double> RgaUtility::getVdTicks() {
 /// \brief RgaUtility::getVsLabels
 /// \return
 ///
-const QVector<QString> RgaUtility::getVsLabels() {
+const QVector<QString> RgaUtility::get_vs_labels() {
     return spec_x_labels;
 }
 
 ///
 /// \brief RgaUtility::genTicker
 ///
-void RgaUtility::genTicker() {
+void RgaUtility::gen_ticker() {
     spec_x_labels.clear();
     spec_x_ticks.clear();
     spec_data_pos.clear();
-    QStringList sl_points = getScanPos();
-    bool b_isSweep = getIsSweep();
-    bool b_isAScan = getIsAScan();
-    int i_ppamu = getPPAmu();
+    QStringList sl_points = get_scan_pos();
+    bool b_isSweep = get_is_sweep();
+    bool b_isAScan = get_is_alg_scan();
+    int i_ppamu = get_ppamu();
     int i_start = sl_points.first().toInt();
     int i_stop = sl_points.last().toInt();
     int i_posCnt = b_isSweep ? (i_stop - i_start + 1) : sl_points.count();
@@ -199,7 +191,7 @@ void RgaUtility::genTicker() {
 /// \brief RgaUtility::getIsSweep
 /// \return
 ///
-const bool RgaUtility::getIsSweep() const {
+const bool RgaUtility::get_is_sweep() const {
     return m_rcpt.s_method == "Sweep";
 }
 
@@ -207,7 +199,7 @@ const bool RgaUtility::getIsSweep() const {
 /// \brief RgaUtility::setRgaAcqState
 /// \param is_in_acq
 ///
-void RgaUtility::setAcquireState(bool is_in_acq) {
+void RgaUtility::set_acquire_state(bool is_in_acq) {
     m_stat.b_isInAcquire = is_in_acq;
 }
 
@@ -215,7 +207,7 @@ void RgaUtility::setAcquireState(bool is_in_acq) {
 /// \brief RgaUtility::getRgaAcqState
 /// \return
 ///
-const bool RgaUtility::getAcquireState() {
+const bool RgaUtility::get_acquire_state() {
     return m_stat.b_isInAcquire;
 }
 
@@ -223,7 +215,7 @@ const bool RgaUtility::getAcquireState() {
 /// \brief RgaUtility::setRgaLabel
 /// \param lb
 ///
-void RgaUtility::setRgaLabel(QLabel* lb) {
+void RgaUtility::set_rga_label(QLabel* lb) {
     m_lb = lb;
     lb_text = lb->text() + "\n\n";
 }
@@ -232,12 +224,12 @@ void RgaUtility::setRgaLabel(QLabel* lb) {
 /// \brief RgaUtility::getRgaLabel
 /// \return
 ///
-QLabel* RgaUtility::getRgaLabel() {
+QLabel* RgaUtility::get_rga_label() {
     return m_lb;
 }
 
 
-void RgaUtility::initDataFile(bool is_crateFile) {
+void RgaUtility::int_data_file(bool is_crateFile) {
     if(!is_crateFile) {
         delete data_file_ptr;
         data_file_ptr = nullptr;
@@ -246,7 +238,7 @@ void RgaUtility::initDataFile(bool is_crateFile) {
         return;
     }
     data_file_name = "";
-    genDataFileName();
+    gen_file_name();
     QString s_fileFolder = DataHelper::get_file_folder("data");
     QDir d_fileFolder = QDir(s_fileFolder);
     if(!d_fileFolder.exists()) {
@@ -254,15 +246,15 @@ void RgaUtility::initDataFile(bool is_crateFile) {
     }
     QString s_filePath = s_fileFolder + '/' + data_file_name;
     data_file_ptr = new QFile(s_filePath);
-    QString s_fileHeader = genFileHeaders();
+    QString s_fileHeader = gen_file_header();
     DataHelper::write_data_file(s_fileHeader, data_file_ptr);
 }
 
-void RgaUtility::writeScanData(bool final) {
+void RgaUtility::write_scan_data(bool final) {
     if(data_file_ptr == nullptr) {
         return;
     }
-    QStringList sl_data = getScanValuesSL();
+    QStringList sl_data = get_scan_sl_val();
     if(sl_data.isEmpty()) {
         return;
     }
@@ -270,8 +262,8 @@ void RgaUtility::writeScanData(bool final) {
     QString s_data = sl_data.join(",");
     s_data.prepend(",,,");
     s_data.prepend(s_pres);
-    s_data.prepend(QString::number(getScanTS()) + ",");
-    s_data.prepend(QString::number(getScanNum()) + ",");
+    s_data.prepend(QString::number(get_scan_tmstmp()) + ",");
+    s_data.prepend(QString::number(get_scan_num()) + ",");
     s_data.append("\n");
     string_data.append(s_data);
     bool b_scanCountTen = m_scanData.i_scanNum % 10 == 0;
@@ -285,7 +277,7 @@ void RgaUtility::writeScanData(bool final) {
 /// \brief RgaUtility::setLbText. set text label
 /// \param finish_scan. bool
 ///
-void RgaUtility::setLbText(bool finish_scan) {
+void RgaUtility::set_label_text(bool finish_scan) {
     int i_starts = static_cast<int>(stars_intvl) * scan_count;
     if(finish_scan) {
         i_starts = 0;
@@ -304,7 +296,7 @@ void RgaUtility::setLbText(bool finish_scan) {
 /// \brief RgaUtility::genFileHeaders
 /// \return
 ///
-const QString RgaUtility::genFileHeaders() {
+const QString RgaUtility::gen_file_header() {
     QString s_sweepRange = m_rcpt.s_startMass + " - " + m_rcpt.s_stopMass;
     QString s_points = m_rcpt.sl_points.join(",");
     QStringList sl_rcptInfo;
@@ -346,9 +338,9 @@ const QString RgaUtility::genFileHeaders() {
 /// \brief RgaUtility::getScanSet
 /// \return
 ///
-const QStringList RgaUtility::getScanSet() {
-    genScanSet();
-    resetOverTime();
+const QStringList RgaUtility::get_scan_set() {
+    gen_scan_set();
+    reset_over_tm();
     return m_scanSet;
 }
 
@@ -356,8 +348,8 @@ const QStringList RgaUtility::getScanSet() {
 /// \brief RgaUtility::getIdlSet
 /// \return
 ///
-const QStringList RgaUtility::getIdlSet() {
-    genIdlSet();
+const QStringList RgaUtility::get_idle_set() {
+    gen_idle_set();
     return m_idlSet;
 }
 
@@ -365,18 +357,18 @@ const QStringList RgaUtility::getIdlSet() {
 /// \brief RgaUtility::getCloseSet
 /// \return
 ///
-const QStringList RgaUtility::getCloseSet() {
-    genCloseSet();
+const QStringList RgaUtility::get_close_set() {
+    gen_close_set();
     return m_closeSet;
 }
 
-const QStringList RgaUtility::getStopSet() {
+const QStringList RgaUtility::get_stop_set() {
     local_tmstamp = 0;
     recipe_run_tm = 0;
     QList<RgaActions> actions = {StopAcquire};
     QStringList sl_stop = {};
     foreach (auto act, actions) {
-        sl_stop.append(genRgaAction(act));
+        sl_stop.append(gen_rga_action(act));
     }
     return sl_stop;
 }
@@ -384,11 +376,11 @@ const QStringList RgaUtility::getStopSet() {
 ///
 /// \brief RgaUtility::genCloseSet
 ///
-void RgaUtility::genCloseSet() {
+void RgaUtility::gen_close_set() {
     m_closeSet.clear();
     QList<RgaActions> actions = {StopAcquire, CloseEm, CloseFlmt, RleaseCtrl};
     foreach (auto act, actions) {
-        m_closeSet.append(genRgaAction(act));
+        m_closeSet.append(gen_rga_action(act));
     }
 }
 
@@ -396,7 +388,7 @@ void RgaUtility::genCloseSet() {
 /// \brief RgaUtility::getFileName
 /// \return
 ///
-const QString RgaUtility::getFileName() {
+const QString RgaUtility::get_file_name() {
     return data_file_name;
 }
 
@@ -404,7 +396,7 @@ const QString RgaUtility::getFileName() {
 /// \brief RgaUtility::getScanPos
 /// \return
 ///
-const QStringList RgaUtility::getScanPos() {
+const QStringList RgaUtility::get_scan_pos() {
     if(m_rcpt.s_method == "Points") {
         QStringList sl_pointsPos = m_rcpt.sl_points;
         return sl_pointsPos;
@@ -422,9 +414,9 @@ const QStringList RgaUtility::getScanPos() {
 /// \brief RgaUtility::setIsSaveData
 /// \param save_data
 ///
-void RgaUtility::setIsSaveData(bool save_data) {
+void RgaUtility::set_is_save_data(bool save_data) {
     if(save_data) {
-        initDataFile();
+        int_data_file();
     }
     is_save_data = save_data;
 }
@@ -433,7 +425,7 @@ void RgaUtility::setIsSaveData(bool save_data) {
 /// \brief RgaUtility::getIsSaveData
 /// \return
 ///
-const bool RgaUtility::getIsSaveData() {
+const bool RgaUtility::get_is_save_data() {
     return is_save_data;
 }
 
@@ -441,7 +433,7 @@ const bool RgaUtility::getIsSaveData() {
 /// \brief RgaUtility::setAcquireCnt
 /// \param count
 ///
-void RgaUtility::setAcquireCnt(int count) {
+void RgaUtility::set_acquier_cnt(int count) {
     scan_count = count;
 }
 
@@ -449,14 +441,14 @@ void RgaUtility::setAcquireCnt(int count) {
 /// \brief RgaUtility::getAcqireCnt
 /// \return
 ///
-const int RgaUtility::getAcqireCnt() {
+const int RgaUtility::get_acquire_cnt() {
     return scan_count;
 }
 
 ///
 /// \brief RgaUtility::genDataFileName
 ///
-void RgaUtility::genDataFileName() {
+void RgaUtility::gen_file_name() {
     if(data_file_name == "") {
         data_file_name = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss_") + rga_tag + "_" + m_rcpt.s_rcpName + ".csv";
     }
@@ -466,7 +458,7 @@ void RgaUtility::genDataFileName() {
 /// \brief RgaUtility::getDataPointsCount
 /// \return
 ///
-int RgaUtility::getDataPointsCount() {
+int RgaUtility::get_data_points_cnt() {
     if(m_rcpt.s_method == "Points") {
         return 0;
     }
@@ -481,12 +473,12 @@ int RgaUtility::getDataPointsCount() {
 /// \brief RgaUtility::getIsAScan. return true if ppamu > 1
 /// \return
 ///
-bool RgaUtility::getIsAScan() const {
+bool RgaUtility::get_is_alg_scan() const {
     int i_ppamu = m_rcpt.s_ppamu.toInt();
     return i_ppamu > 1;
 }
 
-int RgaUtility::getOverTime() {
+int RgaUtility::get_over_tm() {
     qint64 i_now = QDateTime::currentMSecsSinceEpoch();
     if(!local_tmstamp) {
         return false;
@@ -494,7 +486,7 @@ int RgaUtility::getOverTime() {
     return local_tmstamp - i_now;
 }
 
-void RgaUtility::resetOverTime() {
+void RgaUtility::reset_over_tm() {
     local_tmstamp = QDateTime::currentMSecsSinceEpoch() + m_rcpt.i_period;
 }
 
@@ -502,7 +494,7 @@ void RgaUtility::resetOverTime() {
 /// \brief RgaUtility::getRunSet
 /// \return
 ///
-const bool RgaUtility::getRunSet() {
+const bool RgaUtility::get_run_set() {
     return m_rcpt.s_run.toInt();
 }
 
@@ -510,7 +502,7 @@ const bool RgaUtility::getRunSet() {
 /// \brief RgaUtility::setRunSet
 /// \param s_run
 ///
-void RgaUtility::setRunSet(const QString& s_run) {
+void RgaUtility::set_run_set(const QString& s_run) {
     m_rcpt.s_run = s_run;
 }
 
@@ -518,7 +510,7 @@ void RgaUtility::setRunSet(const QString& s_run) {
 ///
 /// \brief RgaUtility::genIdlSet
 ///
-void RgaUtility::genIdlSet() {
+void RgaUtility::gen_idle_set() {
     m_idlSet.clear();
     QList<RgaActions> idl_actions = {
         AmInCtrl,
@@ -526,27 +518,27 @@ void RgaUtility::genIdlSet() {
         GetSysStatus,
         GetIssueLog
     };
-    bool b_isEmOpened = getRgaStatus(EMState);
-    bool b_isFlmtOpened = getRgaStatus(EmissState);
+    bool b_isEmOpened = get_status(EMState);
+    bool b_isFlmtOpened = get_status(EmissState);
     bool b_isSetEmOn  = m_rcpt.s_emOpt == "On";
     foreach (auto act, idl_actions) {
-        m_idlSet.append(genRgaAction(act));
+        m_idlSet.append(gen_rga_action(act));
     }
     if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && !is_em_man) {
-        m_idlSet.append(genRgaAction(OpenEm));
+        m_idlSet.append(gen_rga_action(OpenEm));
     }
-    if(!getEmGainVal()) {
-        m_idlSet.append(genRgaAction(GetEmGainReq));
+    if(!get_em_gain_val()) {
+        m_idlSet.append(gen_rga_action(GetEmGainReq));
     }
-    if(!getFcSensVal()) {
-        m_idlSet.append(genRgaAction(GetFcSensReq));
+    if(!get_fc_sens_val()) {
+        m_idlSet.append(gen_rga_action(GetFcSensReq));
     }
 }
 
 ///
 /// \brief RgaUtility::genScanSet
 ///
-void RgaUtility::genScanSet() {
+void RgaUtility::gen_scan_set() {
     m_scanSet.clear();
     QList<ScanHeadChSet> headList = {Timestamp, TotalPressure};
     QList<int> i_headList = {};
@@ -556,7 +548,7 @@ void RgaUtility::genScanSet() {
     if(m_scanSet.count() > 0) {
         m_scanSet.clear();
     }
-    m_scanSet.append(genRgaAction(StopAcquire));
+    m_scanSet.append(gen_rga_action(StopAcquire));
     m_scanSet = m_cmd.setupScanChs(
                     rga_addr,
                     m_rcpt.s_startMass,
@@ -569,14 +561,14 @@ void RgaUtility::genScanSet() {
                     i_headList
                 );
     m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
-    RgaActions flmt_idx = flmtIdxSet() == "1" ? SetFlmt1st : SetFlmt2nd;
-    m_scanSet.append(genRgaAction(flmt_idx));
+    RgaActions flmt_idx = get_flmt_idx() == "1" ? SetFlmt1st : SetFlmt2nd;
+    m_scanSet.append(gen_rga_action(flmt_idx));
     m_scanSet.append(m_cmd.setTpUnits(rga_addr, m_rcpt.s_pUnit));
-    m_scanSet.append(genRgaAction(SetScanCnt));
-    m_scanSet.append(genRgaAction(OpenFlmt));
-    m_scanSet.append(genRgaAction(StartAcquire));
-    m_scanSet.append(genRgaAction(SetMeasBegin));
-    m_scanSet.append(genRgaAction(GetScanTm));
+    m_scanSet.append(gen_rga_action(SetScanCnt));
+    m_scanSet.append(gen_rga_action(OpenFlmt));
+    m_scanSet.append(gen_rga_action(StartAcquire));
+    m_scanSet.append(gen_rga_action(SetMeasBegin));
+    m_scanSet.append(gen_rga_action(GetScanTm));
 }
 
 ///
@@ -584,7 +576,7 @@ void RgaUtility::genScanSet() {
 /// \param action
 /// \return
 ///
-const QString RgaUtility::genRgaAction(RgaActions action) {
+const QString RgaUtility::gen_rga_action(RgaActions action) {
     return (cmdStrArr[static_cast<int>(action)])(rga_addr);
 }
 
@@ -592,7 +584,7 @@ const QString RgaUtility::genRgaAction(RgaActions action) {
 /// \brief RgaUtility::getRcpt
 /// \return
 ///
-const RecipeSet RgaUtility::getRcpt() {
+const RecipeSet RgaUtility::get_rcpt() {
     return m_rcpt;
 }
 
@@ -601,7 +593,7 @@ const RecipeSet RgaUtility::getRcpt() {
 /// \param info_code
 /// \return
 ///
-const QString RgaUtility::getRcptInfo(RecipeInfo info_code) {
+const QString RgaUtility::get_rcpt_info(RecipeInfo info_code) {
     QString s_info = "";
     switch (info_code) {
         case RcptName:
@@ -614,7 +606,7 @@ const QString RgaUtility::getRcptInfo(RecipeInfo info_code) {
             s_info = m_rcpt.s_rUnit;
             break;
         case RcptTPUnit:
-            s_info = getPrsUnit();
+            s_info = get_pres_unit();
             break;
         default:
             break;
@@ -626,7 +618,7 @@ const QString RgaUtility::getRcptInfo(RecipeInfo info_code) {
 /// \brief RgaUtility::getPrsUnit
 /// \return
 ///
-const QString RgaUtility::getPrsUnit(bool b_isNum) {
+const QString RgaUtility::get_pres_unit(bool b_isNum) {
     int i_prsUnit = m_rcpt.s_pUnit.toInt();
     if(b_isNum) {
         return m_rcpt.s_pUnit;
@@ -653,7 +645,7 @@ const QString RgaUtility::getPrsUnit(bool b_isNum) {
 /// \brief RgaUtility::getPPAmu
 /// \return
 ///
-const int RgaUtility::getPPAmu() {
+const int RgaUtility::get_ppamu() {
     return m_rcpt.s_ppamu.toInt();
 }
 
@@ -661,18 +653,18 @@ const int RgaUtility::getPPAmu() {
 /// \brief RgaUtility::setFlmtIdx
 /// \param index
 ///
-void RgaUtility::setFlmtIdx(double index) {
-    if(!index) {
+void RgaUtility::set_flmt_idx(int flmt_idx) {
+    if(!flmt_idx || flmt_idx > 2 || flmt_idx < 0) {
         return;
     }
-    m_stat.s_curntFlmt = QString::number(index);
+    m_stat.s_curntFlmt = QString::number(flmt_idx);
 }
 
 ///
 /// \brief RgaUtility::getFlmtIdx
 /// \return
 ///
-QString RgaUtility::getFlmtIdx() {
+QString RgaUtility::get_flmt_idx() {
     return m_stat.s_curntFlmt;
 }
 
@@ -681,7 +673,7 @@ QString RgaUtility::getFlmtIdx() {
 /// \param b_isChartPage
 /// \return
 ///
-const QStringList RgaUtility::getTblCol(bool b_isChartPage) {
+const QStringList RgaUtility::get_tbl_col(bool b_isChartPage) {
     QStringList sl_header = {"TotalPressure"};
     bool b_isSweep = m_rcpt.s_method == "Sweep";
     if(!b_isChartPage) {
@@ -705,7 +697,7 @@ const QStringList RgaUtility::getTblCol(bool b_isChartPage) {
 /// \brief RgaUtility::setRgaAddr
 /// \param addr
 ///
-void RgaUtility::setRgaAddr(QString addr) {
+void RgaUtility::set_rga_addr(QString addr) {
     rga_addr = addr;
 }
 
@@ -713,7 +705,7 @@ void RgaUtility::setRgaAddr(QString addr) {
 /// \brief RgaUtility::getRgaAddr
 /// \return
 ///
-const QString RgaUtility::getRgaAddr() {
+const QString RgaUtility::get_rga_addr() {
     return rga_addr;
 }
 
@@ -721,7 +713,7 @@ const QString RgaUtility::getRgaAddr() {
 /// \brief RgaUtility::setRgaTag
 /// \param s_tag
 ///
-void RgaUtility::setRgaTag(QString s_tag) {
+void RgaUtility::set_rga_tag(QString s_tag) {
     rga_tag = s_tag;
 }
 
@@ -729,7 +721,7 @@ void RgaUtility::setRgaTag(QString s_tag) {
 /// \brief RgaUtility::getRgaTag
 /// \return
 ///
-const QString RgaUtility::getRgaTag() {
+const QString RgaUtility::get_rga_tag() {
     return rga_tag;
 }
 
@@ -737,7 +729,7 @@ const QString RgaUtility::getRgaTag() {
 /// \brief RgaUtility::setRgaSn
 /// \param rga_sn
 ///
-void RgaUtility::setRgaSn(const QString& sn) {
+void RgaUtility::set_rga_sn(const QString& sn) {
     rga_sn = sn;
 }
 
@@ -745,7 +737,7 @@ void RgaUtility::setRgaSn(const QString& sn) {
 /// \brief RgaUtility::getRgaSn
 /// \return
 ///
-const QString RgaUtility::getRgaSn() {
+const QString RgaUtility::get_rga_sn() {
     return rga_sn;
 }
 
@@ -753,7 +745,7 @@ const QString RgaUtility::getRgaSn() {
 /// \brief RgaUtility::setScanTmTotal
 /// \param value
 ///
-void RgaUtility::setScanTmTotal(double value) {
+void RgaUtility::set_scan_tm_total(double value) {
     m_scanData.d_scanTmTotal = value;
 }
 
@@ -761,7 +753,7 @@ void RgaUtility::setScanTmTotal(double value) {
 /// \brief RgaUtility::getScanTmTotal
 /// \return
 ///
-const double RgaUtility::getScanTmTotal() {
+const double RgaUtility::get_scan_tm_total() {
     return m_scanData.d_scanTmTotal;
 }
 
@@ -769,7 +761,7 @@ const double RgaUtility::getScanTmTotal() {
 /// \brief RgaUtility::setInCtrl
 /// \param rga_inCtrl
 ///
-void RgaUtility::setInCtrl(bool rga_inCtrl) {
+void RgaUtility::set_in_ctrl(bool rga_inCtrl) {
     m_stat.b_isInCtrl = rga_inCtrl;
 }
 
@@ -777,7 +769,7 @@ void RgaUtility::setInCtrl(bool rga_inCtrl) {
 /// \brief RgaUtility::getInCtrl
 /// \return
 ///
-const bool RgaUtility::getInCtrl() {
+const bool RgaUtility::get_in_ctrl() {
     return m_stat.b_isInCtrl;
 }
 
@@ -785,7 +777,7 @@ const bool RgaUtility::getInCtrl() {
 /// \brief RgaUtility::setScanTS
 /// \param i_tmStmp
 ///
-void RgaUtility::setScanTS(qint64 i_tmStmp) {
+void RgaUtility::set_scan_tmstmp(qint64 i_tmStmp) {
     m_scanData.i_scanTS = i_tmStmp;
 }
 
@@ -793,7 +785,7 @@ void RgaUtility::setScanTS(qint64 i_tmStmp) {
 /// \brief RgaUtility::getScanTS
 /// \return
 ///
-const qint64 RgaUtility::getScanTS() {
+const qint64 RgaUtility::get_scan_tmstmp() {
     return m_scanData.i_scanTS;
 }
 
@@ -801,7 +793,7 @@ const qint64 RgaUtility::getScanTS() {
 /// \brief RgaUtility::setLocalTS
 /// \param i_tmStmp
 ///
-void RgaUtility::setLocalTS(qint64 i_tmStmp) {
+void RgaUtility::set_local_tmstmp(qint64 i_tmStmp) {
     m_scanData.i_scanTS = i_tmStmp;
 }
 
@@ -809,7 +801,7 @@ void RgaUtility::setLocalTS(qint64 i_tmStmp) {
 /// \brief RgaUtility::setScanNum
 /// \param scan_num
 ///
-void RgaUtility::setScanNum(int scan_num) {
+void RgaUtility::set_scan_num(int scan_num) {
     m_scanData.i_scanNum = scan_num;
 }
 
@@ -817,7 +809,7 @@ void RgaUtility::setScanNum(int scan_num) {
 /// \brief RgaUtility::getScanNum
 /// \return
 ///
-const int RgaUtility::getScanNum() {
+const int RgaUtility::get_scan_num() {
     return m_scanData.i_scanNum;
 }
 
@@ -825,7 +817,7 @@ const int RgaUtility::getScanNum() {
 /// \brief RgaUtility::setEmisCurnt
 /// \param value
 ///
-void RgaUtility::setEmisCurnt(double value) {
+void RgaUtility::set_emis_curnt(double value) {
     m_scanData.d_emisCurnt = value;
 }
 
@@ -833,7 +825,7 @@ void RgaUtility::setEmisCurnt(double value) {
 /// \brief RgaUtility::getEmisCurnt
 /// \return
 ///
-const double RgaUtility::getEmisCurnt() {
+const double RgaUtility::get_emis_curnt() {
     return m_scanData.d_emisCurnt;
 }
 
@@ -841,7 +833,7 @@ const double RgaUtility::getEmisCurnt() {
 /// \brief RgaUtility::setTotalPressure
 /// \param value
 ///
-void RgaUtility::setTotalPressure(double value) {
+void RgaUtility::set_total_pres(double value) {
     m_scanData.d_tPress = value;
 }
 
@@ -849,7 +841,7 @@ void RgaUtility::setTotalPressure(double value) {
 /// \brief RgaUtility::getTotalPressure
 /// \return
 ///
-const double RgaUtility::getTotalPressure() {
+const double RgaUtility::get_total_pres() {
     return m_scanData.d_tPress;
 }
 
@@ -857,7 +849,7 @@ const double RgaUtility::getTotalPressure() {
 /// \brief RgaUtility::setBaseLine
 /// \param value
 ///
-void RgaUtility::setBaseLine(double value) {
+void RgaUtility::set_baseline(double value) {
     m_scanData.d_baseLine = value;
 }
 
@@ -865,7 +857,7 @@ void RgaUtility::setBaseLine(double value) {
 /// \brief RgaUtility::getBaseLine
 /// \return
 ///
-const double RgaUtility::getBaseLine() {
+const double RgaUtility::get_baseline() {
     return m_scanData.d_baseLine;
 }
 
@@ -873,7 +865,7 @@ const double RgaUtility::getBaseLine() {
 /// \brief RgaUtility::setTotalPressureQuad
 /// \param value
 ///
-void RgaUtility::setTotalPressureQuad(double value) {
+void RgaUtility::set_total_pres_quad(double value) {
     m_scanData.d_tpQuad = value;
 }
 
@@ -881,7 +873,7 @@ void RgaUtility::setTotalPressureQuad(double value) {
 /// \brief RgaUtility::getTPressureQuad
 /// \return
 ///
-const double RgaUtility::getTPressureQuad() {
+const double RgaUtility::get_total_pres_quad() {
     return m_scanData.d_tpQuad;
 }
 
@@ -889,7 +881,7 @@ const double RgaUtility::getTPressureQuad() {
 /// \brief RgaUtility::setTpDectCurnt
 /// \param value
 ///
-void RgaUtility::setTpDectCurnt(double value) {
+void RgaUtility::set_total_pres_curnt(double value) {
     m_scanData.d_tpDectCurnt = value;
 }
 
@@ -897,7 +889,7 @@ void RgaUtility::setTpDectCurnt(double value) {
 /// \brief RgaUtility::getTpDectCurnt
 /// \return
 ///
-const double RgaUtility::getTpDectCurnt() {
+const double RgaUtility::get_total_pres_curnt() {
     return m_scanData.d_tpDectCurnt;
 }
 
@@ -905,7 +897,7 @@ const double RgaUtility::getTpDectCurnt() {
 /// \brief RgaUtility::setAnodePotxl
 /// \param value
 ///
-void RgaUtility::setAnodePotxl(double value) {
+void RgaUtility::set_anode_potxl(double value) {
     m_scanData.d_anodePotxl = value;
 }
 
@@ -913,7 +905,7 @@ void RgaUtility::setAnodePotxl(double value) {
 /// \brief RgaUtility::getAnodePotxl
 /// \return
 ///
-const double RgaUtility::getAnodePotxl() {
+const double RgaUtility::set_anode_potxl() {
     return m_scanData.d_anodePotxl;
 }
 
@@ -921,7 +913,7 @@ const double RgaUtility::getAnodePotxl() {
 /// \brief RgaUtility::setFocusPotxl
 /// \param value
 ///
-void RgaUtility::setFocusPotxl(double value) {
+void RgaUtility::set_focus_potxl(double value) {
     m_scanData.d_focusPotxl = value;
 }
 
@@ -929,7 +921,7 @@ void RgaUtility::setFocusPotxl(double value) {
 /// \brief RgaUtility::getFocusPotxl
 /// \return
 ///
-const double RgaUtility::getFocusPotxl() {
+const double RgaUtility::get_focus_potxl() {
     return m_scanData.d_focusPotxl;
 }
 
@@ -937,7 +929,7 @@ const double RgaUtility::getFocusPotxl() {
 /// \brief RgaUtility::setEltrEnrg
 /// \param value
 ///
-void RgaUtility::setEltrEnrg(double value) {
+void RgaUtility::set_elctr_enrg(double value) {
     m_scanData.d_eEnrg = value;
 }
 
@@ -945,7 +937,7 @@ void RgaUtility::setEltrEnrg(double value) {
 /// \brief RgaUtility::getEltrEnrg
 /// \return
 ///
-const double RgaUtility::getEltrEnrg() const {
+const double RgaUtility::get_elctr_enrg() const {
     return m_scanData.d_eEnrg;
 }
 
@@ -953,7 +945,7 @@ const double RgaUtility::getEltrEnrg() const {
 /// \brief RgaUtility::setFlmtCurnt
 /// \param value
 ///
-void RgaUtility::setFlmtCurnt(double value) {
+void RgaUtility::set_flmt_curnt(double value) {
     m_scanData.d_flmtCurnt = value;
 }
 
@@ -961,7 +953,7 @@ void RgaUtility::setFlmtCurnt(double value) {
 /// \brief RgaUtility::getFlmtCurnt
 /// \return
 ///
-const double RgaUtility::getFlmtCurnt() {
+const double RgaUtility::get_flmt_curnt() {
     return m_scanData.d_flmtCurnt;
 }
 
@@ -969,7 +961,7 @@ const double RgaUtility::getFlmtCurnt() {
 /// \brief RgaUtility::setScanSize
 /// \param scan_size
 ///
-void RgaUtility::setScanSize(int scan_size) {
+void RgaUtility::set_scan_size(int scan_size) {
     m_scanData.i_scanSize = scan_size;
 }
 
@@ -977,7 +969,7 @@ void RgaUtility::setScanSize(int scan_size) {
 /// \brief RgaUtility::getScanSize
 /// \return
 ///
-const int RgaUtility::getScanSize() const {
+const int RgaUtility::get_scan_size() const {
     return m_scanData.i_scanSize;
 }
 
@@ -985,7 +977,7 @@ const int RgaUtility::getScanSize() const {
 /// \brief RgaUtility::setRgaScanValues
 /// \param values
 ///
-void RgaUtility::setRgaScanValues(const QVector<double>& values) {
+void RgaUtility::set_scan_val(const QVector<double>& values) {
     m_scanData.vd_scanValues = values;
 }
 
@@ -994,11 +986,11 @@ void RgaUtility::setRgaScanValues(const QVector<double>& values) {
 /// \param data_index
 /// \return
 ///
-const QStringList RgaUtility::getScanValuesSL(bool is_all) {
+const QStringList RgaUtility::get_scan_sl_val(bool is_all) {
     if(m_scanData.vd_scanValues.count() < 1) {
         return {};
     }
-    QVector<double> vd_values = getScanValues(is_all);
+    QVector<double> vd_values = get_scan_val(is_all);
     QStringList sl_val;
     foreach (double val, vd_values) {
         sl_val.append(QString::number(val, 'e', 3));
@@ -1011,12 +1003,12 @@ const QStringList RgaUtility::getScanValuesSL(bool is_all) {
 /// \param is_all
 /// \return
 ///
-const QVector<double> RgaUtility::getScanValues(bool is_all) {
+const QVector<double> RgaUtility::get_scan_val(bool is_all) {
     if(m_scanData.vd_scanValues.count() < 1) {
         return {};
     }
     QVector<double> vd_values = m_scanData.vd_scanValues;
-    int i_ppamu = getPPAmu();
+    int i_ppamu = get_ppamu();
     if(is_all || i_ppamu == 1) {
         return vd_values;
     }
@@ -1036,7 +1028,7 @@ const QVector<double> RgaUtility::getScanValues(bool is_all) {
 /// \brief RgaUtility::setErrLog
 /// \param err_list
 ///
-void RgaUtility::setErrLog(const QJsonArray& err_list) {
+void RgaUtility::set_err_list(const QJsonArray& err_list) {
     m_errLog.i_errCount = 0;
     m_errLog.sl_errList.clear();
     foreach(auto s, err_list) {
@@ -1048,15 +1040,15 @@ void RgaUtility::setErrLog(const QJsonArray& err_list) {
     }
 }
 
-void RgaUtility::resetErrList() {
+void RgaUtility::reset_err_list() {
     m_errLog.resetErrList();
 }
 
-const int RgaUtility::getErrCount() {
+const int RgaUtility::get_err_cnt() {
     return m_errLog.i_errCount;
 }
 
-const QStringList RgaUtility::getErrList() {
+const QStringList RgaUtility::get_err_list() {
     return m_errLog.sl_errList;
 }
 
@@ -1064,7 +1056,7 @@ const QStringList RgaUtility::getErrList() {
 ///
 /// \brief RgaUtility::resetStatus
 ///
-void RgaUtility::resetStatus() {
+void RgaUtility::reset_status() {
     m_stat.resetStatus();
 }
 
@@ -1072,9 +1064,9 @@ void RgaUtility::resetStatus() {
 /// \brief RgaUtility::setRgaStatus
 /// \param status_code
 ///
-void RgaUtility::setRgaStatus(double status_code) {
+void RgaUtility::set_status(double status_code) {
     m_stat.i_statusCode = (uint)status_code;
-    addRunTm();
+    add_runtm();
 }
 
 ///
@@ -1082,11 +1074,11 @@ void RgaUtility::setRgaStatus(double status_code) {
 /// \param status
 /// \return
 ///
-const bool RgaUtility::getRgaStatus(SysStatusCode status) {
+const bool RgaUtility::get_status(SysStatusCode status) {
     return (m_stat.i_statusCode & (1 << (31 - static_cast<int>(status))));
 }
 
-const QString RgaUtility::getRgaStatusString() {
+const QString RgaUtility::get_str_status() {
     return "getRgaStatusString";
 }
 
@@ -1097,40 +1089,40 @@ const QString RgaUtility::getRgaStatusString() {
 /// \param is_pp
 /// \return
 ///
-void RgaUtility::setScanData(const QJsonObject& rga_scanData) {
+void RgaUtility::set_scan_data(const QJsonObject& rga_scanData) {
     int i_scanNum               = rga_scanData.value("scannum").toInt();
-    resetScanData();
+    reset_scan_data();
     //**********************************************************************************//
     //** scannum
-    setScanNum(i_scanNum);
+    set_scan_num(i_scanNum);
     //**********************************************************************************//
     //** RealTm
-    setLocalTS(QDateTime::currentMSecsSinceEpoch());
+    set_local_tmstmp(QDateTime::currentMSecsSinceEpoch());
     //**********************************************************************************//
     //** scansize
     int i_scanSize              = rga_scanData.value("scansize").toInt();
-    setScanSize(i_scanSize);
+    set_scan_size(i_scanSize);
     //**********************************************************************************//
     //** scan values
     QJsonArray ja_scanVal   = rga_scanData.value("d_values").toArray();
-    setTotalPressure(ja_scanVal.first().toDouble());
+    set_total_pres(ja_scanVal.first().toDouble());
     foreach (QJsonValue val, ja_scanVal) {
         m_scanData.vd_scanValues.append(val.toDouble());
     }
-    setNewData(true);
+    set_is_new_data(true);
 }
 
 ///
 /// \brief RgaUtility::resetScanData
 ///
-void RgaUtility::resetScanData() {
+void RgaUtility::reset_scan_data() {
     m_scanData.resetData();
 }
 
-void RgaUtility::setNewData(bool is_new_data) {
+void RgaUtility::set_is_new_data(bool is_new_data) {
     m_scanData.b_isNewData = is_new_data;
 }
 
-const bool RgaUtility::getIsNewData() {
+const bool RgaUtility::get_is_new_data() {
     return m_scanData.b_isNewData;
 }

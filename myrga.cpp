@@ -34,7 +34,7 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
-    QStringList exit_sets = rga_inst->getCloseSet();
+    QStringList exit_sets = rga_inst->get_close_set();
     foreach (auto cmd, exit_sets) {
         http_cli->execCmd(cmd);
     }
@@ -73,12 +73,12 @@ void MyRga::on_tb_flmt_clicked() {
     if(rga_inst == nullptr) {
         return;
     }
-    if(!rga_inst->getInCtrl()) {
+    if(!rga_inst->get_in_ctrl()) {
         return;
     }
-    bool flmt_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EmissState);
-    http_cli->execCmd(rga_inst->genRgaAction(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
-    ui->tb_flmt->setStyleSheet(border_toolbtn);
+    bool flmt_on = rga_inst->get_status(RgaUtility::SysStatusCode::EmissState);
+    http_cli->execCmd(rga_inst->gen_rga_action(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
+//    ui->tb_flmt->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -88,12 +88,12 @@ void MyRga::on_tb_em_clicked() {
     if(rga_inst == nullptr) {
         return;
     }
-    if(!rga_inst->getInCtrl()) {
+    if(!rga_inst->get_in_ctrl()) {
         return;
     }
-    bool em_on = rga_inst->getRgaStatus(RgaUtility::SysStatusCode::EMState);
-    http_cli->execCmd(rga_inst->genRgaAction(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
-    ui->tb_em->setStyleSheet(border_toolbtn);
+    bool em_on = rga_inst->get_status(RgaUtility::SysStatusCode::EMState);
+    http_cli->execCmd(rga_inst->gen_rga_action(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
+//    ui->tb_em->setStyleSheet(border_toolbtn);
 }
 
 ///
@@ -122,12 +122,13 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
-    if(rga_inst->getAcquireState()) {
-        rga_inst->setAcquireState(false);
+    if(rga_inst->get_acquire_state()) {
+        rga_inst->set_acquire_state(false);
         acq_tmr->stop();
-//        rga_inst->acquireSet();
+        idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
         return;
     }
+    idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
                  "Off",
@@ -146,14 +147,9 @@ void MyRga::on_tb_ctrl_clicked() {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
         return;
     }
-    read_current_config();
-    int try_count = 0;
-    while(!rga_inst->getInCtrl() && try_count > 50) {
-        QThread::msleep(100);
-        ++try_count;
-    }
-    http_cli->cmdEnQueue(rga_inst->getScanSet(), true);
-    rga_inst->setEmManual(true);
+    read_current_config(true);
+    http_cli->cmdEnQueue(rga_inst->get_scan_set(), true);
+    rga_inst->set_em_manual(true);
     if(acq_tmr->isActive()) {
         return;
     }
@@ -199,20 +195,20 @@ void MyRga::idle_tmr_action() {
     if(inst == nullptr) {
         return;
     }
-    http_cli->cmdEnQueue(inst->getIdlSet(), true);
-    if(!inst->getInCtrl()) {
-        http_cli->cmdEnQueue(inst->genRgaAction(RgaUtility::ForceCtrl));
-        http_cli->cmdEnQueue(inst->genRgaAction(RgaUtility::AmInCtrl));
+    http_cli->cmdEnQueue(inst->get_idle_set(), true);
+    if(!inst->get_in_ctrl()) {
+        http_cli->cmdEnQueue(inst->gen_rga_action(RgaUtility::ForceCtrl));
+        http_cli->cmdEnQueue(inst->gen_rga_action(RgaUtility::AmInCtrl));
         return;
     }
-    bool b_run = inst->getRunSet();
-    int i_overTm = inst->getOverTime();
-    bool b_saveData = inst->getIsSaveData();
+    bool b_run = inst->get_run_set();
+    int i_overTm = inst->get_over_tm();
+    bool b_saveData = inst->get_is_save_data();
     if(!b_run && i_overTm < 0) {
-        inst->setAcquireState(false);
+        inst->set_acquire_state(false);
     }
     if(b_run && i_overTm < 0 && b_saveData) {
-        inst->resetOverTime();
+        inst->reset_over_tm();
     }
     if(idle_tmr->isActive()) {
         return;
@@ -224,14 +220,15 @@ void MyRga::idle_tmr_action() {
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
-    if(rga_inst->getScanTmTotal() < 1) {
+    qDebug() << rga_inst->get_acquire_state();
+    if(rga_inst->get_scan_tm_total() < 1) {
         return;
     }
-    if(!rga_inst->getRgaStatus(RgaUtility::EmissState)) {
+    if(!rga_inst->get_status(RgaUtility::EmissState)) {
         return;
     }
-    if(rga_inst->getAcquireState() && rga_inst->getAcquireState()) {
-        http_cli->cmdEnQueue(rga_inst->genRgaAction(RgaUtility::GetLastScan));
+    if(rga_inst->get_acquire_state()) {
+        http_cli->cmdEnQueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
     }
 }
 
@@ -283,6 +280,7 @@ void MyRga::run_from_recipe(int dur) {
 
 ///
 /// \brief MyRga::read_current_config
+/// \param only_rcpt
 ///
 void MyRga::read_current_config(bool only_rcpt) {
     RgaUtility* inst = StaticContainer::getCrntRga();
@@ -306,7 +304,7 @@ void MyRga::read_current_config(bool only_rcpt) {
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
     inst->setScanRecipe(recpt);
-    if(only_rcpt) {
+    if(only_rcpt) { // don't reset the connection and status when only read recipe
         return;
     }
     QString s_ip = "";
@@ -325,8 +323,8 @@ void MyRga::read_current_config(bool only_rcpt) {
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
     inst->resetAll();
-    inst->setRgaAddr("http://" + s_ip + ":" + s_port);
-    inst->setRgaTag(s_tag);
+    inst->set_rga_addr("http://" + s_ip + ":" + s_port);
+    inst->set_rga_tag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
 
@@ -354,6 +352,11 @@ void MyRga::setup_obs() {
     DataObserver* info_btn_obs = new TbObserver(ui->tb_info);
     info_btn_obs->setObjectName("info");
     obs_subj->add_obs(info_btn_obs);
+    //******************************************************************//
+    //** ctrl button
+    DataObserver* ctrl_btn_obs = new TbObserver(ui->tb_ctrl);
+    ctrl_btn_obs->setObjectName("ctrl");
+    obs_subj->add_obs(ctrl_btn_obs);
 }
 
 ///

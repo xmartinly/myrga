@@ -128,48 +128,49 @@ void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
 //    RgaUtility* inst = StaticContainer::STC_RGAMAP.value(s_id);
     //am in controll
     if(type == AmInControl) {
-        inst->setInCtrl(vm_data.value("data").toBool());
+        inst->set_in_ctrl(vm_data.value("data").toBool());
     }
     //scanSetup
     if(type == ScanTimeTotal) {
-        inst->setScanTmTotal(vm_data.value("data").toDouble());
+        inst->set_scan_tm_total(vm_data.value("data").toDouble());
     }
     //em gain val
     if(type == EmGain) {
-        inst->setEmGainVal(vm_data.value("data").toDouble());
+        inst->set_em_gain_val(vm_data.value("data").toDouble());
     }
     //fc sensitivity val
     if(type == PpSensitivityFactor) {
-        inst->setFcSensVal(vm_data.value("data").toDouble());
+        inst->set_fc_sens_val(vm_data.value("data").toDouble());
     }
     //system status
     if(type == SystemStatus) {
-        inst->setRgaStatus(vm_data.value("data").toDouble());
+        inst->set_status(vm_data.value("data").toDouble());
     }
     //filament selected
     if(type == FilamentSelected) {
-        inst->setFlmtIdx(vm_data.value("data").toDouble());
+        inst->set_flmt_idx(vm_data.value("data").toDouble());
     }
     //scan data
     if(type == ScanData) {
         QJsonObject jo_scan_data = vm_data.value("data").toJsonObject();
         qDebug() << __FUNCTION__ << jo_scan_data;
-        inst->setScanData(jo_scan_data);
-        if(inst->getIsSaveData()) {
-            inst->writeScanData();
+        inst->set_scan_data(jo_scan_data);
+        if(inst->get_is_save_data()) {
+            inst->write_scan_data();
         }
     }
     //issue log
     if(type == ErrorLog) {
-        inst->setErrLog(vm_data.value("data").toJsonArray());
+        inst->set_err_list(vm_data.value("data").toJsonArray());
     }
     //issue log
     if(type == ScanStatus) {
-        inst->setAcquireState(vm_data.value("data").toBool());
+        qDebug() << __FUNCTION__ << vm_data;
+        inst->set_acquire_state(vm_data.value("data").toBool());
     }
     //serial number
     if(type == SerialNumber) {
-        inst->setRgaSn(vm_data.value("data").toString());
+        inst->set_rga_sn(vm_data.value("data").toString());
     }
     emit resp_arrival();
 }

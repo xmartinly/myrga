@@ -193,237 +193,235 @@ class RgaUtility {
 
     //*************************************************************************************//
     //**  em gain
-    const double getEmGainVal();
-    void setEmGainVal(double d_val);
+    const double get_em_gain_val();
+    void set_em_gain_val(double d_val);
 
     //*************************************************************************************//
     //**  fc sensitivity
-    const double getFcSensVal();
-    void setFcSensVal(double d_val);
+    const double get_fc_sens_val();
+    void set_fc_sens_val(double d_val);
 
     //*************************************************************************************//
     //**  ticks, data positions, labels
-    const QVector<double> getVdTicks();
-    const QVector<QString> getVsLabels();
-    void genTicker();
-    QVector<double> getDataPos() const;
-    void setDataPos(const QVector<double>& new_dataPos);
-    int getDataPointsCount();
+    const QVector<double> get_vd_ticks();
+    const QVector<QString> get_vs_labels();
+    void gen_ticker();
+    QVector<double> get_data_pos() const;
+    void set_data_pos(const QVector<double>& new_dataPos);
+    int get_data_points_cnt();
 
     //*************************************************************************************//
     //**  is sweep mode
-    const bool getIsSweep() const;
+    const bool get_is_sweep() const;
 
     //*************************************************************************************//
     //**  rga acquire state
-    void setAcquireState(bool is_in_acq = false);
-    const bool getAcquireState();
+    void set_acquire_state(bool is_in_acq = false);
+    const bool get_acquire_state();
 
     //*************************************************************************************//
     //**  rga main widget label
-    void setRgaLabel(QLabel* lb);
-    QLabel* getRgaLabel();
-    void setLbText(bool finish_scan = false);
+    void set_rga_label(QLabel* lb);
+    QLabel* get_rga_label();
+    void set_label_text(bool finish_scan = false);
 
     //*************************************************************************************//
     //**  data file operations
-    void initDataFile(bool is_crateFile = true);
-    void writeScanData(bool final = false);
-    const QString genFileHeaders();
-    const QString getFileName();
-    void genDataFileName();
+    void int_data_file(bool is_crateFile = true);
+    void write_scan_data(bool final = false);
+    const QString gen_file_header();
+    const QString get_file_name();
+    void gen_file_name();
 
     //*************************************************************************************//
     //**  controll commands
-    const QStringList getScanSet();
-    const QStringList getIdlSet();
-    const QStringList getCloseSet();
-    const QStringList getStopSet();
-    const QStringList getScanPos();
-    void genIdlSet();
-    void genScanSet();
-    void genCloseSet();
-    const QString genRgaAction(RgaActions action);
+    const QStringList get_scan_set();
+    const QStringList get_idle_set();
+    const QStringList get_close_set();
+    const QStringList get_stop_set();
+    const QStringList get_scan_pos();
+    void gen_idle_set();
+    void gen_scan_set();
+    void gen_close_set();
+    const QString gen_rga_action(RgaActions action);
 
     //*************************************************************************************//
     //**  is save data
-    void setIsSaveData(bool save_data = true);
-    const bool getIsSaveData();
+    void set_is_save_data(bool save_data = true);
+    const bool get_is_save_data();
 
     //*************************************************************************************//
     //**  acquire count
-    void setAcquireCnt(int count = 0);
-    const int getAcqireCnt();
+    void set_acquier_cnt(int count = 0);
+    const int get_acquire_cnt();
 
 
     //*************************************************************************************//
     //**  is analog scan
-    bool getIsAScan() const;
+    bool get_is_alg_scan() const;
 
     //*************************************************************************************//
     //**  over time
-    int getOverTime();
-    void resetOverTime();
+    int get_over_tm();
+    void reset_over_tm();
 
     //*************************************************************************************//
     //**  run set, continious/one time
-    const bool getRunSet();
-    void setRunSet(const QString& s_run);
+    const bool get_run_set();
+    void set_run_set(const QString& s_run);
 
     //*************************************************************************************//
     //**  data table colums
-    const QStringList getTblCol(bool b_isChartPage = false);
+    const QStringList get_tbl_col(bool b_isChartPage = false);
 
     //*************************************************************************************//
     //**  recipe
-    const RecipeSet getRcpt();
-    const QString getRcptInfo(RecipeInfo info_code);
+    const RecipeSet get_rcpt();
+    const QString get_rcpt_info(RecipeInfo info_code);
 
     //*************************************************************************************//
     //**  pressure unit
-    const QString getPrsUnit(bool b_isNum = false);
+    const QString get_pres_unit(bool b_isNum = false);
 
     //*************************************************************************************//
     //**  ppamu
-    const int getPPAmu();
+    const int get_ppamu();
 
     //*************************************************************************************//
     //**  filament index
-    void setFlmtIdx(double index);
-    QString getFlmtIdx();
+    void set_flmt_idx(int flmt_idx);
+    QString get_flmt_idx();
 
     //*************************************************************************************//
     //**  rga address
-    void setRgaAddr(QString addr);
-    const QString getRgaAddr();
+    void set_rga_addr(QString addr);
+    const QString get_rga_addr();
 
     //*************************************************************************************//
     //**  rga tag
-    void setRgaTag(QString s_tag);
-    const QString getRgaTag();
+    void set_rga_tag(QString s_tag);
+    const QString get_rga_tag();
 
     //*************************************************************************************//
     //**  rga serial number
-    void setRgaSn(const QString& sn);
-    const QString getRgaSn();
+    void set_rga_sn(const QString& sn);
+    const QString get_rga_sn();
 
     //*************************************************************************************//
     //**  scan time total for one
-    void setScanTmTotal(double value = 0);
-    const double getScanTmTotal();
+    void set_scan_tm_total(double value = 0);
+    const double get_scan_tm_total();
 
     //*************************************************************************************//
     //**  rga in control
-    void setInCtrl(bool rga_inCtrl);
-    const bool getInCtrl();
+    void set_in_ctrl(bool rga_inCtrl);
+    const bool get_in_ctrl();
 
     //*************************************************************************************//
     //**  scan timestamp
-    void setScanTS(qint64 i_tmStmp);
-    const qint64 getScanTS();
+    void set_scan_tmstmp(qint64 i_tmStmp);
+    const qint64 get_scan_tmstmp();
 
     //*************************************************************************************//
     //**  local timestamp
-    void setLocalTS(qint64 i_tmStmp);
-    const qint64 getLocalTS();
+    void set_local_tmstmp(qint64 i_tmStmp);
+    const qint64 get_local_tmstmp();
 
     //*************************************************************************************//
     //**  scan number
-    void setScanNum(int scan_num);
-    const int getScanNum();
+    void set_scan_num(int scan_num);
+    const int get_scan_num();
 
     //*************************************************************************************//
     //**  emission current
-    void setEmisCurnt(double value);
-    const double getEmisCurnt();
+    void set_emis_curnt(double value);
+    const double get_emis_curnt();
 
     //*************************************************************************************//
     //**  total pressure
-    void setTotalPressure(double value = 0);
-    const double getTotalPressure();
+    void set_total_pres(double value = 0);
+    const double get_total_pres();
 
     //*************************************************************************************//
     //**  base line
-    void setBaseLine(double value);
-    const double getBaseLine();
+    void set_baseline(double value);
+    const double get_baseline();
 
     //*************************************************************************************//
     //**  total pressure at quadro pole
-    void setTotalPressureQuad(double value = 0);
-    const double getTPressureQuad();
+    void set_total_pres_quad(double value = 0);
+    const double get_total_pres_quad();
 
     //*************************************************************************************//
     //**  total pressure current
-    void setTpDectCurnt(double value = 0);
-    const double getTpDectCurnt() ;
+    void set_total_pres_curnt(double value = 0);
+    const double get_total_pres_curnt() ;
 
     //*************************************************************************************//
     //**  anode potential
-    void setAnodePotxl(double value);
-    const double getAnodePotxl();
+    void set_anode_potxl(double value);
+    const double set_anode_potxl();
 
     //*************************************************************************************//
     //**  focus potential
-    void setFocusPotxl(double value = 0);
-    const double getFocusPotxl();
+    void set_focus_potxl(double value = 0);
+    const double get_focus_potxl();
 
     //*************************************************************************************//
     //**  electron energe
-    void setEltrEnrg(double value = 0);
-    const double getEltrEnrg() const;
+    void set_elctr_enrg(double value = 0);
+    const double get_elctr_enrg() const;
 
     //*************************************************************************************//
     //**  filament current
-    void setFlmtCurnt(double value = 0);
-    const double getFlmtCurnt();
+    void set_flmt_curnt(double value = 0);
+    const double get_flmt_curnt();
 
     //*************************************************************************************//
     //**  scan size
-    void setScanSize(int scan_size = 0);
-    const int getScanSize() const;
+    void set_scan_size(int scan_size = 0);
+    const int get_scan_size() const;
 
     //*************************************************************************************//
     //**  scan values
-    void setRgaScanValues(const QVector<double>& values);
-    const QStringList getScanValuesSL(bool is_all = true);
-    const QVector<double> getScanValues(bool is_all = false);
+    void set_scan_val(const QVector<double>& values);
+    const QStringList get_scan_sl_val(bool is_all = true);
+    const QVector<double> get_scan_val(bool is_all = false);
 
     //*************************************************************************************//
     //**  error list
-    void setErrLog(const QJsonArray& err_list);
-    void resetErrList();
-    const int getErrCount();
-    const QStringList getErrList();
+    void set_err_list(const QJsonArray& err_list);
+    void reset_err_list();
+    const int get_err_cnt();
+    const QStringList get_err_list();
 
     //*************************************************************************************//
     //**  status
-    void resetStatus();
-    void setRgaStatus(double status_code);
-    const bool getRgaStatus(SysStatusCode status = EmissState);
-    const QString getRgaStatusString();
+    void reset_status();
+    void set_status(double status_code);
+    const bool get_status(SysStatusCode status = EmissState);
+    const QString get_str_status();
 
     //*************************************************************************************//
     //**  scan data
-    void setScanData(const QJsonObject& rga_scanData);
-    void resetScanData();
-    void setNewData(bool is_new_data = false);
-    const bool getIsNewData();
+    void set_scan_data(const QJsonObject& rga_scanData);
+    void reset_scan_data();
+    void set_is_new_data(bool is_new_data = false);
+    const bool get_is_new_data();
 
     //*************************************************************************************//
     //**  run time
-    QString getRunTm() const;
-    void addRunTm();
+    QString get_str_runtm() const;
+    void add_runtm();
 
     //*************************************************************************************//
     //**  limit value
-    double getDLimitVal() const;
-    void setDLimitVal(double newDLimitVal);
+    double get_limit_val() const;
+    void set_limit_val(double newDLimitVal);
 
 
-    QString flmtIdxSet() const;
-    void setFlmtIdxSet(const QString& news_flmtIdx);
-    bool emManual() const;
-    void setEmManual(bool newbEmManual);
+    bool get_em_manual() const;
+    void set_em_manual(bool newbEmManual);
 };
 
 #endif // RGAUTILITY_H

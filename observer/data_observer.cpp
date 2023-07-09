@@ -34,13 +34,13 @@ void TableObserver::update() {
         if(!m_zone->rowCount()) {
             return;
         }
-        bool b_isFlmtPending = inst->getRgaStatus(RgaUtility::EmissPd);
-        bool b_isFlmtOpen = inst->getRgaStatus(RgaUtility::EmissState);
-        bool b_isEmPending = inst->getRgaStatus(RgaUtility::EMPd);
-        bool b_isEmOpen = inst->getRgaStatus(RgaUtility::EMState);
-        bool b_isInCtrl = inst->getInCtrl();
-        bool b_isSaveData = inst->getIsSaveData();
-        int  i_errCnt = inst->getErrCount();
+        bool b_isFlmtPending = inst->get_status(RgaUtility::EmissPd);
+        bool b_isFlmtOpen = inst->get_status(RgaUtility::EmissState);
+        bool b_isEmPending = inst->get_status(RgaUtility::EMPd);
+        bool b_isEmOpen = inst->get_status(RgaUtility::EMState);
+        bool b_isInCtrl = inst->get_in_ctrl();
+        bool b_isSaveData = inst->get_is_save_data();
+        int  i_errCnt = inst->get_err_cnt();
         bool b_isHasErr = i_errCnt > 0;
         QString s_errCnt = QString::number(i_errCnt);
         QString s_flmtState = "Off";
@@ -71,15 +71,15 @@ void TableObserver::update() {
         //        "TotalPressure",    //11
         //        "ScanNum"   //12
         //addr  0
-        m_zone->item(0, 1)->setText(inst->getRgaAddr());
+        m_zone->item(0, 1)->setText(inst->get_rga_addr());
         //sn    1
-        m_zone->item(1, 1)->setText(inst->getRgaSn());
+        m_zone->item(1, 1)->setText(inst->get_rga_sn());
         m_zone->item(1, 1)->setBackground(b_isInCtrl ? Qt::darkGreen : Qt::white);
         m_zone->item(1, 1)->setForeground(b_isInCtrl ? Qt::white : Qt::black);
         //recipe    2
-        m_zone->item(2, 1)->setText(inst->getRcptInfo(RgaUtility::RcptName));
+        m_zone->item(2, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptName));
         //filament status   3
-        m_zone->item(3, 1)->setText(s_flmtState + "\t" + inst->getFlmtIdx());
+        m_zone->item(3, 1)->setText(s_flmtState + "\t" + inst->get_flmt_idx());
         m_zone->item(3, 1)->setBackground(b_isFlmtOpen ? Qt::darkGreen : Qt::white);
         m_zone->item(3, 1)->setForeground(b_isFlmtOpen ? Qt::white : Qt::black);
         //em status     4
@@ -87,28 +87,28 @@ void TableObserver::update() {
         m_zone->item(4, 1)->setBackground(b_isEmOpen ? Qt::darkGreen : Qt::white);
         m_zone->item(4, 1)->setForeground(b_isEmOpen ? Qt::white : Qt::black);
         //dwell     5
-        m_zone->item(5, 1)->setText(inst->getRcptInfo(RgaUtility::RcptDwell));
+        m_zone->item(5, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptDwell));
         //report unit       6
-        m_zone->item(6, 1)->setText(inst->getRcptInfo(RgaUtility::RcptRptUnit));
+        m_zone->item(6, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptRptUnit));
         //datalog state       7
         m_zone->item(7, 1)->setText(b_isSaveData ? "On" : "Off");
         if(b_isSaveData) {
-            m_zone->item(7, 1)->setToolTip(inst->getFileName());
+            m_zone->item(7, 1)->setToolTip(inst->get_file_name());
         }
         //error list    8
         m_zone->item(8, 1)->setText(s_errCnt);
         m_zone->item(8, 1)->setForeground(b_isHasErr ? Qt::darkMagenta : Qt::black);
         //run tm    9
-        m_zone->item(9, 1)->setText(inst->getRunTm() + "");
+        m_zone->item(9, 1)->setText(inst->get_str_runtm() + "");
         //scan tm   10
-        m_zone->item(10, 1)->setText(QString::number(inst->getScanTmTotal(), 'f', 2) + " ms");
+        m_zone->item(10, 1)->setText(QString::number(inst->get_scan_tm_total(), 'f', 2) + " ms");
         //total pressure
-        m_zone->item(11, 1)->setText(QString::number(inst->getTotalPressure(), 'e', 2) + " " +
-                                     inst->getRcptInfo(RgaUtility::RcptTPUnit));
+        m_zone->item(11, 1)->setText(QString::number(inst->get_total_pres(), 'e', 2) + " " +
+                                     inst->get_rcpt_info(RgaUtility::RcptTPUnit));
         //scan number
-        m_zone->item(12, 1)->setText(QString::number(inst->getScanNum()));
+        m_zone->item(12, 1)->setText(QString::number(inst->get_scan_num()));
     } else {
-        QStringList sl_data = inst->getScanValuesSL(false);
+        QStringList sl_data = inst->get_scan_sl_val(false);
         int i_dataCnt = sl_data.count();
         if(!i_dataCnt) {
             return;
@@ -228,14 +228,14 @@ void LineChartObserver::update() {
     RgaUtility* inst = StaticContainer::getCrntRga();
     int i_xVal = (int)QTime::currentTime().msecsSinceStartOfDay() / 1000;
     static double lastPointKey = 0;
-    double d_scanTm = inst->getScanTmTotal() / 1000;
+    double d_scanTm = inst->get_scan_tm_total() / 1000;
     if ((i_xVal - lastPointKey) < d_scanTm) { //add a point according to the scan time
         return;
     }
-    if(!inst->getIsNewData() || !StaticContainer::STC_ISCHARTPAGE) {
+    if(!inst->get_is_new_data() || !StaticContainer::STC_ISCHARTPAGE) {
         return;
     }
-    QVector<double> ld_values = inst->getScanValues();
+    QVector<double> ld_values = inst->get_scan_val();
     int i_dataCount = ld_values.count();
     if(ld_values.isEmpty()) {
         return;
@@ -286,15 +286,15 @@ void SpecChartObserver::update() {
         return;
     }
     RgaUtility* inst = StaticContainer::getCrntRga();
-    if(!inst->getIsNewData() && !StaticContainer::STC_CELLCLICKED) {
+    if(!inst->get_is_new_data() && !StaticContainer::STC_CELLCLICKED) {
         return;
     }
-    bool b_isAScan = inst->getIsAScan();
+    bool b_isAScan = inst->get_is_alg_scan();
     m_qcpLine->setVisible(b_isAScan);
-    QVector<double> ld_values = inst->getScanValues();
-    QVector<double> ld_valuesAll = inst->getScanValues(true);
-    QVector<double> vd_ticks = inst->getVdTicks();
-    QVector<double> vd_pos = inst->getDataPos();
+    QVector<double> ld_values = inst->get_scan_val();
+    QVector<double> ld_valuesAll = inst->get_scan_val(true);
+    QVector<double> vd_ticks = inst->get_vd_ticks();
+    QVector<double> vd_pos = inst->get_data_pos();
     if(ld_values.isEmpty() || ld_valuesAll.isEmpty()) {
         return;
     }
@@ -327,8 +327,8 @@ void TextInfoObserver::update() {
     }
     RgaUtility* inst = StaticContainer::getCrntRga();
     int i_selCnt = StaticContainer::STC_SELMASS.count();
-    QVector<double> ld_values = inst->getScanValues();
-    if(!inst->getIsNewData() && !StaticContainer::STC_CELLCLICKED) {
+    QVector<double> ld_values = inst->get_scan_val();
+    if(!inst->get_is_new_data() && !StaticContainer::STC_CELLCLICKED) {
         return;
     }
     if(ld_values.isEmpty() || StaticContainer::STC_SELMASS.isEmpty()) {
@@ -336,8 +336,8 @@ void TextInfoObserver::update() {
     }
     QString s_info = "";
     double d_pressure = ld_values.takeFirst();
-    bool b_isCurrent = inst->getRcptInfo(RgaUtility::RcptRptUnit) == "Current";
-    QStringList sl_pos = inst->getScanPos();
+    bool b_isCurrent = inst->get_rcpt_info(RgaUtility::RcptRptUnit) == "Current";
+    QStringList sl_pos = inst->get_scan_pos();
 //    QList<int> li_posSel;
     QStringList sl_hints;
     QStringList sl_vals;
@@ -356,12 +356,12 @@ void TextInfoObserver::update() {
             d_pp = DataHelper::cal_pp_val(
                        i_mz,
                        d_val,
-                       inst->getFcSensVal(),
-                       inst->getRgaStatus(RgaUtility::EMState),
-                       inst->getEmGainVal(),
-                       inst->getPrsUnit(true).toInt()
+                       inst->get_fc_sens_val(),
+                       inst->get_status(RgaUtility::EMState),
+                       inst->get_em_gain_val(),
+                       inst->get_pres_unit(true).toInt()
                    );
-            s_val.append("; PP:" + QString::number(d_pp, 'e', 3) + " " + inst->getPrsUnit());
+            s_val.append("; PP:" + QString::number(d_pp, 'e', 3) + " " + inst->get_pres_unit());
         }
         d_ppm =  1000000 * d_pp / d_pressure;
         s_val.append("; PPM:" + QString::number(d_ppm, 'e', 3));
@@ -408,30 +408,25 @@ void TbObserver::update() {
     if(inst == nullptr || btn_name == "") {
         return;
     }
-    bool rga_in_ctrl = inst->getInCtrl();
-    bool rga_flmt_on = inst->getRgaStatus(RgaUtility::EmissState);
-    bool rga_em_on = inst->getRgaStatus(RgaUtility::EMState);
-//    bool rga_flmt_pd = inst->getRgaStatus(RgaUtility::EmissPd);
-//    bool rga_em_pd = inst->getRgaStatus(RgaUtility::EMPd);
-    bool rga_err = inst->getErrCount() > 0;
+    bool rga_in_ctrl = inst->get_in_ctrl();
+    bool rga_flmt_on = inst->get_status(RgaUtility::EmissState);
+    bool rga_em_on = inst->get_status(RgaUtility::EMState);
+    bool rga_flmt_pd = inst->get_status(RgaUtility::EmissPd);
+    bool rga_em_pd = inst->get_status(RgaUtility::EMPd);
+    bool rga_in_acq = inst->get_acquire_state();
+    bool rga_err = inst->get_err_cnt() > 0;
     if(btn_name == "tb_flmt") {
-        if(is_flmt_on == rga_flmt_on) {
-            return;
-        } else {
-            is_flmt_on = rga_flmt_on;
-            m_zone->setStyleSheet(border_none);
-        }
+        m_zone->setStyleSheet(rga_flmt_pd ? border_toolbtn : border_none);
         m_zone->setIcon(rga_flmt_on ? flmt_on_svg : flmt_off_svg);
         return;
     }
     if(btn_name == "tb_em") {
-        if(is_em_on == rga_em_on) {
-            return;
-        } else {
-            is_em_on = rga_em_on;
-            m_zone->setStyleSheet(border_none);
-        }
+        m_zone->setStyleSheet(rga_em_pd ? border_toolbtn : border_none);
         m_zone->setIcon(rga_em_on ? em_on_svg : em_off_svg);
+        return;
+    }
+    if(btn_name == "tb_ctrl") {
+        m_zone->setIcon(rga_in_acq ? stop_svg : start_svg);
         return;
     }
     if(btn_name == "tb_info") {
@@ -441,7 +436,7 @@ void TbObserver::update() {
     if(btn_name == "tb_link") {
         m_zone->setIcon(rga_in_ctrl ? link_on_svg : link_off_svg);
         if(rga_in_ctrl) {
-            m_zone->setToolTip(inst->getRgaSn() + "\n" + inst->getRgaAddr().mid(7, -1));
+            m_zone->setToolTip(inst->get_rga_sn() + "\n" + inst->get_rga_addr().mid(7, -1));
         }
     }
 }

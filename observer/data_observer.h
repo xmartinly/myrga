@@ -49,6 +49,8 @@ class TbObserver: public DataObserver {
     QPixmap info_no_err_svg = DataHelper::get_pixmap("information", btn_ratio, btn_size, DataHelper::SVG);
     QPixmap link_on_svg = DataHelper::get_pixmap("link", btn_ratio, btn_size, DataHelper::SVG);
     QPixmap link_off_svg = DataHelper::get_pixmap("broken_link", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap start_svg = DataHelper::get_pixmap("resume_button", btn_ratio, btn_size, DataHelper::SVG);
+    QPixmap stop_svg = DataHelper::get_pixmap("stop_sign", btn_ratio, btn_size, DataHelper::SVG);
 
     bool is_flmt_on = false;
     bool is_em_on = false;

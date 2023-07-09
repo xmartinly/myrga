@@ -83,7 +83,7 @@ void ResponseCalc::run() {
         jo_data_temp = m_objData.value("data").toObject();
         QJsonObject jo_scan = {};
         jo_scan = m_objData.value("data").toObject();
-        if(jo_data_temp.value("scannum").toInt() > inst->getScanNum()) {
+        if(jo_data_temp.value("scannum").toInt() > inst->get_scan_num()) {
             QJsonArray ja_values = jo_scan.value("values").toArray();
             ja_values.pop_front();
             QJsonArray ja_d_values;
