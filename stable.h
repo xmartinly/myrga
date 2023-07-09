@@ -1,6 +1,5 @@
 ﻿#ifndef STABLE_H
 #define STABLE_H
-#include "thirdparty/httplib.h"
 
 #include <QList>
 #include <QStringList>

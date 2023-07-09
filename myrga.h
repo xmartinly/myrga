@@ -1,12 +1,12 @@
 #ifndef MYRGA_H
 #define MYRGA_H
 
+
+#include <QMainWindow>
 #include "observer/observer_subject.h"
 #include "dlgs/addrga_dlg.h"
 #include "dlgs/recipe_dlg.h"
 #include "utility/rga_utility.h"
-#include "utility/comm_httplib.h"
-#include <QMainWindow>
 
 
 QT_BEGIN_NAMESPACE
@@ -66,6 +66,8 @@ class MyRga : public QMainWindow
 
     void on_tb_link_clicked();
 
+    void tbl_click(int row, int col);
+
   private:
     Ui::MyRga* ui;
     // RgaUtility
@@ -77,23 +79,25 @@ class MyRga : public QMainWindow
     // add rga dialog pointer
     AddRgaDlg* dlg_add = nullptr;
     // acquire command generate timer
-    QTimer*                 acq_tmr           = nullptr;
+    QTimer* acq_tmr           = nullptr;
     // idle command generate timer
-    QTimer*                 idle_tmr          = nullptr;
-    // worker thread
-    QThread*                work_thread       = nullptr;
-    // http connection instance. singleton
-    CommHttpLib*            http_cli          = nullptr;
+    QTimer* idle_tmr          = nullptr;
+    // http request
+    CommHttp* http_cli = nullptr;
     // observer subject
-    ObserverSubject         m_subObs;
+    ObserverSubject m_subObs;
     // print chart
-    QAction*                m_action_print      = nullptr;
+    QAction* m_action_print = nullptr;
     // rescale x and y axis
-    QAction*                m_action_rescale    = nullptr;
+    QAction* m_action_rescale = nullptr;
     // y axis ticker type switch
-    QAction*                m_action_yaxis      = nullptr;
+    QAction* m_action_yaxis = nullptr;
     // padding svg
     QPixmap pd_svg = DataHelper::get_pixmap("flash_on");
+    // is misc info opened
+    bool tw_info_visable = false;
+
+  private:
     // initialize data table
     void init_data_tbl();
     // initialize spec chart

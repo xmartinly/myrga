@@ -8,7 +8,7 @@
 class ResponseCalc: public QObject, public QRunnable {
     Q_OBJECT
   public:
-    ResponseCalc(const QJsonObject& data, QObject*        m_pObj);
+    ResponseCalc(const QJsonObject& data, QObject* m_pObj);
     ~ResponseCalc();
     void set_json_obj(const QJsonObject& data);
 

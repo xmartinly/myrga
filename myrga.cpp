@@ -15,6 +15,7 @@ MyRga::MyRga(QWidget* parent)
     ui->setupUi(this);
     ui->frame_points->setHidden(true);
     ui->tw_info->setVisible(false);
+    rga_inst = new RgaUtility;
     idle_tmr = new QTimer(this);
     connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
     acq_tmr  = new QTimer(this);
@@ -22,12 +23,10 @@ MyRga::MyRga(QWidget* parent)
     dlg_recipe = new RecipeDlg(this);
     connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
     dlg_add = new AddRgaDlg(this);
-    http_cli = new CommHttpLib(this);
-    rga_inst = new RgaUtility;
     StaticContainer::setCrntRga(rga_inst);
     obs_subj = new ObserverSubject;
-    connect(http_cli, &CommHttpLib::resp_arrival, this, &MyRga::update_obs);
-    http_cli->start();
+    http_cli = CommHttp::GetInstance();
+    connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
     setup_obs();
     read_current_config();
     set_last_rcpt();
@@ -37,7 +36,6 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
-    delete http_cli;
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -98,8 +96,9 @@ void MyRga::on_tb_em_clicked() {
 /// \brief MyRga::on_tb_info_clicked
 ///
 void MyRga::on_tb_info_clicked() {
-    bool tw_info_visable = ui->tw_info->isVisible();
-    ui->tw_info->setVisible(!tw_info_visable);
+    tw_info_visable = !ui->tw_info->isVisible();
+    ui->tw_info->setVisible(tw_info_visable);
+    StaticContainer::STC_ISMISCINFO = tw_info_visable;
 }
 
 
@@ -107,6 +106,7 @@ void MyRga::on_tb_info_clicked() {
 /// \brief MyRga::on_tb_review_clicked
 ///
 void MyRga::on_tb_review_clicked() {
+    http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
 }
 
 ///
@@ -115,6 +115,7 @@ void MyRga::on_tb_review_clicked() {
 void MyRga::on_tb_link_clicked() {
     read_current_config();
 }
+
 
 ///
 /// \brief MyRga::on_tb_ctrl_clicked
@@ -218,7 +219,32 @@ void MyRga::acq_tmr_action() {
 /// \brief MyRga::initDataTbl
 ///
 void MyRga::init_data_tbl() {
+    connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
+    StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
+    ui->tw_data->clear();
+    ui->tw_data->setRowCount(0);
+    ui->tw_data->setColumnCount(2);
+    QStringList tblHeader_main = {"Item", "Value"};
+    ui->tw_data->setHorizontalHeaderLabels(tblHeader_main);
+    ui->tw_data->verticalHeader()->setVisible(false);
+    ui->tw_data->horizontalHeader()->setStretchLastSection(true);
+    ui->tw_data->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tw_data->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->tw_data->horizontalHeader()->resizeSection(0, 160);
+    QStringList sl_tblCol = rga_inst->get_tbl_col(true);
+    int i_colCnt = sl_tblCol.count();
+    for (int var = 0; var < i_colCnt; ++var) {
+        ui->tw_data->insertRow(var);
+        QTableWidgetItem* item = new QTableWidgetItem(sl_tblCol.at(var));
+        item->setCheckState(var ? Qt::Unchecked : Qt::Checked);
+        ui->tw_data->setItem(var, 0, item);
+        ui->tw_data->setItem(var, 1, new QTableWidgetItem("na"));
+    }
+    connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
 }
+void MyRga::tbl_click(int row, int col) {
+}
+
 
 ///
 /// \brief MyRga::initSpecChart
@@ -245,6 +271,7 @@ void MyRga::init_scan() {
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
+    init_data_tbl();
     if(acq_tmr->isActive()) {
         return;
     }
@@ -329,7 +356,7 @@ void MyRga::read_current_config(bool only_rcpt) {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
-    QString rga_addr = s_ip + ":" + s_port;
+    QString rga_addr = "http://" + s_ip + ":" + s_port;
     rga_inst->reset_all();
     rga_inst->set_rga_addr(rga_addr);
     rga_inst->set_rga_tag(s_tag);
@@ -365,6 +392,11 @@ void MyRga::setup_obs() {
     DataObserver* ctrl_btn_obs = new TbObserver(ui->tb_ctrl);
     ctrl_btn_obs->setObjectName("ctrl");
     obs_subj->add_obs(ctrl_btn_obs);
+    //******************************************************************//
+    //** tbl_data
+    DataObserver* tw_data = new TableObserver(ui->tw_data);
+    tw_data->setObjectName("tw_data");
+    obs_subj->add_obs(tw_data);
 }
 
 ///
@@ -390,7 +422,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
             http_cli->cmd_exec(cmd);
             QThread::msleep(200);
         }
-        http_cli->set_stop_cli();
+//        http_cli->set_stop_cli();
         event->accept();
     } else {
         event->ignore();
@@ -462,5 +494,4 @@ void MyRga::set_last_rcpt() {
     ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
-
 

@@ -11,7 +11,7 @@ CONFIG += c++20
 SOURCES += \
     chart_plugin/qcp_modify.cpp \
     chart_plugin/qcustomplot.cpp \
-    utility/comm_httplib.cpp \
+    utility/comm_http.cpp \
     dlgs/addrga_dlg.cpp \
     dlgs/ipaddress.cpp \
     dlgs/recipe_dlg.cpp \
@@ -20,13 +20,12 @@ SOURCES += \
     data_helper.cpp \
     observer/data_observer.cpp \
     observer/observer_subject.cpp \
-    utility/comm_http.cpp \
     utility/response_calc.cpp \
     utility/rga_utility.cpp \
     utility/static_container.cpp
 
 HEADERS += \
-    utility/comm_httplib.h \
+    utility/comm_http.h \
     thirdparty/httplib.h \
     myrga.h \
     data_helper.h \
@@ -37,7 +36,6 @@ HEADERS += \
     dlgs/recipe_dlg.h \
     observer/data_observer.h \
     observer/observer_subject.h \
-    utility/comm_http.h \
     utility/http_command.h \
     utility/response_calc.h \
     utility/rga_structs.h \

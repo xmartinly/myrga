@@ -2,6 +2,8 @@
 #define COMMHTTP_H
 
 #include <QObject>
+#include <QMutex>
+#include <QMutexLocker>
 
 ///
 /// \brief The CommHttp class
@@ -17,10 +19,7 @@ class CommHttp : public QObject {
     QTimer*                 m_tmr = nullptr;
     QQueue<QString>         m_cmdQ;
     QThreadPool*            m_pool;
-    //    QString                 m_clientInfo = "Mozilla/5.0 (Windows NT 10.0;
-    //    Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0
-    //    Safari/537.36"; QString                 m_contenInfo =
-    //    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+    QMutex                  m_mutex ;
 
     CommHttp(CommHttp&) = delete;
     CommHttp& operator=(CommHttp ch) = delete;
@@ -52,17 +51,17 @@ class CommHttp : public QObject {
         ScanStatus,
     };
 
-    void cmdEnQueue(QVariant cmd, bool is_str_list = false);
+    void cmd_enqueue(QVariant cmd, bool is_str_list = false);
     static CommHttp* GetInstance();
-    void execCmd(QString cmd);
+    void cmd_exec(QString cmd);
     ~CommHttp();
 
   public slots:
-    void sendQueueCmd();
+    void send_queue_cmd();
 
-    void clearCmdQ();
+    void clear_cmd_queue();
 
-    void getCalcResp(int type_, const QVariantMap& vm_data);
+    void get_calc_resp(int type_, const QVariantMap& vm_data);
 
   signals:
 

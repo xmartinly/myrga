@@ -22,7 +22,7 @@ class HttpCommand {
   public:
     const QStringList setHeadScan(const QString& rga_addr, const QList<int>& scan_head_ch_list) {
         QStringList sl_cmds;
-        QString s_addrTemp = rga_addr + "@/mmsp/scanSetup/channels/%1/set?channelMode=%2&dwell=%3&enabled=True";
+        QString s_addrTemp = rga_addr + "/mmsp/scanSetup/channels/%1/set?channelMode=%2&dwell=%3&enabled=True";
         int i_chNo = 1;
         foreach (int i_ch, scan_head_ch_list) {
             QString s_chNo      = QString::number(i_chNo);
@@ -46,7 +46,7 @@ class HttpCommand {
         int         i_chHeadCount   = sl_cmds.count();
         int         i_pointsCount   = points.count();
         bool        b_isSweep       = ch_mod == "Sweep";
-        QString     s_scanCmd       = rga_addr + "@/mmsp/scanSetup/channels/%1/set?channelMode=%2&enabled=True&%3%4&ppamu=%5&dwell=%6&ReportUnits=%7";
+        QString     s_scanCmd       = rga_addr + "/mmsp/scanSetup/channels/%1/set?channelMode=%2&enabled=True&%3%4&ppamu=%5&dwell=%6&ReportUnits=%7";
         //**********************************************************************************//
         //** Sweep
         if(b_isSweep) {
@@ -95,7 +95,7 @@ class HttpCommand {
     /// \return QString.
     ///
     static const QString setCh1Tm(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/scanSetup/channels/1/set?channelMode=Timestamp&enabled=True";
+        return rga_addr + "/mmsp/scanSetup/channels/1/set?channelMode=Timestamp&enabled=True";
     }
 
     ///
@@ -103,7 +103,7 @@ class HttpCommand {
     /// \return QString.
     ///
     static const QString setReboot(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/system/set?bootMonitor=1";
+        return rga_addr + "/mmsp/system/set?bootMonitor=1";
     }
 
     ///
@@ -112,7 +112,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setFlmtOn(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/generalControl/set?setEmission=on";
+        return rga_addr + "/mmsp/generalControl/set?setEmission=on";
     }
 
     ///
@@ -121,7 +121,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setFlmtOff(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/generalControl/set?setEmission=off";
+        return rga_addr + "/mmsp/generalControl/set?setEmission=off";
     }
 
     ///
@@ -130,7 +130,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setScanStop(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/scanSetup/set?scanStop=Immediately";
+        return rga_addr + "/mmsp/scanSetup/set?scanStop=Immediately";
     }
 
     ///
@@ -140,7 +140,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setTpUnits(const QString& rga_addr, QString s_unitCode = "2") {
-        return rga_addr + "@/mmsp/sensorIonSource/set?tPunits=" + s_unitCode;
+        return rga_addr + "/mmsp/sensorIonSource/set?tPunits=" + s_unitCode;
     }
 
     ///
@@ -155,7 +155,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setScanIntvl(const QString& rga_addr, QString s_intvl = "0") {
-        return rga_addr + "@/mmsp/scanSetup/set?scanInterval=" + s_intvl;
+        return rga_addr + "/mmsp/scanSetup/set?scanInterval=" + s_intvl;
     }
 
     ///
@@ -164,7 +164,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setScanCnt(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/scanSetup/set?scanCount=-1";
+        return rga_addr + "/mmsp/scanSetup/set?scanCount=-1";
     }
 
     ///
@@ -173,7 +173,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setScanStart(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/scanSetup/set?scanStart=1";
+        return rga_addr + "/mmsp/scanSetup/set?scanStart=1";
     }
 
     ///
@@ -181,7 +181,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setMeasBegin(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/measurement/data/get";
+        return rga_addr + "/mmsp/measurement/data/get";
     }
 
     ///
@@ -192,7 +192,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setChannelsRange(const QString& rga_addr, const QString& s_chCnt = "12") {
-        return rga_addr + "@/mmsp/scanSetup/set?startChannel=1&stopChannel=" + s_chCnt;
+        return rga_addr + "/mmsp/scanSetup/set?startChannel=1&stopChannel=" + s_chCnt;
     }
 
     ///
@@ -207,7 +207,7 @@ class HttpCommand {
         }
         QString s_unit  = report_current ? "Current" : "PP";
         QString s_ch_no = QString::number(ch_no);
-        return rga_addr + QString("@/mmsp/scanSetup/channels/%1/set?ReportUnits=2%").arg(s_ch_no, s_unit);
+        return rga_addr + QString("/mmsp/scanSetup/channels/%1/set?ReportUnits=2%").arg(s_ch_no, s_unit);
     }
 
     ///
@@ -216,7 +216,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setEmOn(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/generalControl/set?setEM=on" ;
+        return rga_addr + "/mmsp/generalControl/set?setEM=on" ;
     }
 
     ///
@@ -225,7 +225,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setEmOff(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/generalControl/set?setEM=off" ;
+        return rga_addr + "/mmsp/generalControl/set?setEM=off" ;
     }
 
     ///
@@ -234,7 +234,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setReleaseCtrl(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/communication/control/release";
+        return rga_addr + "/mmsp/communication/control/release";
     }
 
     ///
@@ -244,7 +244,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setForceCtrl(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/communication/control/set?force";
+        return rga_addr + "/mmsp/communication/control/set?force";
     }
 
     ///
@@ -253,7 +253,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getAmInCtrl(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/communication/amInControl/get";
+        return rga_addr + "/mmsp/communication/amInControl/get";
     }
 
     ///
@@ -262,7 +262,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getCtrlInfo(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/communication/controlInfo/get";
+        return rga_addr + "/mmsp/communication/controlInfo/get";
     }
 
     ///
@@ -280,7 +280,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getIssueLog(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/communication/issueLog/get";
+        return rga_addr + "/mmsp/communication/issueLog/get";
     }
 
     ///
@@ -289,7 +289,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getSysStatus(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/status/systemStatus/get";
+        return rga_addr + "/mmsp/status/systemStatus/get";
     }
 
     ///
@@ -298,7 +298,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getDectType(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorInfo/detectorType/get";
+        return rga_addr + "/mmsp/sensorInfo/detectorType/get";
     }
 
     ///
@@ -306,7 +306,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getInputState(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/digitalInput/ioChannel/get";
+        return rga_addr + "/mmsp/digitalInput/ioChannel/get";
     }
 
     ///
@@ -315,7 +315,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getSn(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/electronicsInfo/serialNumber/get";
+        return rga_addr + "/mmsp/electronicsInfo/serialNumber/get";
     }
 
     ///
@@ -324,7 +324,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getLastScan(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/measurement/scansPow2/-1/get";
+        return rga_addr + "/mmsp/measurement/scansPow2/-1/get";
     }
 
     ///
@@ -333,7 +333,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getLastScanDouble(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/measurement/scans/-1/get";
+        return rga_addr + "/mmsp/measurement/scans/-1/get";
     }
     ///
     /// \brief getLastScanBin
@@ -341,7 +341,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getLastScanBin(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/measurement/binaryScans/-1/get";
+        return rga_addr + "/mmsp/measurement/binaryScans/-1/get";
     }
 
     ///
@@ -350,7 +350,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getHardwareError(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/status/hardwareErrors/get";
+        return rga_addr + "/mmsp/status/hardwareErrors/get";
     }
 
     ///
@@ -359,7 +359,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getEmGainReq(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorDetector/emGain/get";
+        return rga_addr + "/mmsp/sensorDetector/emGain/get";
     }
 
     ///
@@ -368,7 +368,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getFcSensReq(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorIonSource/ppSensitivityFactor/get";
+        return rga_addr + "/mmsp/sensorIonSource/ppSensitivityFactor/get";
     }
 
     ///
@@ -377,7 +377,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getCurrentFlmts(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorIonSource/filamentSelected/get";
+        return rga_addr + "/mmsp/sensorIonSource/filamentSelected/get";
     }
 
     ///
@@ -386,7 +386,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setFlmt1st(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorIonSource/set?filamentSelected=1";
+        return rga_addr + "/mmsp/sensorIonSource/set?filamentSelected=1";
     }
 
     ///
@@ -395,7 +395,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setFlmt2nd(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorIonSource/set?filamentSelected=2";
+        return rga_addr + "/mmsp/sensorIonSource/set?filamentSelected=2";
     }
 
     ///
@@ -404,7 +404,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString setFlmtIdx(const QString& rga_addr, QString idx) {
-        return rga_addr + "@/mmsp/sensorIonSource/set?filamentSelected=" + idx;
+        return rga_addr + "/mmsp/sensorIonSource/set?filamentSelected=" + idx;
     }
 
     ///
@@ -413,7 +413,7 @@ class HttpCommand {
     /// \return
     ///
     static const QString getMassRange(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/electronicsInfo/massRange/get";
+        return rga_addr + "/mmsp/electronicsInfo/massRange/get";
     }
 
     ///
@@ -422,15 +422,15 @@ class HttpCommand {
     /// \return
     ///
     static const QString getTotalTm(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/scanSetup/scanTimeTotal/get";
+        return rga_addr + "/mmsp/scanSetup/scanTimeTotal/get";
     }
 
     static const QString setThrehold(const QString& rga_addr, const QString& value) {
-        return rga_addr + "@/mmsp/sensorIonSource/set?tPThresholdCurrent=" + value;
+        return rga_addr + "/mmsp/sensorIonSource/set?tPThresholdCurrent=" + value;
     }
 
     static const QString getThrehold(const QString& rga_addr) {
-        return rga_addr + "@/mmsp/sensorIonSource/get?tPThresholdCurrent";
+        return rga_addr + "/mmsp/sensorIonSource/get?tPThresholdCurrent";
     }
 
 };

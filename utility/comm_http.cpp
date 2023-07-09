@@ -21,9 +21,8 @@ class CommHttp::Private {
 CommHttp::CommHttp(QObject* parent) : QObject(parent) {
     m_pool = new QThreadPool(this);
     m_pool->setMaxThreadCount(QThread::idealThreadCount());
-    //    m_pool->setStackSize();
     m_tmr = new QTimer(this);
-    connect(m_tmr, &QTimer::timeout, this, &CommHttp::sendQueueCmd);
+    connect(m_tmr, &QTimer::timeout, this, &CommHttp::send_queue_cmd);
     d = new CommHttp::Private(this);
     connect(d->manager, &QNetworkAccessManager::finished, this,
             &CommHttp::replyFinishedSlot);
@@ -42,7 +41,7 @@ CommHttp* CommHttp::GetInstance() {
 /// \brief CommHttp::execCmd. execute command
 /// \param cmd
 ///
-void CommHttp::execCmd(QString cmd) {
+void CommHttp::cmd_exec(QString cmd) {
     d->manager->get(QNetworkRequest(QUrl(cmd)));
 }
 
@@ -73,7 +72,7 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
             QJsonObject data_obj = json_data.object();
             data_obj.insert("id", s_rgaIp.replace(".", ""));
             ResponseCalc* calc = new ResponseCalc(data_obj, this);
-            connect(calc, &ResponseCalc::send_calc_res, this, &CommHttp::getCalcResp);
+            connect(calc, &ResponseCalc::send_calc_res, this, &CommHttp::get_calc_resp);
             m_pool->start(calc);
         }
     }
@@ -84,7 +83,8 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
 /// \param cmd
 /// \param is_str_list
 ///
-void CommHttp::cmdEnQueue(QVariant cmd, bool is_str_list) {
+void CommHttp::cmd_enqueue(QVariant cmd, bool is_str_list) {
+    QMutexLocker locker(&m_mutex);
     if (!m_tmr->isActive()) {
         m_tmr->start(10);
     }
@@ -101,25 +101,26 @@ void CommHttp::cmdEnQueue(QVariant cmd, bool is_str_list) {
 ///
 /// \brief CommHttp::sendQueueCmd. timeout action
 ///
-void CommHttp::sendQueueCmd() {
+void CommHttp::send_queue_cmd() {
+    QMutexLocker locker(&m_mutex);
     if (!m_cmdQ.count()) {
         return;
     }
     QString s_cmd = m_cmdQ.dequeue();
     d->manager->get(QNetworkRequest(QUrl(s_cmd)));
     if (m_cmdQ.count() > 100) {
-        clearCmdQ();
+        clear_cmd_queue();
     }
 }
 
 ///
 /// \brief CommHttp::clearCmdQ. clear command queue
 ///
-void CommHttp::clearCmdQ() {
+void CommHttp::clear_cmd_queue() {
     m_cmdQ.clear();
 }
 
-void CommHttp::getCalcResp(int type_, const QVariantMap& vm_data) {
+void CommHttp::get_calc_resp(int type_, const QVariantMap& vm_data) {
     RespType type = static_cast<RespType>(type_);
     auto inst = StaticContainer::getCrntRga();
     if(inst == nullptr || type == ResRespNone) {

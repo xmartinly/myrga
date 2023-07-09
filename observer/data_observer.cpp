@@ -30,7 +30,7 @@ void TableObserver::update() {
         return;
     }
     RgaUtility* inst = StaticContainer::getCrntRga();
-    if(!StaticContainer::STC_ISCHARTPAGE) {
+    if(StaticContainer::STC_ISMISCINFO) {
         if(!m_zone->rowCount()) {
             return;
         }
@@ -426,7 +426,6 @@ void TbObserver::update() {
         return;
     }
     if(btn_name == "tb_ctrl") {
-        qDebug() << rga_in_ctrl;
         m_zone->setEnabled(rga_in_ctrl);
         m_zone->setIcon(rga_in_acq ? stop_svg : start_svg);
         return;

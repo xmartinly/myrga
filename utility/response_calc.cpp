@@ -33,7 +33,6 @@ void ResponseCalc::run() {
         } else {
             QJsonObject obj_data = m_objData.value("data").toObject();
             resp_type = CommHttp::ScanStatus;
-//            qDebug() << __FUNCTION__ << obj_data;
             bool b_started = false;
             bool b_stopped = false;
             if(obj_data.contains("scanStart")) {
