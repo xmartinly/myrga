@@ -34,10 +34,6 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
-    QStringList exit_sets = rga_inst->get_close_set();
-    foreach (auto cmd, exit_sets) {
-        http_cli->execCmd(cmd);
-    }
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -222,7 +218,6 @@ void MyRga::idle_tmr_action() {
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
-    qDebug() << rga_inst->get_acquire_state();
     if(rga_inst->get_scan_tm_total() < 1) {
         return;
     }
@@ -376,14 +371,25 @@ void MyRga::update_obs() {
 /// \param event
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
-//    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
-//                                         QMessageBox::Yes | QMessageBox::No,
-//                                         QMessageBox::No);
-//    if (result == QMessageBox::Yes) {
-//        event->accept();
-//    } else {
-//        event->ignore();
-//    }
+    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
+                                         QMessageBox::Yes | QMessageBox::No,
+                                         QMessageBox::No);
+    if (result == QMessageBox::Yes) {
+        setWindowFlags(Qt::FramelessWindowHint);            //无边框
+        setAttribute(Qt::WA_TranslucentBackground);         //背景透明
+        int round = 10;
+        QStringList exit_sets = rga_inst->get_close_set();
+        foreach (auto cmd, exit_sets) {
+            http_cli->execCmd(cmd);
+        }
+        while(round > 0) {
+            QThread::msleep(200);
+            --round;
+        }
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
 
 
