@@ -85,7 +85,6 @@ void ResponseCalc::run() {
         if(jo_data_temp.value("scannum").toInt() > inst->get_scan_num()) {
             QJsonArray ja_values = jo_scan.value("values").toArray();
             ja_values.pop_front();
-            qDebug() << ja_values;
             QJsonArray ja_d_values;
             int i_valCnt = ja_values.count();
             for (int var = 0; var < i_valCnt; ++var) {
