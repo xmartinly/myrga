@@ -275,6 +275,7 @@ void MyRga::tbl_click(int row, int) {
         return;
     }
     StaticContainer::STC_CELLCLICKED = true;
+    ui->qcp_spec->xAxis->setTicker(calc_ticker());
     update_obs();
     StaticContainer::STC_CELLCLICKED = false;
 }
@@ -335,15 +336,28 @@ void MyRga::set_spec_xAxis() {
     if(!rga_inst) {
         return;
     }
-    rga_inst->gen_ticker();
     auto spec_chart = ui->qcp_spec;
-    QVector<double> vd_ticks = rga_inst->get_vd_ticks();
-    QVector<QString> vs_labels = rga_inst->get_vs_labels();
-    int i_dataCnt = vd_ticks.count();
-    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
-    textTicker->addTicks(vd_ticks, vs_labels);
+    QSharedPointer<QCPAxisTickerText> textTicker = calc_ticker();
+    int i_data_cnt = rga_inst->get_vs_labels().count();
     spec_chart->xAxis->setTicker(textTicker);
-    spec_chart->xAxis->setRange(0, i_dataCnt + 1);
+    spec_chart->xAxis->setRange(0, i_data_cnt + 1);
+}
+
+QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
+    rga_inst->gen_ticker();
+    QVector<QString> x_labels = rga_inst->get_vs_labels();
+    int label_cnt = x_labels.count();
+    QVector<double> x_ticks = rga_inst->get_vd_ticks();
+    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
+    if(label_cnt > 9) {
+        for (int var = 0; var < label_cnt; ++var) {
+            if((var % 5) && !StaticContainer::STC_SELMASS.contains(var + 1)) {
+                x_labels[var] = "";
+            }
+        }
+    }
+    textTicker->addTicks(x_ticks, x_labels);
+    return textTicker;
 }
 
 void MyRga::init_scan() {
@@ -505,6 +519,11 @@ void MyRga::setup_obs() {
     DataObserver* qcp_spec_obs = new SpecChartObserver(ui->qcp_spec);
     qcp_spec_obs->setObjectName("qcp_spec_obs");
     obs_subj->add_obs(qcp_spec_obs);
+    //******************************************************************//
+    //** text browser misc
+    DataObserver* tb_misc = new TextInfoObserver(ui->tb_misc);
+    tb_misc->setObjectName("tb_misc_obs");
+    obs_subj->add_obs(tb_misc);
 }
 
 ///

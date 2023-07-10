@@ -160,7 +160,8 @@ const QVector<QString> RgaUtility::get_vs_labels(const QList<int> pos) {
     if(!pos.count()) {
         return spec_x_labels;
     }
-    return ;
+    QVector<QString> labels = {};
+    return labels;
 }
 
 ///

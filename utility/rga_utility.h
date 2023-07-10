@@ -186,7 +186,7 @@ class RgaUtility {
     //*************************************************************************************//
     //**  ticks, data positions, labels
     const QVector<double> get_vd_ticks();
-    const QVector<QString> get_vs_labels();
+    const QVector<QString> get_vs_labels(const QList<int> pos = {});
     void gen_ticker();
     QVector<double> get_data_pos() const;
     void set_data_pos(const QVector<double>& new_dataPos);

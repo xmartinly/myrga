@@ -1270,7 +1270,7 @@
        <widget class="QFrame" name="frm_misc">
         <property name="minimumSize">
          <size>
-          <width>290</width>
+          <width>295</width>
           <height>0</height>
          </size>
         </property>

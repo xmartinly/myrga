@@ -106,6 +106,8 @@ class MyRga : public QMainWindow
     void init_line_chart();
     // setup spectrum chart x axis
     void set_spec_xAxis();
+    // calc spec x axis ticker;
+    QSharedPointer<QCPAxisTickerText> calc_ticker();
     // initialize rga scan setup.
     void init_scan();
     // menu action when right click on rga label
