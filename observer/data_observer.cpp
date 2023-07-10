@@ -30,7 +30,7 @@ void TableObserver::update() {
         return;
     }
     RgaUtility* inst = StaticContainer::get_crnt_rga();
-    if(m_zone->objectName() == "tw_info") {
+    if(m_zone->objectName() == "tw_info" && StaticContainer::STC_ISMISCINFO) {
         if(!m_zone->rowCount()) {
             return;
         }
@@ -71,8 +71,10 @@ void TableObserver::update() {
         //        "TotalPressure",    //11
         //        "ScanNum"   //12
         //addr  0
-        m_zone->item(0, 1)->setText(inst->get_rga_addr());
-        m_zone->item(0, 1)->setToolTip(inst->get_rga_addr());
+        QString rga_addr = inst->get_rga_addr();
+        rga_addr.replace("http:\//", "");
+        m_zone->item(0, 1)->setText(rga_addr);
+        m_zone->item(0, 1)->setToolTip(rga_addr);
         //sn    1
         m_zone->item(1, 1)->setText(inst->get_rga_sn());
         m_zone->item(1, 1)->setBackground(b_isInCtrl ? Qt::darkGreen : Qt::white);
@@ -225,7 +227,7 @@ LineChartObserver::~LineChartObserver() {
 ///
 void LineChartObserver::update() {
     RgaUtility* inst = StaticContainer::get_crnt_rga();
-    if(m_zone == nullptr || !inst->get_is_new_data()) {
+    if(m_zone == nullptr || !inst->get_is_new_data() || !inst->get_acquire_state()) {
         return;
     }
     int i_xVal = (int)QTime::currentTime().msecsSinceStartOfDay() / 1000;
@@ -235,14 +237,13 @@ void LineChartObserver::update() {
         return;
     }
     QVector<double> ld_values = inst->get_scan_val();
-    int i_dataCount = ld_values.count();
+    int data_cnt = ld_values.count();
     if(ld_values.isEmpty()) {
         return;
     }
     lastPointKey = i_xVal;
-    for(int valuePos = 0; valuePos < i_dataCount; valuePos++) {
-        qDebug() << __FUNCTION__ << valuePos;
-//        m_zone->graph(valuePos)->addData(i_xVal, ld_values.at(valuePos));
+    for(int val_pos = 0; val_pos < data_cnt; val_pos++) {
+        m_zone->graph(val_pos)->addData(i_xVal, ld_values.at(val_pos));
     }
     m_zone->xAxis->rescale();
     m_zone->replot(QCustomPlot::rpQueuedReplot);

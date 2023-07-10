@@ -117,7 +117,6 @@ void MyRga::on_tb_link_clicked() {
     read_current_config();
 }
 
-
 ///
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
@@ -142,8 +141,6 @@ void MyRga::on_tb_ctrl_clicked() {
         return;
     }
     init_scan();
-    init_line_chart();
-    init_spec_chart();
 }
 
 ///
@@ -181,7 +178,6 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
-//    RgaUtility* inst = StaticContainer::getCrntRga();
     if(rga_inst == nullptr) {
         return;
     }
@@ -209,7 +205,14 @@ void MyRga::acq_tmr_action() {
     if(rga_inst->get_scan_tm_total() < 1) {
         return;
     }
+    if(rga_inst->get_flmt_setted() != rga_inst->get_flmt_idx()) {
+        http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::CloseFlmt));
+        RgaUtility::RgaActions flmt_set = rga_inst->get_flmt_setted() == "1" ? RgaUtility::SetFlmt1st : RgaUtility::SetFlmt2nd ;
+        http_cli->cmd_exec(rga_inst->gen_rga_action(flmt_set));
+        return;
+    }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
+        http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
         return;
     }
     if(rga_inst->get_acquire_state()) {
@@ -253,7 +256,27 @@ void MyRga::init_data_tbl(bool is_misc_info) {
     }
 }
 
-void MyRga::tbl_click(int row, int col) {
+void MyRga::tbl_click(int row, int) {
+    bool b_rowChecked = ui->tw_data->item(row, 0)->checkState();
+    ui->qcp_line->graph(row)->setVisible(b_rowChecked);
+    ui->qcp_line->replot(QCustomPlot::rpQueuedReplot);
+    QColor line_color = ui->qcp_line->graph(row)->pen().color();
+    ui->tw_data->item(row, 0)->setBackground(b_rowChecked ? line_color : Qt::white);
+    ui->tw_data->item(row, 0)->setForeground(b_rowChecked ? Qt::white : Qt::black);
+    StaticContainer::STC_SELMASS.clear();
+    int i_row_cnt = ui->tw_data->rowCount();
+    for (int var = 1; var < i_row_cnt; ++var) {
+        if(ui->tw_data->item(var, 0)->checkState() == Qt::Checked) {
+            StaticContainer::STC_SELMASS.push_back(var);
+        }
+    }
+    if(!StaticContainer::STC_SELMASS.count()) {
+        ui->tb_misc->clear();
+        return;
+    }
+    StaticContainer::STC_CELLCLICKED = true;
+    update_obs();
+    StaticContainer::STC_CELLCLICKED = false;
 }
 
 
@@ -280,7 +303,7 @@ void MyRga::init_spec_chart() {
 void MyRga::init_line_chart() {
     QStringList sl_col = rga_inst->get_tbl_col(true);
 //    qDebug() << __FUNCTION__ << sl_col;
-    QCustomPlot* line_chart = ui->qcp_spec;
+    QCustomPlot* line_chart = ui->qcp_line;
     int i_lineCnt = sl_col.count();
     line_chart->setNoAntialiasingOnDrag(true);
     line_chart->clearPlottables();
@@ -308,6 +331,21 @@ void MyRga::init_line_chart() {
     }
 }
 
+void MyRga::set_spec_xAxis() {
+    if(!rga_inst) {
+        return;
+    }
+    rga_inst->gen_ticker();
+    auto spec_chart = ui->qcp_spec;
+    QVector<double> vd_ticks = rga_inst->get_vd_ticks();
+    QVector<QString> vs_labels = rga_inst->get_vs_labels();
+    int i_dataCnt = vd_ticks.count();
+    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
+    textTicker->addTicks(vd_ticks, vs_labels);
+    spec_chart->xAxis->setTicker(textTicker);
+    spec_chart->xAxis->setRange(0, i_dataCnt + 1);
+}
+
 void MyRga::init_scan() {
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
@@ -324,6 +362,9 @@ void MyRga::init_scan() {
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
     init_data_tbl();
+    init_line_chart();
+    init_spec_chart();
+    set_spec_xAxis();
     if(acq_tmr->isActive()) {
         return;
     }
@@ -461,9 +502,9 @@ void MyRga::setup_obs() {
     obs_subj->add_obs(qcp_line_obs);
     //******************************************************************//
     //** qcp_spec
-//    DataObserver* qcp_spec_obs = new SpecChartObserver(ui->qcp_spec);
-//    qcp_spec_obs->setObjectName("qcp_spec_obs");
-//    obs_subj->add_obs(qcp_spec_obs);
+    DataObserver* qcp_spec_obs = new SpecChartObserver(ui->qcp_spec);
+    qcp_spec_obs->setObjectName("qcp_spec_obs");
+    obs_subj->add_obs(qcp_spec_obs);
 }
 
 ///
@@ -560,4 +601,6 @@ void MyRga::set_last_rcpt() {
     ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
+
+
 

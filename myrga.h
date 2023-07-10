@@ -66,7 +66,7 @@ class MyRga : public QMainWindow
 
     void on_tb_link_clicked();
 
-    void tbl_click(int row, int col);
+    void tbl_click(int row, int);
 
   private:
     Ui::MyRga* ui;
@@ -104,6 +104,8 @@ class MyRga : public QMainWindow
     void init_spec_chart();
     // initialize line chart
     void init_line_chart();
+    // setup spectrum chart x axis
+    void set_spec_xAxis();
     // initialize rga scan setup.
     void init_scan();
     // menu action when right click on rga label

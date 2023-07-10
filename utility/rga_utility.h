@@ -267,6 +267,7 @@ class RgaUtility {
     //**  filament index
     void set_flmt_idx(int flmt_idx);
     QString get_flmt_idx();
+    const QString get_flmt_setted();
 
     //*************************************************************************************//
     //**  rga address

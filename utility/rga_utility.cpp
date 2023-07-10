@@ -156,8 +156,11 @@ const QVector<double> RgaUtility::get_vd_ticks() {
 /// \brief RgaUtility::getVsLabels
 /// \return
 ///
-const QVector<QString> RgaUtility::get_vs_labels() {
-    return spec_x_labels;
+const QVector<QString> RgaUtility::get_vs_labels(const QList<int> pos) {
+    if(!pos.count()) {
+        return spec_x_labels;
+    }
+    return ;
 }
 
 ///
@@ -534,9 +537,13 @@ void RgaUtility::gen_idle_set() {
     bool b_isEmOpened = get_status(EMState);
     bool b_isFlmtOpened = get_status(EmissState);
     bool b_isSetEmOn  = m_rcpt.s_emOpt == "On";
+//    bool flmt_sel_confirm = m_rcpt.s_flmtIdx == m_stat.s_curntFlmt;
     foreach (auto act, idl_actions) {
         m_idlSet.append(gen_rga_action(act));
     }
+//    if(!flmt_sel_confirm) {
+//        m_idlSet.append(gen_rga_action(GetCrntFlmt));
+//    }
     if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && m_rcpt.s_emOpt == "1") {
         m_idlSet.append(gen_rga_action(OpenEm));
     }
@@ -574,8 +581,13 @@ void RgaUtility::gen_scan_set() {
                     i_headList
                 );
     m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
-    RgaActions flmt_idx = m_rcpt.s_flmtIdx == "1" ? SetFlmt1st : SetFlmt2nd;
-    m_scanSet.append(gen_rga_action(flmt_idx));
+//    if(m_stat.s_curntFlmt != m_rcpt.s_flmtIdx) {
+//        m_scanSet.append(gen_rga_action(CloseFlmt));
+//        m_scanSet.append(gen_rga_action(CloseFlmt));
+//        m_scanSet.append(gen_rga_action(CloseFlmt));
+//    }
+//    RgaActions flmt_idx = m_rcpt.s_flmtIdx == "1" ? SetFlmt1st : SetFlmt2nd;
+//    m_scanSet.append(gen_rga_action(flmt_idx));
     m_scanSet.append(m_cmd.setTpUnits(rga_addr, m_rcpt.s_pUnit));
     m_scanSet.append(gen_rga_action(SetScanCnt));
     m_scanSet.append(gen_rga_action(OpenFlmt));
@@ -672,6 +684,11 @@ void RgaUtility::set_flmt_idx(int flmt_idx) {
 QString RgaUtility::get_flmt_idx() {
     return m_stat.s_curntFlmt;
 }
+
+const QString RgaUtility::get_flmt_setted() {
+    return m_rcpt.s_flmtIdx;
+}
+
 
 ///
 /// \brief RgaUtility::getTblHead

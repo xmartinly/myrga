@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
+    <width>1350</width>
     <height>710</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
+    <width>1350</width>
     <height>710</height>
    </size>
   </property>
@@ -464,7 +464,7 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,8,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,99,1">
       <item>
        <widget class="QFrame" name="frm_left">
         <property name="frameShape">
@@ -478,7 +478,7 @@
           <widget class="QFrame" name="frame_settings">
            <property name="minimumSize">
             <size>
-             <width>360</width>
+             <width>330</width>
              <height>0</height>
             </size>
            </property>
@@ -516,10 +516,7 @@
                <property name="bottomMargin">
                 <number>0</number>
                </property>
-               <property name="horizontalSpacing">
-                <number>6</number>
-               </property>
-               <property name="verticalSpacing">
+               <property name="spacing">
                 <number>0</number>
                </property>
                <item row="0" column="0">
@@ -528,13 +525,13 @@
                   <widget class="QLabel" name="lb_range">
                    <property name="minimumSize">
                     <size>
-                     <width>55</width>
+                     <width>60</width>
                      <height>30</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>55</width>
+                     <width>60</width>
                      <height>30</height>
                     </size>
                    </property>
@@ -550,13 +547,13 @@
                   <widget class="QSpinBox" name="sb_start">
                    <property name="minimumSize">
                     <size>
-                     <width>90</width>
+                     <width>80</width>
                      <height>30</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>90</width>
+                     <width>80</width>
                      <height>30</height>
                     </size>
                    </property>
@@ -575,18 +572,18 @@
                   <widget class="QLabel" name="lb_arrow">
                    <property name="minimumSize">
                     <size>
-                     <width>40</width>
+                     <width>55</width>
                      <height>30</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>40</width>
-                     <height>30</height>
+                     <width>16777215</width>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <property name="text">
-                    <string>→</string>
+                    <string>→ </string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -597,13 +594,13 @@
                   <widget class="QSpinBox" name="sb_end">
                    <property name="minimumSize">
                     <size>
-                     <width>90</width>
+                     <width>80</width>
                      <height>30</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>90</width>
+                     <width>80</width>
                      <height>30</height>
                     </size>
                    </property>
@@ -622,19 +619,6 @@
                   </widget>
                  </item>
                 </layout>
-               </item>
-               <item row="0" column="1">
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
              </widget>
@@ -663,19 +647,22 @@
                   <property name="text">
                    <string>Method</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QComboBox" name="cb_method">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -737,13 +724,13 @@
                  <widget class="QComboBox" name="cb_unitpressure">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -873,13 +860,13 @@
                  <widget class="QComboBox" name="cb_dwell">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -969,13 +956,13 @@
                  <widget class="QComboBox" name="cb_ppamu">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -1036,13 +1023,13 @@
                   <widget class="QLabel" name="lb_points">
                    <property name="minimumSize">
                     <size>
-                     <width>55</width>
+                     <width>60</width>
                      <height>30</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>55</width>
+                     <width>60</width>
                      <height>30</height>
                     </size>
                    </property>
@@ -1117,7 +1104,7 @@
                  <widget class="QComboBox" name="cb_unitreport">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -1185,7 +1172,7 @@
                  <widget class="QComboBox" name="cb_flmt">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>80</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -1352,7 +1339,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1350</width>
      <height>22</height>
     </rect>
    </property>
