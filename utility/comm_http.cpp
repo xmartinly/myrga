@@ -66,9 +66,6 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
             d->manager->cookieJar()->cookiesForUrl(reply->url());
         QString s_rgaIp = lc_cookie.value(0).domain();
         QByteArray data = reply->readAll();
-        if(StaticContainer::STC_ISDEBUG) {
-            qDebug() << __FUNCTION__ << data;
-        }
         QJsonParseError jsonpe;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
         if (jsonpe.error == QJsonParseError::NoError) {
@@ -125,7 +122,7 @@ void CommHttp::clear_cmd_queue() {
 
 void CommHttp::get_calc_resp(int type_, const QVariantMap& vm_data) {
     RespType type = static_cast<RespType>(type_);
-    auto inst = StaticContainer::getCrntRga();
+    auto inst = StaticContainer::get_crnt_rga();
     if(inst == nullptr || type == ResRespNone) {
         return;
     }
@@ -156,7 +153,6 @@ void CommHttp::get_calc_resp(int type_, const QVariantMap& vm_data) {
     //scan data
     if(type == ScanData) {
         QJsonObject jo_scan_data = vm_data.value("data").toJsonObject();
-        qDebug() << jo_scan_data;
         inst->set_scan_data(jo_scan_data);
         if(inst->get_is_save_data()) {
             inst->write_scan_data();

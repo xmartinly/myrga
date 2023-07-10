@@ -74,7 +74,7 @@ void ResponseCalc::run() {
     }
     //scan data
     if(s_origin.indexOf("scans") > -1) {
-        auto* inst = StaticContainer::getCrntRga();
+        auto* inst = StaticContainer::get_crnt_rga();
         if(inst == nullptr) {
             return;
         }

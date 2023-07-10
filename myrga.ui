@@ -464,7 +464,7 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,99,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,8,1">
       <item>
        <widget class="QFrame" name="frm_left">
         <property name="frameShape">
@@ -1268,7 +1268,7 @@
         <property name="childrenCollapsible">
          <bool>false</bool>
         </property>
-        <widget class="QCustomPlot" name="qcp_spec" native="true">
+        <widget class="QCustomPlot" name="qcp_line" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -1276,7 +1276,7 @@
           </sizepolicy>
          </property>
         </widget>
-        <widget class="QCustomPlot" name="qcp_line" native="true"/>
+        <widget class="QCustomPlot" name="qcp_spec" native="true"/>
        </widget>
       </item>
       <item>

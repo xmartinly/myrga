@@ -142,6 +142,8 @@ void MyRga::on_tb_ctrl_clicked() {
         return;
     }
     init_scan();
+    init_line_chart();
+    init_spec_chart();
 }
 
 ///
@@ -259,12 +261,51 @@ void MyRga::tbl_click(int row, int col) {
 /// \brief MyRga::initSpecChart
 ///
 void MyRga::init_spec_chart() {
+    QCustomPlot* spec_chart = ui->qcp_spec;
+    spec_chart->setNoAntialiasingOnDrag(true);
+    spec_chart->xAxis->grid()->setVisible(false);
+    spec_chart->xAxis->setTickLabelRotation(15);
+    spec_chart->xAxis->setSubTicks(false);
+    spec_chart->xAxis->setTickLength(0, 4);
+    spec_chart->xAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
+    spec_chart->yAxis->setNumberFormat("e"); // e = exponential, b = beautiful decimal powers
+    spec_chart->yAxis->setNumberPrecision(0);
+    spec_chart->yAxis->setRange(1e-14, 5e-2);
+    spec_chart->yAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
 }
 
 ///
 /// \brief MyRga::initLineChart
 ///
 void MyRga::init_line_chart() {
+    QStringList sl_col = rga_inst->get_tbl_col(true);
+//    qDebug() << __FUNCTION__ << sl_col;
+    QCustomPlot* line_chart = ui->qcp_spec;
+    int i_lineCnt = sl_col.count();
+    line_chart->setNoAntialiasingOnDrag(true);
+    line_chart->clearPlottables();
+    line_chart->legend->setBrush(QColor(230, 230, 230, 40));
+    line_chart->legend->setBorderPen(Qt::NoPen);
+    line_chart->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+    timeTicker->setTimeFormat("%h:%m:%s");
+    line_chart->xAxis->setTicker(timeTicker);
+    line_chart->xAxis->grid()->setVisible(false);
+    line_chart->xAxis->setTickLabelRotation(15);
+    line_chart->yAxis->setScaleType(QCPAxis::stLogarithmic);
+    QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
+    line_chart->yAxis->setTicker(logTicker);
+    line_chart->yAxis->setNumberFormat("e"); // e = exponential, b = beautiful decimal powers
+    line_chart->yAxis->setNumberPrecision(0);
+    line_chart->yAxis->setRange(1e-14, 5e-2);
+    line_chart->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
+    for(int line_index = 0; line_index < i_lineCnt; line_index++) {
+        line_chart->addGraph();
+        QPen qp_linePen = DataHelper::get_pen(line_index * 13);
+        line_chart->graph(line_index)->setPen(qp_linePen);
+        line_chart->graph(line_index)->setName(sl_col.at(line_index));
+        line_chart->graph(line_index)->setVisible(!line_index);
+    }
 }
 
 void MyRga::init_scan() {
@@ -276,10 +317,12 @@ void MyRga::init_scan() {
         return;
     }
     read_current_config(true);
+    StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
+    rga_inst->gen_ticker();
     init_data_tbl();
     if(acq_tmr->isActive()) {
         return;
@@ -379,38 +422,48 @@ void MyRga::setup_obs() {
     //******************************************************************//
     //** link button
     DataObserver* link_btn_obs = new TbObserver(ui->tb_link);
-    link_btn_obs->setObjectName("link");
+    link_btn_obs->setObjectName("link_btn_obs");
     obs_subj->add_obs(link_btn_obs);
     //******************************************************************//
     //** flmt button
     DataObserver* flmt_btn_obs = new TbObserver(ui->tb_flmt);
-    flmt_btn_obs->setObjectName("flmt");
+    flmt_btn_obs->setObjectName("flmt_btn_obs");
     obs_subj->add_obs(flmt_btn_obs);
     //******************************************************************//
     //** em button
     DataObserver* em_btn_obs = new TbObserver(ui->tb_em);
-    em_btn_obs->setObjectName("em");
+    em_btn_obs->setObjectName("em_btn_obs");
     obs_subj->add_obs(em_btn_obs);
     //******************************************************************//
     //** info button
     DataObserver* info_btn_obs = new TbObserver(ui->tb_info);
-    info_btn_obs->setObjectName("info");
+    info_btn_obs->setObjectName("info_btn_obs");
     obs_subj->add_obs(info_btn_obs);
     //******************************************************************//
     //** ctrl button
     DataObserver* ctrl_btn_obs = new TbObserver(ui->tb_ctrl);
-    ctrl_btn_obs->setObjectName("ctrl");
+    ctrl_btn_obs->setObjectName("ctrl_btn_obs");
     obs_subj->add_obs(ctrl_btn_obs);
     //******************************************************************//
     //** tw_data
-    DataObserver* tw_data = new TableObserver(ui->tw_data);
-    tw_data->setObjectName("tw_data");
-    obs_subj->add_obs(tw_data);
+    DataObserver* tw_data_obs = new TableObserver(ui->tw_data);
+    tw_data_obs->setObjectName("tw_data_obs");
+    obs_subj->add_obs(tw_data_obs);
     //******************************************************************//
     //** tw_info
-    DataObserver* tw_info = new TableObserver(ui->tw_info);
-    tw_info->setObjectName("tw_info");
-    obs_subj->add_obs(tw_info);
+    DataObserver* tw_info_obs = new TableObserver(ui->tw_info);
+    tw_info_obs->setObjectName("tw_info_obs");
+    obs_subj->add_obs(tw_info_obs);
+    //******************************************************************//
+    //** qcp_line
+    DataObserver* qcp_line_obs = new LineChartObserver(ui->qcp_line);
+    qcp_line_obs->setObjectName("qcp_line_obs");
+    obs_subj->add_obs(qcp_line_obs);
+    //******************************************************************//
+    //** qcp_spec
+//    DataObserver* qcp_spec_obs = new SpecChartObserver(ui->qcp_spec);
+//    qcp_spec_obs->setObjectName("qcp_spec_obs");
+//    obs_subj->add_obs(qcp_spec_obs);
 }
 
 ///

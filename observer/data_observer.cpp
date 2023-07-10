@@ -29,7 +29,7 @@ void TableObserver::update() {
     if(m_zone == nullptr) {
         return;
     }
-    RgaUtility* inst = StaticContainer::getCrntRga();
+    RgaUtility* inst = StaticContainer::get_crnt_rga();
     if(m_zone->objectName() == "tw_info") {
         if(!m_zone->rowCount()) {
             return;
@@ -224,17 +224,14 @@ LineChartObserver::~LineChartObserver() {
 /// \param data
 ///
 void LineChartObserver::update() {
-    if(m_zone == nullptr) {
+    RgaUtility* inst = StaticContainer::get_crnt_rga();
+    if(m_zone == nullptr || !inst->get_is_new_data()) {
         return;
     }
-    RgaUtility* inst = StaticContainer::getCrntRga();
     int i_xVal = (int)QTime::currentTime().msecsSinceStartOfDay() / 1000;
     static double lastPointKey = 0;
     double d_scanTm = inst->get_scan_tm_total() / 1000;
     if ((i_xVal - lastPointKey) < d_scanTm) { //add a point according to the scan time
-        return;
-    }
-    if(!inst->get_is_new_data() || !StaticContainer::STC_ISCHARTPAGE) {
         return;
     }
     QVector<double> ld_values = inst->get_scan_val();
@@ -244,9 +241,8 @@ void LineChartObserver::update() {
     }
     lastPointKey = i_xVal;
     for(int valuePos = 0; valuePos < i_dataCount; valuePos++) {
-        m_zone->graph(valuePos)->addData(i_xVal,
-                                         ld_values.at(valuePos)
-                                        );
+        qDebug() << __FUNCTION__ << valuePos;
+//        m_zone->graph(valuePos)->addData(i_xVal, ld_values.at(valuePos));
     }
     m_zone->xAxis->rescale();
     m_zone->replot(QCustomPlot::rpQueuedReplot);
@@ -284,10 +280,10 @@ SpecChartObserver::~SpecChartObserver() {
 /// \brief SpecChartObserver::update
 ///
 void SpecChartObserver::update() {
-    if(m_zone == nullptr || !StaticContainer::STC_ISINACQ || !StaticContainer::STC_ISCHARTPAGE) {
+    if(m_zone == nullptr) {
         return;
     }
-    RgaUtility* inst = StaticContainer::getCrntRga();
+    RgaUtility* inst = StaticContainer::get_crnt_rga();
     if(!inst->get_is_new_data() && !StaticContainer::STC_CELLCLICKED) {
         return;
     }
@@ -327,7 +323,7 @@ void TextInfoObserver::update() {
     if(m_zone == nullptr || !StaticContainer::STC_ISINACQ || !StaticContainer::STC_ISCHARTPAGE) {
         return;
     }
-    RgaUtility* inst = StaticContainer::getCrntRga();
+    RgaUtility* inst = StaticContainer::get_crnt_rga();
     int i_selCnt = StaticContainer::STC_SELMASS.count();
     QVector<double> ld_values = inst->get_scan_val();
     if(!inst->get_is_new_data() && !StaticContainer::STC_CELLCLICKED) {
@@ -406,7 +402,7 @@ TbObserver::~TbObserver() {
 }
 
 void TbObserver::update() {
-    auto inst = StaticContainer::getCrntRga();
+    auto inst = StaticContainer::get_crnt_rga();
     if(inst == nullptr || btn_name == "") {
         return;
     }

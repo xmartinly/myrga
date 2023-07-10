@@ -36,7 +36,7 @@ StaticContainer::StaticContainer(QObject* parent): QObject(parent) {
 StaticContainer::~StaticContainer() {
 }
 
-RgaUtility* StaticContainer::getCrntRga() {
+RgaUtility* StaticContainer::get_crnt_rga() {
     return m_crntRga;
 }
 
