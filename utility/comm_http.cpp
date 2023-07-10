@@ -66,6 +66,9 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
             d->manager->cookieJar()->cookiesForUrl(reply->url());
         QString s_rgaIp = lc_cookie.value(0).domain();
         QByteArray data = reply->readAll();
+        if(StaticContainer::STC_ISDEBUG) {
+            qDebug() << __FUNCTION__ << data;
+        }
         QJsonParseError jsonpe;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
         if (jsonpe.error == QJsonParseError::NoError) {

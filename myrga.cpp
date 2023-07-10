@@ -436,7 +436,6 @@ void MyRga::closeEvent(QCloseEvent* event) {
             http_cli->cmd_exec(cmd);
             QThread::msleep(200);
         }
-//        http_cli->set_stop_cli();
         event->accept();
     } else {
         event->ignore();

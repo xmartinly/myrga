@@ -573,9 +573,13 @@ void RgaUtility::gen_scan_set() {
                     m_rcpt.sl_points,
                     i_headList
                 );
-    m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
-    RgaActions flmt_idx = get_flmt_idx() == "1" ? SetFlmt1st : SetFlmt2nd;
+    RgaActions flmt_idx = SetFlmt1st;
+    if( m_rcpt.s_flmtIdx == "2") {
+        flmt_idx = SetFlmt2nd;
+    }
+    qDebug() << flmt_idx << m_rcpt.s_flmtIdx;
     m_scanSet.append(gen_rga_action(flmt_idx));
+    m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
     m_scanSet.append(m_cmd.setTpUnits(rga_addr, m_rcpt.s_pUnit));
     m_scanSet.append(gen_rga_action(SetScanCnt));
     m_scanSet.append(gen_rga_action(OpenFlmt));

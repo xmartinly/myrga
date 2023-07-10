@@ -29,6 +29,8 @@ class StaticContainer: public QObject {
 
     static bool    STC_ISMISCINFO;
 
+    static bool    STC_ISDEBUG;
+
     static int     STC_ACQINTVL;
 
     static int     STC_IDLINTVL;

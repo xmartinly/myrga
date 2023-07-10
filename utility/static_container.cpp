@@ -10,6 +10,8 @@ bool StaticContainer::STC_ISINACQ       = false;
 
 bool StaticContainer::STC_ISMISCINFO    = false;
 
+bool StaticContainer::STC_ISDEBUG       = false;
+
 int StaticContainer::STC_ACQINTVL       = 250;
 
 int StaticContainer::STC_IDLINTVL       = 500;
