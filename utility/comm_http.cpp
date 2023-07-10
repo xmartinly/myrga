@@ -156,6 +156,7 @@ void CommHttp::get_calc_resp(int type_, const QVariantMap& vm_data) {
     //scan data
     if(type == ScanData) {
         QJsonObject jo_scan_data = vm_data.value("data").toJsonObject();
+        qDebug() << jo_scan_data;
         inst->set_scan_data(jo_scan_data);
         if(inst->get_is_save_data()) {
             inst->write_scan_data();
