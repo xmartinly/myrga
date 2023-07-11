@@ -100,6 +100,8 @@ class MyRga : public QMainWindow
     bool tw_info_visable = false;
     // misc info address column click count
     int rga_addr_click_cnt = 0;
+    //line/spec chart menu
+    QMenu* chat_right_b_menu = nullptr;
 
   private:
     // initialize data table
