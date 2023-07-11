@@ -121,6 +121,7 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
+    ui->frame_settings->setHidden(!rga_inst->get_acquire_state());
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
                  "Off",
@@ -171,6 +172,10 @@ void MyRga::on_actionExit_triggered() {
 void MyRga::on_cb_method_currentIndexChanged(int index) {
     ui->frame_points->setVisible(index);
     ui->frame_range->setVisible(!index);
+    ui->cb_ppamu->setDisabled(index);
+    ui->cb_ppamu->setCurrentIndex(0);
+    ui->cb_unitreport->setDisabled(index);
+    ui->cb_unitreport->setCurrentIndex(0);
 }
 
 ///
@@ -364,6 +369,7 @@ void MyRga::init_scan() {
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
         rga_inst->set_acquire_state(false);
+        rga_inst->init_data_file(false);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
         return;
@@ -375,6 +381,10 @@ void MyRga::init_scan() {
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
+    if(rga_inst->get_is_save_data()) {
+        rga_inst->init_data_file(true);
+    }
+    StaticContainer::STC_SELMASS.clear();
     init_data_tbl();
     init_line_chart();
     init_spec_chart();
@@ -622,4 +632,43 @@ void MyRga::set_last_rcpt() {
 }
 
 
+
+
+void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
+    if(!rga_inst) {
+        return;
+    }
+    if(row == 0) {
+        ++rga_addr_click_cnt;
+    } else {
+        rga_addr_click_cnt = 0;
+    }
+    if(rga_addr_click_cnt == 5 && rga_inst->get_in_ctrl()) {
+        QMessageBox::StandardButton btn = QMessageBox::question(this, u8"Reboot", u8"Are you sure to reboot RGA?", QMessageBox::Yes | QMessageBox::No);
+        if(btn == QMessageBox::Yes) {
+            http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
+            acq_tmr->stop();
+            idle_tmr->start(StaticContainer::STC_IDLINTVL);
+            rga_inst->set_acquire_state(false);
+            rga_inst->reset_all();
+            update_obs();
+        }
+        rga_addr_click_cnt = 0;
+        return;
+    }
+    if((row == 8) && (rga_inst->get_err_cnt() > 0)) {
+        QMessageBox::warning(this, "Error", rga_inst->get_err_list().join("\n"));
+        return;
+    }
+    if(row == 7) {
+        bool save_data = rga_inst->get_is_save_data();
+        QString is_save = u8"Set data log %1?";
+        QMessageBox::StandardButton btn = QMessageBox::question(this, "DataLog", is_save.arg(save_data ? "off" : "on"), QMessageBox::Yes | QMessageBox::No);
+        save_data = !save_data;
+        if(btn == QMessageBox::Yes) {
+            rga_inst->set_is_save_data(save_data);
+        }
+        return;
+    }
+}
 

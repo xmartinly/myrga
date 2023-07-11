@@ -95,14 +95,14 @@ void TableObserver::update() {
         m_zone->item(6, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptRptUnit));
         //datalog state       7
         m_zone->item(7, 1)->setText(b_isSaveData ? "On" : "Off");
-        if(b_isSaveData) {
-            m_zone->item(7, 1)->setToolTip(inst->get_file_name());
-        }
+        m_zone->item(7, 1)->setToolTip(b_isSaveData ? inst->get_file_name() : "");
         //error list    8
         m_zone->item(8, 1)->setText(s_errCnt);
         m_zone->item(8, 1)->setForeground(b_isHasErr ? Qt::darkMagenta : Qt::black);
         //run tm    9
-        m_zone->item(9, 1)->setText(inst->get_str_runtm() + "");
+        if(inst->get_acquire_state()) {
+            m_zone->item(9, 1)->setText(inst->get_str_runtm() + "");
+        }
         //scan tm   10
         m_zone->item(10, 1)->setText(QString::number(inst->get_scan_tm_total(), 'f', 2) + " ms");
         //total pressure
@@ -360,10 +360,10 @@ void TextInfoObserver::update() {
                        inst->get_em_gain_val(),
                        inst->get_pres_unit(true).toInt()
                    );
-            s_val.append("; PP:" + QString::number(d_pp, 'e', 3) + " " + inst->get_pres_unit());
+            s_val.append("; PP:" + QString::number(d_pp, 'e', 2) + " " + inst->get_pres_unit());
         }
         d_ppm =  1000000 * d_pp / d_pressure;
-        s_val.append("; PPM:" + QString::number(d_ppm, 'e', 3));
+        s_val.append("; PPM:" + QString::number(d_ppm, 'e', 2));
         sl_vals.append(s_val);
         sl_mzs.append(s_mz);
     }

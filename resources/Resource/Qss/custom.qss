@@ -189,7 +189,8 @@ QScrollArea {
 /* QTableWidget                                    */
 /* =============================================== */
 QTableWidget,QListWidget {
-    border: 1px dashed #2E598A;
+/*    border: 1px dashed #2E598A;*/
+    border:none;
 }
 
 QTableWidget::item:selected, QListWidget::item:selected{
@@ -371,11 +372,11 @@ QTextEdit:focus {
 
 
 QTextBrowser{
-    /*border: 1px dashed #2196F3;*/
+/*    border: 1px dashed #2196F3;*/
     border: none;
 }
 QTextEdit:hover {
-    border: none;
+    border-bottom: none;
     border-top: none;
     border-left: none;
     border-right: none;

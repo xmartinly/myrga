@@ -12,6 +12,9 @@ RgaUtility::RgaUtility() {
 }
 
 RgaUtility::~RgaUtility() {
+    if(data_file_ptr) {
+        delete data_file_ptr;
+    }
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
@@ -238,7 +241,7 @@ const bool RgaUtility::get_acquire_state() {
 //}
 
 
-void RgaUtility::int_data_file(bool is_crateFile) {
+void RgaUtility::init_data_file(bool is_crateFile) {
     if(!is_crateFile) {
         delete data_file_ptr;
         data_file_ptr = nullptr;
@@ -313,7 +316,6 @@ const QString RgaUtility::gen_file_header() {
     bool b_isSweep = m_rcpt.s_method == "Sweep";
     QString s_range = b_isSweep ? s_sweepRange : s_points;
     int i_ppamu = m_rcpt.s_ppamu.toInt();
-    sl_rcptInfo.append("Recipe:," + m_rcpt.s_rcpName);
     sl_rcptInfo.append("Method:," + m_rcpt.s_method);
     sl_rcptInfo.append("Range:," + s_range);
     sl_rcptInfo.append("Dwell:," + m_rcpt.s_dwell);
@@ -424,7 +426,7 @@ const QStringList RgaUtility::get_scan_pos() {
 ///
 void RgaUtility::set_is_save_data(bool save_data) {
     if(save_data) {
-        int_data_file();
+        init_data_file();
     }
     is_save_data = save_data;
 }
@@ -538,13 +540,9 @@ void RgaUtility::gen_idle_set() {
     bool b_isEmOpened = get_status(EMState);
     bool b_isFlmtOpened = get_status(EmissState);
     bool b_isSetEmOn  = m_rcpt.s_emOpt == "On";
-//    bool flmt_sel_confirm = m_rcpt.s_flmtIdx == m_stat.s_curntFlmt;
     foreach (auto act, idl_actions) {
         m_idlSet.append(gen_rga_action(act));
     }
-//    if(!flmt_sel_confirm) {
-//        m_idlSet.append(gen_rga_action(GetCrntFlmt));
-//    }
     if(b_isSetEmOn && !b_isEmOpened && b_isFlmtOpened && m_rcpt.s_emOpt == "1") {
         m_idlSet.append(gen_rga_action(OpenEm));
     }

@@ -68,6 +68,8 @@ class MyRga : public QMainWindow
 
     void tbl_click(int row, int);
 
+    void on_tw_info_cellDoubleClicked(int row, int);
+
   private:
     Ui::MyRga* ui;
     // RgaUtility
@@ -96,6 +98,8 @@ class MyRga : public QMainWindow
     QPixmap pd_svg = DataHelper::get_pixmap("flash_on");
     // is misc info opened
     bool tw_info_visable = false;
+    // misc info address column click count
+    int rga_addr_click_cnt = 0;
 
   private:
     // initialize data table
@@ -128,6 +132,7 @@ class MyRga : public QMainWindow
     void closeEvent(QCloseEvent* event);
     // read last rcpt and setup the checkbox, line_edit,etc
     void set_last_rcpt();
+
 
 
   public slots:

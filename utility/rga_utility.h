@@ -135,7 +135,7 @@ class RgaUtility {
 
     QFile*        data_file_ptr     = nullptr;
     //if save data to file.
-    bool          is_save_data      = false;
+    bool          is_save_data      = true;
     //count for get last scan data
     int           scan_count        = 0;
     //low limit value for show
@@ -147,21 +147,21 @@ class RgaUtility {
     //rga acquire run time total
     qint64        recipe_run_tm     = 0;
     //spec chart data positions for analog scan
-    QVector<double> spec_data_pos   = {};
+    QVector<double>  spec_data_pos  = {};
     //spec chart x axis ticks
-    QVector<double> spec_x_ticks    = {};
+    QVector<double>  spec_x_ticks   = {};
     //spec chart x axis labels
     QVector<QString> spec_x_labels  = {};
     //rga address. eg. http://192.168.1.100:80
-    QString       rga_addr          = "";
+    QString          rga_addr          = "";
     //rga tag.
-    QString       rga_tag           = "";
+    QString          rga_tag        = "";
     //rga electronic box serial number
-    QString       rga_sn            = "";
+    QString          rga_sn         = "";
     //data file name
-    QString       data_file_name    = "";
+    QString          data_file_name = "";
     //data in string format and store into file every ten scans or stop triggered.
-    QString       string_data       = "";
+    QString          string_data    = "";
     //HttpCommand string generate function pointer define
     typedef const QString (*cmd_str_func_ptr)(const QString&);
     //HttpCommand string generate function pointer array
@@ -205,7 +205,7 @@ class RgaUtility {
 
     //*************************************************************************************//
     //**  data file operations
-    void int_data_file(bool is_crateFile = true);
+    void init_data_file(bool is_crateFile = true);
     void write_scan_data(bool final = false);
     const QString get_file_name();
 
