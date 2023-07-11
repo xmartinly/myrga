@@ -360,14 +360,14 @@ void TextInfoObserver::update() {
                        inst->get_em_gain_val(),
                        inst->get_pres_unit(true).toInt()
                    );
-            s_val.append("; PP:" + QString::number(d_pp, 'e', 2) + " " + inst->get_pres_unit());
+            s_val.append("\nPP:" + QString::number(d_pp, 'e', 2) + " " + inst->get_pres_unit());
         }
         d_ppm =  1000000 * d_pp / d_pressure;
         s_val.append("; PPM:" + QString::number(d_ppm, 'e', 2));
         sl_vals.append(s_val);
         sl_mzs.append(s_mz);
     }
-    QString s_temp = "m/z: %1\nValue: %2\nElement: %3\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n";
+    QString s_temp = "m/z: %1\nValue: %2\nElement: %3\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n";
     for (int var = 0; var < i_selCnt; ++var) {
         s_info.append(s_temp.arg(
                           sl_mzs.at(var),
