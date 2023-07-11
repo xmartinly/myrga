@@ -719,8 +719,12 @@ const QStringList RgaUtility::get_tbl_col(bool b_isChartPage) {
 /// \brief RgaUtility::setRgaAddr
 /// \param addr
 ///
-void RgaUtility::set_rga_addr(QString addr) {
-    rga_addr = addr;
+void RgaUtility::set_rga_addr(QString address) {
+    rga_addr = address;
+    QString addr = address.replace("http://", "");
+    QStringList sl_addr = addr.split(":");
+    rga_ip = sl_addr.at(0);
+    rga_port = sl_addr.at(1);
 }
 
 ///
@@ -1139,6 +1143,27 @@ void RgaUtility::set_scan_data(const QJsonObject& rga_scanData) {
 ///
 void RgaUtility::reset_scan_data() {
     m_scanData.resetData();
+}
+
+void RgaUtility::set_rga_ip(const QString& ip) {
+    rga_ip = ip;
+}
+
+void RgaUtility::set_rga_port(const QString& port) {
+    rga_port = port;
+}
+
+const QString RgaUtility::get_rga_ip() {
+    return rga_ip;
+}
+
+const QString RgaUtility::get_rga_port() {
+    return rga_port;
+}
+
+void RgaUtility::gen_rga_addr() {
+    QString addr = "http://1%2%";
+    rga_addr = addr.arg(rga_ip, rga_port == "" ? "" : ":" + rga_port);
 }
 
 void RgaUtility::set_is_new_data(bool is_new_data) {

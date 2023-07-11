@@ -27,6 +27,16 @@ MyRga::MyRga(QWidget* parent)
     obs_subj = new ObserverSubject;
     http_cli = CommHttp::GetInstance();
     connect(http_cli, &CommHttp::resp_arrival, this, &MyRga::update_obs);
+    chart_right_b_menu = new QMenu(this);
+    action_y_type->setObjectName("action_y_type");
+    action_rescale->setObjectName("action_rescale");
+    action_print->setObjectName("action_print");
+    chart_right_b_menu->addAction(action_y_type);
+    chart_right_b_menu->addAction(action_rescale);
+    chart_right_b_menu->addAction(action_print);
+    connect(chart_right_b_menu, &QMenu::triggered, this, &MyRga::chart_actions);
+    connect(ui->qcp_line, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
+    connect(ui->qcp_spec, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
     setup_obs();
     read_current_config();
     set_last_rcpt();
@@ -474,6 +484,10 @@ void MyRga::read_current_config(bool only_rcpt) {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
+    qDebug() << s_ip << rga_inst->get_rga_ip();
+    if(rga_inst->get_rga_ip() != s_ip) {
+        rga_disconn();
+    }
     QString rga_addr = "http://" + s_ip + ":" + s_port;
     rga_inst->reset_all();
     rga_inst->set_rga_addr(rga_addr);
@@ -553,14 +567,9 @@ void MyRga::closeEvent(QCloseEvent* event) {
                                          QMessageBox::Yes | QMessageBox::No,
                                          QMessageBox::No);
     if (result == QMessageBox::Yes) {
-        setWindowFlags(Qt::FramelessWindowHint);            //无边框
-        setAttribute(Qt::WA_TranslucentBackground);         //背景透明
-        QStringList exit_sets = rga_inst->get_close_set();
-        foreach (auto cmd, exit_sets) {
-            http_cli->cmd_exec(cmd);
-            QThread::msleep(200);
-        }
-        rga_inst->write_scan_data(true);
+        setWindowFlags(Qt::FramelessWindowHint);
+        setAttribute(Qt::WA_TranslucentBackground);
+        rga_disconn();
         event->accept();
     } else {
         event->ignore();
@@ -633,6 +642,21 @@ void MyRga::set_last_rcpt() {
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
 
+void MyRga::rga_disconn() {
+    if(!rga_inst) {
+        return;
+    }
+    if(acq_tmr->isActive()) {
+        acq_tmr->stop();
+    }
+    QStringList exit_sets = rga_inst->get_close_set();
+    foreach (auto cmd, exit_sets) {
+        http_cli->cmd_exec(cmd);
+        QThread::msleep(200);
+    }
+    rga_inst->write_scan_data(true);
+}
+
 
 
 
@@ -672,5 +696,64 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         }
         return;
     }
+}
+
+void MyRga::chart_right_click(QMouseEvent* event) {
+    QCustomPlot* plot = qobject_cast<QCustomPlot*>(sender());
+    bool right_btn_click = event->button() == Qt::RightButton,
+         shift_btn_press = QApplication::keyboardModifiers() == Qt::ShiftModifier;
+    if(!right_btn_click) {
+        return;
+    }
+    if(right_btn_click && !shift_btn_press) {
+        chart_right_b_menu->exec(QCursor::pos());
+        return;
+    }
+}
+
+void MyRga::chart_actions(QAction* action) {
+    QString action_name = action->objectName();
+    if(action_name == "action_print") {
+        QPrinter printer;
+        QPrintPreviewDialog preview_dialog(&printer, this);
+        preview_dialog.setGeometry(50, 50, 1200, 700);
+        connect(&preview_dialog, &QPrintPreviewDialog::paintRequested, this, &MyRga::print_chart);
+        preview_dialog.exec();
+        return;
+    }
+    QCustomPlot* qcp_line = ui->qcp_line;
+    if(action_name == "action_y_type") {
+        int line_scale_type = qcp_line->yAxis->scaleType();
+        QSharedPointer<QCPAxisTicker> linear_ticker(new QCPAxisTicker);
+        QSharedPointer<QCPAxisTickerLog> log_ticker(new QCPAxisTickerLog);
+        qcp_line->yAxis->setScaleType(line_scale_type ? QCPAxis::stLinear : QCPAxis::stLogarithmic);
+        qcp_line->yAxis->setTicker(line_scale_type ? linear_ticker : log_ticker);
+        qcp_line->rescaleAxes();
+        qcp_line->replot();
+        return;
+    }
+    if(action_name == "action_rescale") {
+        qcp_line->rescaleAxes();
+        qcp_line->replot();
+    }
+}
+
+void MyRga::print_chart(QPrinter* printer) {
+    QCustomPlot* qcp_line = ui->qcp_line;
+    QCustomPlot* qcp_spec = ui->qcp_spec;
+    printer->setPageOrientation(QPageLayout::Landscape);
+    printer->setColorMode(QPrinter::Color);
+    printer->setFullPage(false);
+    QCPPainter painter(printer);
+    int plotWidth = 1600;
+    int plotHeight = 1000;
+    double scale = 0.75;
+    painter.setMode(QCPPainter::pmVectorized);
+    painter.setMode(QCPPainter::pmNoCaching);
+    painter.setMode(QCPPainter::pmNonCosmetic); // comment this out if you want cosmetic thin lines (always 1 pixel thick independent of pdf zoom level)
+    painter.scale(scale, scale);
+    qcp_line->toPainter(&painter, plotWidth - 140, plotHeight);
+    printer->newPage();
+    qcp_spec->toPainter(&painter, plotWidth - 140, plotHeight);
 }
 

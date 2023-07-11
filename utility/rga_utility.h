@@ -162,6 +162,9 @@ class RgaUtility {
     QString          data_file_name = "";
     //data in string format and store into file every ten scans or stop triggered.
     QString          string_data    = "";
+    //rga ip and port
+    QString          rga_ip = "";
+    QString          rga_port = "";
     //HttpCommand string generate function pointer define
     typedef const QString (*cmd_str_func_ptr)(const QString&);
     //HttpCommand string generate function pointer array
@@ -172,6 +175,13 @@ class RgaUtility {
     void reset_all();
     void setup_func_ptrs();
     void reset_scan_data();
+
+    void set_rga_ip(const QString& ip);
+    void set_rga_port(const QString& port);
+    const QString get_rga_ip();
+    const QString get_rga_port();
+    void gen_rga_addr();
+
 
     //*************************************************************************************//
     //**  em gain

@@ -70,6 +70,12 @@ class MyRga : public QMainWindow
 
     void on_tw_info_cellDoubleClicked(int row, int);
 
+    void chart_right_click(QMouseEvent* event);
+
+    void chart_actions(QAction* action);
+
+    void print_chart(QPrinter* printer);
+
   private:
     Ui::MyRga* ui;
     // RgaUtility
@@ -100,8 +106,13 @@ class MyRga : public QMainWindow
     bool tw_info_visable = false;
     // misc info address column click count
     int rga_addr_click_cnt = 0;
-    //line/spec chart menu
-    QMenu* chat_right_b_menu = nullptr;
+    // line/spec chart menu
+    QMenu* chart_right_b_menu = nullptr;
+    // chart menu actions
+    QAction* action_y_type = new QAction(tr("Toggle yAxis"), this);
+    QAction* action_print = new QAction(tr("Print"), this);
+    QAction* action_rescale = new QAction(tr("Reset"), this);
+
 
   private:
     // initialize data table
@@ -135,6 +146,7 @@ class MyRga : public QMainWindow
     // read last rcpt and setup the checkbox, line_edit,etc
     void set_last_rcpt();
 
+    void rga_disconn();
 
 
   public slots:
