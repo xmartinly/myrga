@@ -13,6 +13,7 @@ RgaUtility::RgaUtility() {
 
 RgaUtility::~RgaUtility() {
     if(data_file_ptr) {
+        data_file_ptr = nullptr;
         delete data_file_ptr;
     }
 }
@@ -111,6 +112,15 @@ void RgaUtility::setup_func_ptrs() {
     cmd_str_arr[21]   = &HttpCommand::setScanCnt;
     cmd_str_arr[22]   = &HttpCommand::getEmGainReq;
     cmd_str_arr[23]   = &HttpCommand::getFcSensReq;
+}
+
+///
+/// \brief RgaUtility::genRgaAction
+/// \param action
+/// \return
+///
+const QString RgaUtility::gen_rga_action(RgaActions action) {
+    return (cmd_str_arr[static_cast<int>(action)])(rga_addr);
 }
 
 ///
@@ -596,14 +606,7 @@ void RgaUtility::gen_scan_set() {
     m_scanSet.append(gen_rga_action(GetScanTm));
 }
 
-///
-/// \brief RgaUtility::genRgaAction
-/// \param action
-/// \return
-///
-const QString RgaUtility::gen_rga_action(RgaActions action) {
-    return (cmd_str_arr[static_cast<int>(action)])(rga_addr);
-}
+
 
 ///
 /// \brief RgaUtility::getRcptInfo

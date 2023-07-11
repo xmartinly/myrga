@@ -112,6 +112,8 @@ class MyRga : public QMainWindow
     QAction* action_y_type = new QAction(tr("Toggle yAxis"), this);
     QAction* action_print = new QAction(tr("Print"), this);
     QAction* action_rescale = new QAction(tr("Reset"), this);
+    // visual cursor
+    QCPItemLine* v_curs = nullptr;
 
 
   private:

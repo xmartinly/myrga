@@ -18,7 +18,6 @@ void ResponseCalc::set_json_obj(const QJsonObject& data) {
 void ResponseCalc::run() {
     CommHttp::RespType resp_type = CommHttp::RespType::ResRespNone;
     QVariantMap vm_data;
-//    vm_data.insert("rga_id", s_id);
     QString s_origin = m_objData.value("origin").toString();
     //am in controll
     if(s_origin.indexOf("amInControl") > -1) {
@@ -82,6 +81,7 @@ void ResponseCalc::run() {
         jo_data_temp = m_objData.value("data").toObject();
         QJsonObject jo_scan = {};
         jo_scan = m_objData.value("data").toObject();
+//        qDebug() << jo_scan;
         if(jo_data_temp.value("scannum").toInt() > inst->get_scan_num()) {
             QJsonArray ja_values = jo_scan.value("values").toArray();
             ja_values.pop_front();

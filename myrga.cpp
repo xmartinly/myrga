@@ -72,6 +72,7 @@ void MyRga::on_tb_menu_clicked() {
 /// \brief MyRga::on_tb_recipe_clicked
 ///
 void MyRga::on_tb_recipe_clicked() {
+    acq_tmr->stop();
     dlg_recipe->exec();
 }
 
@@ -318,7 +319,6 @@ void MyRga::init_spec_chart() {
 ///
 void MyRga::init_line_chart() {
     QStringList sl_col = rga_inst->get_tbl_col(true);
-//    qDebug() << __FUNCTION__ << sl_col;
     QCustomPlot* line_chart = ui->qcp_line;
     int i_lineCnt = sl_col.count();
     line_chart->setNoAntialiasingOnDrag(true);
@@ -388,6 +388,9 @@ void MyRga::init_scan() {
     read_current_config(true);
     StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
+    foreach (auto s, rga_inst->get_scan_set()) {
+        qDebug() << s;
+    }
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
@@ -484,7 +487,6 @@ void MyRga::read_current_config(bool only_rcpt) {
         return;
     }
     s_port = qm_rga_conn.value("Port").toStdString().c_str();
-    qDebug() << s_ip << rga_inst->get_rga_ip();
     if(rga_inst->get_rga_ip() != s_ip) {
         rga_disconn();
     }
@@ -642,6 +644,9 @@ void MyRga::set_last_rcpt() {
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
 
+///
+/// \brief MyRga::rga_disconn. actions: scan stop, close em, close emission, release control
+///
 void MyRga::rga_disconn() {
     if(!rga_inst) {
         return;
@@ -656,8 +661,6 @@ void MyRga::rga_disconn() {
     }
     rga_inst->write_scan_data(true);
 }
-
-
 
 
 void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
@@ -698,19 +701,64 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     }
 }
 
+///
+/// \brief MyRga::chart_right_click
+/// \param event
+///
 void MyRga::chart_right_click(QMouseEvent* event) {
-    QCustomPlot* plot = qobject_cast<QCustomPlot*>(sender());
+//    QCustomPlot* plot = qobject_cast<QCustomPlot*>(sender());
     bool right_btn_click = event->button() == Qt::RightButton,
          shift_btn_press = QApplication::keyboardModifiers() == Qt::ShiftModifier;
     if(!right_btn_click) {
         return;
     }
+    // right click to pop out action menu
     if(right_btn_click && !shift_btn_press) {
         chart_right_b_menu->exec(QCursor::pos());
         return;
     }
+    if(! rga_inst->get_acquire_state()) {
+        return;
+    }
+    // virtual line for line chart, shown values at the mouse position
+    auto qcp_line = ui->qcp_line;
+    QList<int> sel_mass = StaticContainer::STC_SELMASS;
+    sel_mass.append(0);
+    double x_pos = qcp_line->xAxis->pixelToCoord(event->pos().x());
+    int data_tbl_checked_count = sel_mass.count(),
+        line_graph_count = qcp_line->graphCount();
+    if (line_graph_count < 1 || data_tbl_checked_count  < 1) {
+        return;
+    }
+    // re initial virtual cursor
+    if(qcp_line->hasItem(v_curs)) {
+        qcp_line->removeItem(v_curs);
+        v_curs = nullptr;
+    }
+    v_curs = new QCPItemLine(qcp_line);
+    v_curs->setPen(QColor(51, 153, 204, 160));
+    v_curs->start->setCoords(x_pos, QCPRange::minRange);
+    v_curs->end->setCoords(x_pos, QCPRange::maxRange * 0.9);
+    qcp_line->legend->setVisible(true);
+    qcp_line->legend->clearItems();
+    QList<double> dl_specData = {};
+    for(int i = 0; i < line_graph_count ; i ++) {
+        double _value = qcp_line->graph(i)->data()->findBegin(x_pos)->value;
+        dl_specData << _value;
+        QString _valueString = QString::number(_value, 'e', 3);
+        if(sel_mass.contains(i)) {
+            QString _numString = ui->tw_data->item(i, 0)->text();
+            qcp_line->plottable(i)->setName(_numString + " : " + _valueString );
+            qcp_line->plottable(i)->addToLegend();
+        }
+        qcp_line->replot(QCustomPlot::rpQueuedReplot);
+    }
 }
 
+///
+/// \brief MyRga::chart_actions
+/// \param action
+///
 void MyRga::chart_actions(QAction* action) {
     QString action_name = action->objectName();
     if(action_name == "action_print") {
@@ -721,6 +769,7 @@ void MyRga::chart_actions(QAction* action) {
         preview_dialog.exec();
         return;
     }
+    // setup line chart ticker and scale type
     QCustomPlot* qcp_line = ui->qcp_line;
     if(action_name == "action_y_type") {
         int line_scale_type = qcp_line->yAxis->scaleType();
@@ -732,12 +781,17 @@ void MyRga::chart_actions(QAction* action) {
         qcp_line->replot();
         return;
     }
+    // rescale line chart
     if(action_name == "action_rescale") {
         qcp_line->rescaleAxes();
         qcp_line->replot();
     }
 }
 
+///
+/// \brief MyRga::print_chart. print line and spec chart to pdf.
+/// \param printer
+///
 void MyRga::print_chart(QPrinter* printer) {
     QCustomPlot* qcp_line = ui->qcp_line;
     QCustomPlot* qcp_spec = ui->qcp_spec;
