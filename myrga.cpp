@@ -47,6 +47,10 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
+    delete dlg_add;
+    delete dlg_recipe;
+    dlg_add = nullptr;
+    dlg_recipe = nullptr;
     delete obs_subj;
     delete rga_inst;
     delete ui;
@@ -72,10 +76,11 @@ void MyRga::on_tb_menu_clicked() {
 /// \brief MyRga::on_tb_recipe_clicked
 ///
 void MyRga::on_tb_recipe_clicked() {
-    acq_tmr->stop();
     dlg_recipe->exec();
+    if(acq_tmr->isActive()) {
+        acq_tmr->stop();
+    }
 }
-
 ///
 /// \brief MyRga::on_tb_flmt_clicked
 ///
@@ -89,7 +94,6 @@ void MyRga::on_tb_flmt_clicked() {
     bool flmt_on = rga_inst->get_status(RgaUtility::SysStatusCode::EmissState);
     http_cli->cmd_exec(rga_inst->gen_rga_action(flmt_on ? RgaUtility::CloseFlmt : RgaUtility::OpenFlmt));
 }
-
 ///
 /// \brief MyRga::on_tb_em_clicked
 ///
@@ -103,7 +107,6 @@ void MyRga::on_tb_em_clicked() {
     bool em_on = rga_inst->get_status(RgaUtility::SysStatusCode::EMState);
     http_cli->cmd_exec(rga_inst->gen_rga_action(em_on ? RgaUtility::CloseEm : RgaUtility::OpenEm));
 }
-
 ///
 /// \brief MyRga::on_tb_info_clicked
 ///
@@ -112,22 +115,18 @@ void MyRga::on_tb_info_clicked() {
     ui->frm_misc->setVisible(tw_info_visable);
     StaticContainer::STC_ISMISCINFO = tw_info_visable;
 }
-
-
 ///
 /// \brief MyRga::on_tb_review_clicked
 ///
 void MyRga::on_tb_review_clicked() {
     http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
 }
-
 ///
 /// \brief MyRga::on_tb_link_clicked
 ///
 void MyRga::on_tb_link_clicked() {
     read_current_config();
 }
-
 ///
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
@@ -154,28 +153,24 @@ void MyRga::on_tb_ctrl_clicked() {
     }
     init_scan();
 }
-
 ///
 /// \brief MyRga::on_actionRecipe_triggered
 ///
 void MyRga::on_actionRecipe_triggered() {
     dlg_recipe->exec();
 }
-
 ///
 /// \brief MyRga::on_actionComm_triggered
 ///
 void MyRga::on_actionComm_triggered() {
     dlg_add->exec();
 }
-
 ///
 /// \brief MyRga::on_actionExit_triggered
 ///
 void MyRga::on_actionExit_triggered() {
     this->close();
 }
-
 ///
 /// \brief MyRga::on_cb_method_currentIndexChanged
 /// \param index
@@ -188,7 +183,6 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
     ui->cb_unitreport->setDisabled(index);
     ui->cb_unitreport->setCurrentIndex(0);
 }
-
 ///
 /// \brief MyRga::idle_tmr_action
 ///
@@ -213,7 +207,6 @@ void MyRga::idle_tmr_action() {
         rga_inst->reset_over_tm();
     }
 }
-
 ///
 /// \brief MyRga::acq_tmr_action
 ///
@@ -235,8 +228,6 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
     }
 }
-
-
 ///
 /// \brief MyRga::initDataTbl
 ///
@@ -271,7 +262,6 @@ void MyRga::init_data_tbl(bool is_misc_info) {
         connect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click, Qt::UniqueConnection);
     }
 }
-
 void MyRga::tbl_click(int row, int) {
     bool b_rowChecked = ui->tw_data->item(row, 0)->checkState();
     ui->qcp_line->graph(row)->setVisible(b_rowChecked);
@@ -295,8 +285,6 @@ void MyRga::tbl_click(int row, int) {
     update_obs();
     StaticContainer::STC_CELLCLICKED = false;
 }
-
-
 ///
 /// \brief MyRga::initSpecChart
 ///
@@ -313,7 +301,6 @@ void MyRga::init_spec_chart() {
     spec_chart->yAxis->setRange(1e-14, 5e-2);
     spec_chart->yAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
 }
-
 ///
 /// \brief MyRga::initLineChart
 ///
@@ -347,7 +334,6 @@ void MyRga::init_line_chart() {
         line_chart->graph(line_index)->setVisible(!line_index);
     }
 }
-
 void MyRga::set_spec_xAxis() {
     if(!rga_inst) {
         return;
@@ -358,7 +344,6 @@ void MyRga::set_spec_xAxis() {
     spec_chart->xAxis->setTicker(textTicker);
     spec_chart->xAxis->setRange(0, i_data_cnt + 1);
 }
-
 QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
     rga_inst->gen_ticker();
     QVector<QString> x_labels = rga_inst->get_vs_labels();
@@ -375,7 +360,9 @@ QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
     textTicker->addTicks(x_ticks, x_labels);
     return textTicker;
 }
-
+///
+/// \brief MyRga::init_scan
+///
 void MyRga::init_scan() {
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
@@ -388,9 +375,6 @@ void MyRga::init_scan() {
     read_current_config(true);
     StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
-    foreach (auto s, rga_inst->get_scan_set()) {
-        qDebug() << s;
-    }
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
@@ -408,7 +392,6 @@ void MyRga::init_scan() {
     }
     acq_tmr->start(StaticContainer::STC_ACQINTVL);
 }
-
 ///
 /// \brief MyRga::save_current
 ///
@@ -427,7 +410,6 @@ void MyRga::save_current() {
                                         "0");
     DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
 }
-
 ///
 /// \brief MyRga::run_from_recipe
 /// \param dur
@@ -436,10 +418,11 @@ void MyRga::run_from_recipe(int dur) {
     if(!rga_inst) {
         return;
     }
+    read_current_config(true);
     rga_inst->set_run_set(dur);
+    set_last_rcpt();
     init_scan();
 }
-
 ///
 /// \brief MyRga::read_current_config
 /// \param only_rcpt
@@ -496,7 +479,6 @@ void MyRga::read_current_config(bool only_rcpt) {
     rga_inst->set_rga_tag(s_tag);
     idle_tmr->start(StaticContainer::STC_IDLINTVL);
 }
-
 ///
 /// \brief MyRga::setup_obs
 ///
@@ -552,14 +534,12 @@ void MyRga::setup_obs() {
     tb_misc->setObjectName("tb_misc_obs");
     obs_subj->add_obs(tb_misc);
 }
-
 ///
 /// \brief MyRga::update_obs
 ///
 void MyRga::update_obs() {
     obs_subj->notify_obs();
 }
-
 ///
 /// \brief MyRga::closeEvent
 /// \param event
@@ -577,7 +557,6 @@ void MyRga::closeEvent(QCloseEvent* event) {
         event->ignore();
     }
 }
-
 ///
 /// \brief MyRga::set_last_rcpt
 ///
@@ -643,7 +622,6 @@ void MyRga::set_last_rcpt() {
     ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
     ui->cb_unitreport->setCurrentText(s_reportUnit);
 }
-
 ///
 /// \brief MyRga::rga_disconn. actions: scan stop, close em, close emission, release control
 ///
@@ -661,8 +639,6 @@ void MyRga::rga_disconn() {
     }
     rga_inst->write_scan_data(true);
 }
-
-
 void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     if(!rga_inst) {
         return;
@@ -700,7 +676,6 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         return;
     }
 }
-
 ///
 /// \brief MyRga::chart_right_click
 /// \param event
@@ -754,7 +729,6 @@ void MyRga::chart_right_click(QMouseEvent* event) {
         qcp_line->replot(QCustomPlot::rpQueuedReplot);
     }
 }
-
 ///
 /// \brief MyRga::chart_actions
 /// \param action
@@ -787,7 +761,6 @@ void MyRga::chart_actions(QAction* action) {
         qcp_line->replot();
     }
 }
-
 ///
 /// \brief MyRga::print_chart. print line and spec chart to pdf.
 /// \param printer
@@ -810,4 +783,3 @@ void MyRga::print_chart(QPrinter* printer) {
     printer->newPage();
     qcp_spec->toPainter(&painter, plotWidth - 140, plotHeight);
 }
-

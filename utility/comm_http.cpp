@@ -68,7 +68,6 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
         QByteArray data = reply->readAll();
         QJsonParseError jsonpe;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
-        qDebug() << reply->url() << json_data;
         if (jsonpe.error == QJsonParseError::NoError) {
             QJsonObject data_obj = json_data.object();
             data_obj.insert("id", s_rgaIp.replace(".", ""));
