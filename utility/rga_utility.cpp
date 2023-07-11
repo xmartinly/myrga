@@ -317,9 +317,10 @@ const QString RgaUtility::gen_file_header() {
     QString s_range = b_isSweep ? s_sweepRange : s_points;
     int i_ppamu = m_rcpt.s_ppamu.toInt();
     sl_rcptInfo.append("Method:," + m_rcpt.s_method);
-    sl_rcptInfo.append("Range:," + s_range);
     sl_rcptInfo.append("Dwell:," + m_rcpt.s_dwell);
     sl_rcptInfo.append("PPamu:," + m_rcpt.s_ppamu);
+    sl_rcptInfo.append("FCSens:," + QString::number(get_fc_sens_val(), 'e', 3));
+    sl_rcptInfo.append("EMGain:," + QString::number(get_em_gain_val(), 'e', 3));
     sl_rcptInfo.append("Addr:," + ss_addr);
     sl_rcptInfo.append("StartTm:," + QDateTime::currentDateTime().toString("yyyy-mm-dd HH:mm:ss"));
     QString s_head = sl_rcptInfo.join("\n");

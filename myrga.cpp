@@ -295,7 +295,7 @@ void MyRga::init_spec_chart() {
     spec_chart->xAxis->grid()->setVisible(false);
     spec_chart->xAxis->setTickLabelRotation(15);
     spec_chart->xAxis->setSubTicks(false);
-    spec_chart->xAxis->setTickLength(0, 4);
+    spec_chart->xAxis->setTickLength(2, 0);
     spec_chart->xAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
     spec_chart->yAxis->setNumberFormat("e"); // e = exponential, b = beautiful decimal powers
     spec_chart->yAxis->setNumberPrecision(0);
@@ -321,6 +321,7 @@ void MyRga::init_line_chart() {
     line_chart->xAxis->setTicker(timeTicker);
     line_chart->xAxis->grid()->setVisible(false);
     line_chart->xAxis->setTickLabelRotation(15);
+    line_chart->xAxis->setTickLength(2, 0);
     line_chart->yAxis->setScaleType(QCPAxis::stLogarithmic);
     QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
     line_chart->yAxis->setTicker(logTicker);
@@ -369,7 +370,7 @@ void MyRga::init_scan() {
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
         rga_inst->set_acquire_state(false);
-        rga_inst->init_data_file(false);
+        rga_inst->write_scan_data(true);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
         return;
@@ -559,6 +560,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
             http_cli->cmd_exec(cmd);
             QThread::msleep(200);
         }
+        rga_inst->write_scan_data(true);
         event->accept();
     } else {
         event->ignore();
