@@ -47,12 +47,10 @@ MyRga::MyRga(QWidget* parent)
 ///
 MyRga::~MyRga() {
     obs_subj->remove_all_obs();
-    delete dlg_add;
-    delete dlg_recipe;
-    dlg_add = nullptr;
-    dlg_recipe = nullptr;
     delete obs_subj;
     delete rga_inst;
+    delete v_curs;
+    rga_inst = nullptr;
     delete ui;
 }
 
@@ -629,15 +627,18 @@ void MyRga::rga_disconn() {
     if(!rga_inst) {
         return;
     }
+    rga_inst->write_scan_data(true);
     if(acq_tmr->isActive()) {
         acq_tmr->stop();
+    }
+    if(idle_tmr->isActive()) {
+        idle_tmr->stop();
     }
     QStringList exit_sets = rga_inst->get_close_set();
     foreach (auto cmd, exit_sets) {
         http_cli->cmd_exec(cmd);
         QThread::msleep(200);
     }
-    rga_inst->write_scan_data(true);
 }
 void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     if(!rga_inst) {

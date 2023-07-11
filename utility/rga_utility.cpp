@@ -12,10 +12,7 @@ RgaUtility::RgaUtility() {
 }
 
 RgaUtility::~RgaUtility() {
-    if(data_file_ptr) {
-        data_file_ptr = nullptr;
-        delete data_file_ptr;
-    }
+//    qDebug() << __FUNCTION__;
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
@@ -258,7 +255,6 @@ void RgaUtility::init_data_file(bool is_crateFile) {
         data_file_name.clear();
         return;
     }
-    data_file_name = "";
     gen_file_name();
     QString s_fileFolder = DataHelper::get_file_folder("data");
     QDir d_fileFolder = QDir(s_fileFolder);
@@ -292,26 +288,11 @@ void RgaUtility::write_scan_data(bool final) {
         DataHelper::write_data_file(string_data, data_file_ptr);
         string_data.clear();
     }
+    if(final) {
+        delete data_file_ptr;
+        data_file_ptr = nullptr;
+    }
 }
-
-///
-/// \brief RgaUtility::setLbText. set text label
-/// \param finish_scan. bool
-///
-//void RgaUtility::set_label_text(bool finish_scan) {
-//    int i_starts = static_cast<int>(stars_intvl) * scan_count;
-//    if(finish_scan) {
-//        i_starts = 0;
-//        scan_count = 0;
-//    }
-//    m_lb->setText("");
-//    QString s_lb = "";
-//    for (int var = 0; var < i_starts; ++var) {
-//        s_lb.append(">");
-//    }
-//    scan_count++;
-//    m_lb->setText(lb_text + s_lb);
-//}
 
 ///
 /// \brief RgaUtility::genFileHeaders
@@ -436,8 +417,8 @@ const QStringList RgaUtility::get_scan_pos() {
 /// \param save_data
 ///
 void RgaUtility::set_is_save_data(bool save_data) {
-    if(save_data) {
-        init_data_file();
+    if((save_data != get_is_save_data()) && save_data) {
+        init_data_file(true);
     }
     is_save_data = save_data;
 }
@@ -470,9 +451,8 @@ const int RgaUtility::get_acquire_cnt() {
 /// \brief RgaUtility::genDataFileName
 ///
 void RgaUtility::gen_file_name() {
-    if(data_file_name == "") {
-        data_file_name = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss_") + rga_tag + "_" + m_rcpt.s_rcpName + ".csv";
-    }
+    data_file_name = "";
+    data_file_name = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss_") + rga_tag + "_" + m_rcpt.s_rcpName + ".csv";
 }
 
 ///
@@ -591,13 +571,6 @@ void RgaUtility::gen_scan_set() {
                     i_headList
                 );
     m_scanSet.append(m_cmd.setChannelsRange(rga_addr, QString::number(m_scanSet.count())));
-//    if(m_stat.s_curntFlmt != m_rcpt.s_flmtIdx) {
-//        m_scanSet.append(gen_rga_action(CloseFlmt));
-//        m_scanSet.append(gen_rga_action(CloseFlmt));
-//        m_scanSet.append(gen_rga_action(CloseFlmt));
-//    }
-//    RgaActions flmt_idx = m_rcpt.s_flmtIdx == "1" ? SetFlmt1st : SetFlmt2nd;
-//    m_scanSet.append(gen_rga_action(flmt_idx));
     m_scanSet.append(m_cmd.setTpUnits(rga_addr, m_rcpt.s_pUnit));
     m_scanSet.append(gen_rga_action(SetScanCnt));
     m_scanSet.append(gen_rga_action(OpenFlmt));
