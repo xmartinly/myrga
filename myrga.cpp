@@ -660,7 +660,7 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         QMessageBox::warning(this, "Error", rga_inst->get_err_list().join("\n"));
         return;
     }
-    if(row == 7) {
+    if(row == 7 && !rga_inst->get_acquire_state()) {
         bool save_data = rga_inst->get_is_save_data();
         QString is_save = u8"Set data log %1?";
         QMessageBox::StandardButton btn = QMessageBox::question(this, "DataLog", is_save.arg(save_data ? "off" : "on"), QMessageBox::Yes | QMessageBox::No);
