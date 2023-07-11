@@ -12,22 +12,21 @@ RgaUtility::RgaUtility() {
 }
 
 RgaUtility::~RgaUtility() {
-//    qDebug() << __FUNCTION__;
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
     m_rcpt = rcpt;
 }
 
-bool RgaUtility::get_em_manual() const {
+bool RgaUtility::get_em_auto() const {
     return m_rcpt.s_emOpt == "1";
 }
 
-void RgaUtility::set_em_manual(int em_manual) {
-    if((em_manual < 0) || (em_manual > 1)) {
+void RgaUtility::set_em_auto(int em_auto) {
+    if((em_auto < 0) || (em_auto > 1)) {
         return;
     }
-    m_rcpt.s_emOpt = QString::number(em_manual);
+    m_rcpt.s_emOpt = QString::number(em_auto);
 }
 
 

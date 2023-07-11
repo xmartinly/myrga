@@ -378,7 +378,9 @@ class RgaUtility {
     //**  run time
     QString get_str_runtm() const;
 
-    void set_em_manual(int em_manual);
+    bool get_em_auto() const;
+
+    void set_em_auto(int em_auto);
 
   private:
     void set_scan_val(const QVector<double>& values);
@@ -387,7 +389,6 @@ class RgaUtility {
     void set_is_new_data(bool is_new_data = false);
     const QString gen_file_header();
     void gen_file_name();
-    bool get_em_manual() const;
     void add_runtm();
     //*************************************************************************************//
     //**  is sweep mode

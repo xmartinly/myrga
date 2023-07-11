@@ -223,7 +223,7 @@ QMap<QString, QString> DataHelper::gen_recipe_config(const QString& em_opt,
     rcpt.insert("Flmt",       flmt);
     rcpt.insert("PPAmu",      ppamu);
     rcpt.insert("ReportUnit", rpt_uint);
-    rcpt.insert("Run", run);
+    rcpt.insert("Run",        run);
     return rcpt;
 }
 

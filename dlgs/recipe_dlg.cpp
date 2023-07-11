@@ -151,7 +151,7 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     }
     QString s_flmt = qm_values.find("Flmt")->toStdString().c_str();
     bool b_isSweep  = s_method  == "Sweep";
-    bool b_isEmOn   = s_emOpt   == "On";
+    bool b_isEmOn   = s_emOpt   == "1";
     on_cb_method_currentIndexChanged(!b_isSweep);
     ui->cb_emauto->setChecked(b_isEmOn);
     ui->cb_method->setCurrentIndex(!b_isSweep);
@@ -188,7 +188,7 @@ void RecipeDlg::recipe_save(bool is_run) {
     QString file_path = DataHelper::get_file_folder(is_run ? "" : "recipes");
     QMap<QString, QString> recipe;
     int     i_acquirePeriod     = DataHelper::tm_to_sec(ui->te_time->time());
-    QString s_emOpt             = ui->cb_emauto->isChecked() ? "On" : "Off";
+    QString s_emOpt             = ui->cb_emauto->isChecked() ? "1" : "0";
     recipe = DataHelper::gen_recipe_config(
                  s_emOpt,
                  QString::number(ui->cb_unitpressure->currentIndex()),

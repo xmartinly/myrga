@@ -132,7 +132,7 @@ void MyRga::on_tb_ctrl_clicked() {
     ui->frame_settings->setHidden(!rga_inst->get_acquire_state());
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
-                 "Off",
+                 "0",
                  QString::number(ui->cb_unitpressure->currentIndex()),
                  QString::number(ui->sb_start->value()),
                  QString::number(ui->sb_end->value()),
@@ -149,6 +149,7 @@ void MyRga::on_tb_ctrl_clicked() {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
         return;
     }
+    rga_inst->set_em_auto(0);
     init_scan();
 }
 ///
@@ -209,9 +210,11 @@ void MyRga::idle_tmr_action() {
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
+    qDebug() << 11111;
     if(rga_inst->get_scan_tm_total() < 1) {
         return;
     }
+    qDebug() << 2222;
     if(rga_inst->get_flmt_setted() != rga_inst->get_flmt_idx()) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::CloseFlmt));
         RgaUtility::RgaActions flmt_set = rga_inst->get_flmt_setted() == "1" ? RgaUtility::SetFlmt1st : RgaUtility::SetFlmt2nd ;
@@ -224,6 +227,10 @@ void MyRga::acq_tmr_action() {
     }
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
+    }
+    if(rga_inst->get_em_auto()) {
+        http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
+        rga_inst->set_em_auto(0);
     }
 }
 ///
@@ -332,6 +339,10 @@ void MyRga::init_line_chart() {
         line_chart->graph(line_index)->setVisible(!line_index);
     }
 }
+
+///
+/// \brief MyRga::set_spec_xAxis
+///
 void MyRga::set_spec_xAxis() {
     if(!rga_inst) {
         return;
@@ -342,6 +353,11 @@ void MyRga::set_spec_xAxis() {
     spec_chart->xAxis->setTicker(textTicker);
     spec_chart->xAxis->setRange(0, i_data_cnt + 1);
 }
+
+///
+/// \brief MyRga::calc_ticker
+/// \return
+///
 QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
     rga_inst->gen_ticker();
     QVector<QString> x_labels = rga_inst->get_vs_labels();
@@ -368,13 +384,13 @@ void MyRga::init_scan() {
         rga_inst->write_scan_data(true);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
+        rga_inst->set_em_auto(0);
         return;
     }
     read_current_config(true);
     StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
-    rga_inst->set_em_manual(true);
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
     if(rga_inst->get_is_save_data()) {
@@ -416,7 +432,6 @@ void MyRga::run_from_recipe(int dur) {
     if(!rga_inst) {
         return;
     }
-    read_current_config(true);
     rga_inst->set_run_set(dur);
     set_last_rcpt();
     init_scan();
