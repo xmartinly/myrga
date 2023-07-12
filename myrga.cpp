@@ -129,7 +129,6 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
-    ui->frame_settings->setHidden(!rga_inst->get_acquire_state());
     QMap<QString, QString> recipe;
     recipe = DataHelper::gen_recipe_config(
                  "0",
@@ -187,6 +186,9 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
+    if(rga_inst->get_acquire_state() && !acq_tmr->isActive()) {
+        acq_tmr->start(StaticContainer::STC_ACQINTVL);
+    }
     if(rga_inst == nullptr) {
         return;
     }
@@ -210,11 +212,9 @@ void MyRga::idle_tmr_action() {
 /// \brief MyRga::acq_tmr_action
 ///
 void MyRga::acq_tmr_action() {
-    qDebug() << 11111;
     if(rga_inst->get_scan_tm_total() < 1) {
         return;
     }
-    qDebug() << 2222;
     if(rga_inst->get_flmt_setted() != rga_inst->get_flmt_idx()) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::CloseFlmt));
         RgaUtility::RgaActions flmt_set = rga_inst->get_flmt_setted() == "1" ? RgaUtility::SetFlmt1st : RgaUtility::SetFlmt2nd ;
@@ -378,13 +378,14 @@ QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
 /// \brief MyRga::init_scan
 ///
 void MyRga::init_scan() {
-    if(rga_inst->get_acquire_state()) {
+    bool acquire_state = rga_inst->get_acquire_state();
+    ui->frame_settings->setHidden(!acquire_state);
+    if(acquire_state) {
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
         rga_inst->set_acquire_state(false);
         rga_inst->write_scan_data(true);
         acq_tmr->stop();
         idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
-        rga_inst->set_em_auto(0);
         return;
     }
     read_current_config(true);
@@ -401,10 +402,6 @@ void MyRga::init_scan() {
     init_line_chart();
     init_spec_chart();
     set_spec_xAxis();
-    if(acq_tmr->isActive()) {
-        return;
-    }
-    acq_tmr->start(StaticContainer::STC_ACQINTVL);
 }
 ///
 /// \brief MyRga::save_current
@@ -429,9 +426,6 @@ void MyRga::save_current() {
 /// \param dur
 ///
 void MyRga::run_from_recipe(int dur) {
-    if(!rga_inst) {
-        return;
-    }
     rga_inst->set_run_set(dur);
     set_last_rcpt();
     init_scan();
@@ -649,7 +643,7 @@ void MyRga::rga_disconn() {
     if(idle_tmr->isActive()) {
         idle_tmr->stop();
     }
-    QStringList exit_sets = rga_inst->get_close_set();
+    QStringList exit_sets = rga_inst->get_stop_set();
     foreach (auto cmd, exit_sets) {
         http_cli->cmd_exec(cmd);
         QThread::msleep(200);
