@@ -67,7 +67,7 @@ void ResponseCalc::run() {
             vm_data.insert("data", obj.value("filamentSelected").toDouble());
         }
         if(obj.contains("tPunits")) {
-            resp_type = CommHttp::FilamentSelected;
+            resp_type = CommHttp::TPunits;
             vm_data.insert("data", obj.value("tPunits").toDouble());
         }
     }

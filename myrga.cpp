@@ -201,8 +201,9 @@ void MyRga::idle_tmr_action() {
         rga_inst->reset_over_tm();
     }
     if(!run_set && over_tm < 0) {
-        rga_inst->set_acquire_state(false);
-        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
+        stop_scan();
+//        rga_inst->set_acquire_state(false);
+//        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     }
 }
 ///
@@ -216,6 +217,7 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::CloseFlmt));
         RgaUtility::RgaActions flmt_set = rga_inst->get_flmt_setted() == "1" ? RgaUtility::SetFlmt1st : RgaUtility::SetFlmt2nd ;
         http_cli->cmd_exec(rga_inst->gen_rga_action(flmt_set));
+//        rga_inst
         return;
     }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
@@ -225,7 +227,7 @@ void MyRga::acq_tmr_action() {
     if(rga_inst->get_acquire_state()) {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::GetLastScan));
     }
-    if(rga_inst->get_em_auto()) {
+    if(rga_inst->get_em_auto() && !rga_inst->get_status(RgaUtility::EMState)) {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
     }
@@ -424,7 +426,6 @@ void MyRga::read_current_config(bool only_rcpt) {
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
-    qDebug() << qm_rcp;
     rga_inst->set_scan_rcpt(recpt);
     if(only_rcpt) { // don't reset the connection and status when only read recipe
         return;
