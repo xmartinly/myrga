@@ -4,7 +4,6 @@
 #include "ui_myrga.h"
 #include "utility/static_container.h"
 
-
 ///
 /// \brief MyRga::MyRga
 /// \param parent
@@ -20,6 +19,7 @@ MyRga::MyRga(QWidget* parent)
     connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
     acq_tmr  = new QTimer(this);
     connect(acq_tmr, &QTimer::timeout, this, &MyRga::acq_tmr_action);
+    acq_tmr->setInterval(StaticContainer::STC_ACQINTVL);
     dlg_recipe = new RecipeDlg(this);
     connect(dlg_recipe, &RecipeDlg::start_recipe, this, &MyRga::run_from_recipe);
     dlg_add = new AddRgaDlg(this);
@@ -201,6 +201,7 @@ void MyRga::idle_tmr_action() {
     bool run_set = rga_inst->get_run_set();
     int over_tm = rga_inst->get_over_tm();
     bool save_data = rga_inst->get_is_save_data();
+    qDebug() << __FUNCTION__ << over_tm;
     if(!run_set && over_tm < 0) {
         rga_inst->set_acquire_state(false);
     }
@@ -240,7 +241,6 @@ void MyRga::init_data_tbl(bool is_misc_info) {
     if(!is_misc_info) {
         disconnect(ui->tw_data, &QTableWidget::cellClicked, this, &MyRga::tbl_click);
     }
-    StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     QTableWidget* tbl = is_misc_info ? ui->tw_info : ui->tw_data;
     tbl->clear();
     tbl->setRowCount(0);
@@ -378,18 +378,7 @@ QSharedPointer<QCPAxisTickerText> MyRga::calc_ticker() {
 /// \brief MyRga::init_scan
 ///
 void MyRga::init_scan() {
-    bool acquire_state = rga_inst->get_acquire_state();
-    ui->frame_settings->setHidden(!acquire_state);
-    if(acquire_state) {
-        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
-        rga_inst->set_acquire_state(false);
-        rga_inst->write_scan_data(true);
-        acq_tmr->stop();
-        idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
-        return;
-    }
     read_current_config(true);
-    StaticContainer::STC_ISASCAN = rga_inst->get_is_alg_scan();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
     rga_inst->reset_scan_data();
@@ -643,12 +632,17 @@ void MyRga::rga_disconn() {
     if(idle_tmr->isActive()) {
         idle_tmr->stop();
     }
-    QStringList exit_sets = rga_inst->get_stop_set();
+    QStringList exit_sets = StaticContainer::STC_ISDEBUG ? rga_inst->get_close_set() : rga_inst->get_stop_set();
     foreach (auto cmd, exit_sets) {
         http_cli->cmd_exec(cmd);
         QThread::msleep(200);
     }
 }
+
+///
+/// \brief MyRga::on_tw_info_cellDoubleClicked
+/// \param row
+///
 void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     if(!rga_inst) {
         return;
@@ -771,6 +765,7 @@ void MyRga::chart_actions(QAction* action) {
         qcp_line->replot();
     }
 }
+
 ///
 /// \brief MyRga::print_chart. print line and spec chart to pdf.
 /// \param printer
@@ -792,4 +787,32 @@ void MyRga::print_chart(QPrinter* printer) {
     qcp_line->toPainter(&painter, plotWidth - 140, plotHeight);
     printer->newPage();
     qcp_spec->toPainter(&painter, plotWidth - 140, plotHeight);
+}
+
+///
+/// \brief MyRga::start_scan
+///
+void MyRga::start_scan() {
+    if(!rga_inst) {
+        return;
+    }
+    acq_tmr->stop();
+    ui->frame_settings->setHidden(false);
+    init_scan();
+    acq_tmr->start();
+    idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
+}
+
+///
+/// \brief MyRga::stop_scan
+///
+void MyRga::stop_scan() {
+    if(!rga_inst) {
+        return;
+    }
+    acq_tmr->stop();
+    ui->frame_settings->setHidden(true);
+    http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
+    rga_inst->write_scan_data(true);
+    idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
 }

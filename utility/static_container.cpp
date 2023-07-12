@@ -1,25 +1,18 @@
 #include "static_container.h"
 
-bool StaticContainer::STC_ISCHARTPAGE   = false;
-
 bool StaticContainer::STC_CELLCLICKED   = false;
-
-bool StaticContainer::STC_ISASCAN       = false;
 
 bool StaticContainer::STC_ISINACQ       = false;
 
 bool StaticContainer::STC_ISMISCINFO    = false;
 
-bool StaticContainer::STC_ISDEBUG       = false;
+bool StaticContainer::STC_ISDEBUG       = true;
 
 int StaticContainer::STC_ACQINTVL       = 250;
 
 int StaticContainer::STC_IDLINTVL       = 500;
 
 int StaticContainer::STC_LONGINTVL      = 2000;
-
-QString StaticContainer::STC_CRNTID     = "";
-
 
 QString StaticContainer::STC_RVERSION     = " myRGA Comm. v1.0.1 \t";
 

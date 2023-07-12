@@ -147,8 +147,12 @@ class MyRga : public QMainWindow
     void closeEvent(QCloseEvent* event);
     // read last rcpt and setup the checkbox, line_edit,etc
     void set_last_rcpt();
-
+    // disconnect rga
     void rga_disconn();
+    // start scan
+    void start_scan();
+    // stop scan
+    void stop_scan();
 
 
   public slots:

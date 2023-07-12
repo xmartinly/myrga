@@ -4,6 +4,7 @@
 #include <QObject>
 #include "rga_utility.h"
 
+
 class StaticContainer: public QObject {
     Q_OBJECT
   public:
@@ -15,15 +16,9 @@ class StaticContainer: public QObject {
 
     static QList<int> STC_SELMASS;
 
-    static QString    STC_CRNTID;
-
     static QString    STC_RVERSION;
 
-    static bool    STC_ISCHARTPAGE;
-
     static bool    STC_CELLCLICKED;
-
-    static bool    STC_ISASCAN;
 
     static bool    STC_ISINACQ;
 
