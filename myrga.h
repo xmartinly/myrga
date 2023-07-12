@@ -64,7 +64,7 @@ class MyRga : public QMainWindow
 
     void on_tb_ctrl_clicked();
 
-    void on_tb_link_clicked();
+//    void on_tb_link_clicked();
 
     void tbl_click(int row, int);
 
@@ -114,6 +114,8 @@ class MyRga : public QMainWindow
     QAction* action_rescale = new QAction(tr("Reset"), this);
     // visual cursor
     QCPItemLine* v_curs = nullptr;
+    // version label
+    QLabel* versio_label = nullptr;
 
 
   private:

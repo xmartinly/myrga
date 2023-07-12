@@ -14,6 +14,7 @@ MyRga::MyRga(QWidget* parent)
     ui->setupUi(this);
     ui->frame_points->setVisible(false);
     ui->frm_misc->setVisible(false);
+    ui->tb_recipe->setVisible(false);
     rga_inst = new RgaUtility;
     idle_tmr = new QTimer(this);
     connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
@@ -41,6 +42,9 @@ MyRga::MyRga(QWidget* parent)
     read_current_config();
     set_last_rcpt();
     init_data_tbl(true);
+    versio_label = new QLabel(StaticContainer::STC_RVERSION);
+    statusBar()->setSizeGripEnabled(false);
+    statusBar()->addPermanentWidget(versio_label, 0);
 }
 ///
 /// \brief MyRga::~MyRga
@@ -116,14 +120,14 @@ void MyRga::on_tb_info_clicked() {
 /// \brief MyRga::on_tb_review_clicked
 ///
 void MyRga::on_tb_review_clicked() {
-    http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
+//    http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
 }
 ///
 /// \brief MyRga::on_tb_link_clicked
 ///
-void MyRga::on_tb_link_clicked() {
-    read_current_config();
-}
+//void MyRga::on_tb_link_clicked() {
+//    read_current_config();
+//}
 ///
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
