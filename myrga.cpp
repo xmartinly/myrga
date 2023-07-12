@@ -49,7 +49,6 @@ MyRga::~MyRga() {
     obs_subj->remove_all_obs();
     delete obs_subj;
     delete rga_inst;
-    delete v_curs;
     rga_inst = nullptr;
     delete ui;
 }
@@ -201,9 +200,10 @@ void MyRga::idle_tmr_action() {
     bool run_set = rga_inst->get_run_set();
     int over_tm = rga_inst->get_over_tm();
     bool save_data = rga_inst->get_is_save_data();
-    qDebug() << __FUNCTION__ << over_tm;
+    qDebug() << __FUNCTION__ << over_tm << rga_inst->get_run_set();
     if(!run_set && over_tm < 0) {
         rga_inst->set_acquire_state(false);
+        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     }
     if(run_set && over_tm < 0 && save_data) {
         rga_inst->reset_over_tm();
@@ -397,7 +397,7 @@ void MyRga::init_scan() {
 ///
 void MyRga::save_current() {
     QMap<QString, QString> recipe = DataHelper::gen_recipe_config(
-                                        "Off",
+                                        "0",
                                         QString::number(ui->cb_unitpressure->currentIndex()),
                                         QString::number(ui->sb_start->value()),
                                         QString::number(ui->sb_end->value()),
@@ -431,7 +431,6 @@ void MyRga::read_current_config(bool only_rcpt) {
     QString file_folder = DataHelper::get_file_folder("");
     QMap<QString, QString> qm_rcp, qm_rga_conn;
     qm_rcp = DataHelper::read_config(file_name, file_folder, "Recipe");
-    qm_rga_conn = DataHelper::read_config(file_name, file_folder, "Rga");
     RecipeSet recpt;
     recpt.s_rcpName     = "myRGA";
     recpt.i_period      = qm_rcp.value("Peroid").toInt() * 1000;
@@ -448,9 +447,11 @@ void MyRga::read_current_config(bool only_rcpt) {
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
     rga_inst->set_scan_rcpt(recpt);
+    qDebug() << qm_rcp;
     if(only_rcpt) { // don't reset the connection and status when only read recipe
         return;
     }
+    qm_rga_conn = DataHelper::read_config(file_name, file_folder, "Rga");
     QString s_ip = "";
     QString s_tag = "";
     QString s_port = "";

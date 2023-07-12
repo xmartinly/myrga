@@ -58,14 +58,6 @@ bool DataHelper::check_rga_conn(const QString& ip, uint port) {
     return b_connected;
 }
 
-void DataHelper::save_last_config(const QString& rga, const QString& recipe, const QString& run) {
-    if(rga == "" && recipe == "" && run == "") {
-        QMessageBox::warning(nullptr, "Save Error", "No config saved.");
-        return;
-    }
-    QMessageBox::information(nullptr, "DATA", rga + "\t\t\t\n" + recipe + "\n" + run);
-}
-
 ///
 /// \brief DataHelper::writeDataFile. write data to file.
 /// \param data, QString.

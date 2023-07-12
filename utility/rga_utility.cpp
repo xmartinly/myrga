@@ -15,6 +15,7 @@ RgaUtility::~RgaUtility() {
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
+    m_rcpt.resetRcp();
     m_rcpt = rcpt;
 }
 
@@ -479,7 +480,7 @@ bool RgaUtility::get_is_alg_scan() const {
 }
 
 int RgaUtility::get_over_tm() {
-    if(m_rcpt.s_run == "1") {
+    if(get_run_set()) {
         return 1;
     }
     qint64 i_now = QDateTime::currentMSecsSinceEpoch();
@@ -498,6 +499,7 @@ void RgaUtility::reset_over_tm() {
 /// \return
 ///
 const bool RgaUtility::get_run_set() {
+//    qDebug() <<
     return m_rcpt.s_run.toInt();
 }
 
@@ -507,6 +509,7 @@ const bool RgaUtility::get_run_set() {
 ///
 void RgaUtility::set_run_set(int i_run) {
     m_rcpt.s_run = QString::number(i_run);
+    qDebug() << i_run << m_rcpt.s_run ;
 }
 ///
 /// \brief RgaUtility::setRunSet

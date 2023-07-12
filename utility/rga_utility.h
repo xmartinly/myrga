@@ -135,7 +135,7 @@ class RgaUtility {
 
     QFile*        data_file_ptr     = nullptr;
     //if save data to file.
-    bool          is_save_data      = true;
+    bool          is_save_data      = false;
     //count for get last scan data
     int           scan_count        = 0;
     //low limit value for show

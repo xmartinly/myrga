@@ -25,8 +25,6 @@ class DataHelper {
   public:
     static bool     check_rga_conn (const QString& ip, uint port);
 
-    static void     save_last_config (const QString& rga = "", const QString& recipe = "", const QString& run = "");
-
     static int      tm_to_sec (const QTime& time);
 
     static QTime    sec_to_tm (int sec);

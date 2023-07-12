@@ -31,7 +31,6 @@ void ResponseCalc::run() {
             vm_data.insert("data", m_objData.value("data").toDouble());
         } else {
             QJsonObject obj_data = m_objData.value("data").toObject();
-            qDebug() << __FUNCTION__ << obj_data;
             resp_type = CommHttp::ScanStatus;
             bool b_started = false;
             bool b_stopped = false;

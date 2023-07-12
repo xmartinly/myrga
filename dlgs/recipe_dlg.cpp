@@ -200,7 +200,8 @@ void RecipeDlg::recipe_save(bool is_run) {
                  ui->cb_flmt->currentText(),
                  ui->cb_ppamu->currentText(),
                  ui->cb_unitreport->currentText(),
-                 QString::number(i_acquirePeriod)
+                 QString::number(i_acquirePeriod),
+                 "0"
              );
     if(DataHelper::save_config(recipe, s_recipeName, file_path, "Recipe")) {
         if(is_run) {
