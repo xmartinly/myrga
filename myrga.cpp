@@ -141,7 +141,7 @@ void MyRga::on_tb_ctrl_clicked() {
                  ui->cb_ppamu->currentText(),
                  ui->cb_unitreport->currentText(),
                  "0",
-                 "1"
+                 "0"
              );
     if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
         QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
@@ -197,17 +197,16 @@ void MyRga::idle_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::AmInCtrl));
         return;
     }
-    bool run_set = rga_inst->get_run_set();
+    bool run_set = rga_inst->get_continuous_run();
     int over_tm = rga_inst->get_over_tm();
-    bool save_data = rga_inst->get_is_save_data();
-    qDebug() << __FUNCTION__ << over_tm << rga_inst->get_run_set();
+    if(run_set && over_tm < 1000) {
+        rga_inst->reset_over_tm();
+    }
     if(!run_set && over_tm < 0) {
         rga_inst->set_acquire_state(false);
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     }
-    if(run_set && over_tm < 0 && save_data) {
-        rga_inst->reset_over_tm();
-    }
+    qDebug() << __FUNCTION__ << over_tm << rga_inst->get_continuous_run();
 }
 ///
 /// \brief MyRga::acq_tmr_action
@@ -407,6 +406,7 @@ void MyRga::save_current() {
                                         ui->cb_flmt->currentText(),
                                         ui->cb_ppamu->currentText(),
                                         ui->cb_unitreport->currentText(),
+                                        "0",
                                         "0");
     DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
 }
@@ -415,7 +415,8 @@ void MyRga::save_current() {
 /// \param dur
 ///
 void MyRga::run_from_recipe(int dur) {
-    rga_inst->set_run_set(dur);
+    qDebug() << __FUNCTION__ << dur;
+    rga_inst->set_continuous_run(dur);
     set_last_rcpt();
     init_scan();
 }
@@ -559,6 +560,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
 ///
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
+    qDebug() << qm_values;
     if(!qm_values.count()) {
         QMessageBox::warning(nullptr, u8"Read Failed", u8"No value readed.");
         return;
@@ -633,7 +635,7 @@ void MyRga::rga_disconn() {
     if(idle_tmr->isActive()) {
         idle_tmr->stop();
     }
-    QStringList exit_sets = StaticContainer::STC_ISDEBUG ? rga_inst->get_close_set() : rga_inst->get_stop_set();
+    QStringList exit_sets = StaticContainer::STC_ISDEBUG ? rga_inst->get_stop_set() : rga_inst->get_close_set();
     foreach (auto cmd, exit_sets) {
         http_cli->cmd_exec(cmd);
         QThread::msleep(200);

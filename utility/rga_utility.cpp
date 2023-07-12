@@ -480,7 +480,7 @@ bool RgaUtility::get_is_alg_scan() const {
 }
 
 int RgaUtility::get_over_tm() {
-    if(get_run_set()) {
+    if(get_continuous_run()) {
         return 1;
     }
     qint64 i_now = QDateTime::currentMSecsSinceEpoch();
@@ -498,7 +498,7 @@ void RgaUtility::reset_over_tm() {
 /// \brief RgaUtility::getRunSet
 /// \return
 ///
-const bool RgaUtility::get_run_set() {
+const bool RgaUtility::get_continuous_run() {
 //    qDebug() <<
     return m_rcpt.s_run.toInt();
 }
@@ -507,15 +507,14 @@ const bool RgaUtility::get_run_set() {
 /// \brief RgaUtility::setRunSet
 /// \param i_run
 ///
-void RgaUtility::set_run_set(int i_run) {
+void RgaUtility::set_continuous_run(int i_run) {
     m_rcpt.s_run = QString::number(i_run);
-    qDebug() << i_run << m_rcpt.s_run ;
 }
 ///
 /// \brief RgaUtility::setRunSet
 /// \param s_run
 ///
-void RgaUtility::set_run_set(const QString& s_run) {
+void RgaUtility::set_continuous_run(const QString& s_run) {
     m_rcpt.s_run = s_run;
 }
 

@@ -191,6 +191,22 @@ DataHelper::read_config(const QString& file_name, const QString& file_folder, co
     return qm_values;
 }
 
+///
+/// \brief DataHelper::gen_recipe_config
+/// \param em_opt
+/// \param pre_unit
+/// \param mass_start
+/// \param mass_stop
+/// \param points
+/// \param method
+/// \param dwell
+/// \param flmt
+/// \param ppamu
+/// \param rpt_uint
+/// \param peroid
+/// \param run
+/// \return
+///
 QMap<QString, QString> DataHelper::gen_recipe_config(const QString& em_opt,
         const QString& pre_unit,
         const QString& mass_start,
