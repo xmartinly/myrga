@@ -499,7 +499,6 @@ void RgaUtility::reset_over_tm() {
 /// \return
 ///
 const bool RgaUtility::get_continuous_run() {
-//    qDebug() <<
     return m_rcpt.s_run.toInt();
 }
 

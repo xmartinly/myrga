@@ -110,7 +110,7 @@ struct RecipeSet {
     //scan period
     qint64          i_period        = 0;
     //0: one time; 1: continuous
-    QString         s_run           = "0";
+    QString         s_run           = "1";
     //scan method
     QString         s_method        = "Sweep";
     //scan dwell

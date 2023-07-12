@@ -53,8 +53,7 @@ class DataHelper {
 
     static QMap<QString, QString> read_config(const QString& file_name, const QString& file_folder, const QString& group = "myRGA");
 
-    static QMap<QString, QString> gen_recipe_config(
-        const QString& em_opt,
+    static QMap<QString, QString> gen_recipe_config(const QString& em_opt,
         const QString& pre_unit,
         const QString& mass_start,
         const QString& mass_stop,
@@ -64,8 +63,7 @@ class DataHelper {
         const QString& flmt,
         const QString& ppamu,
         const QString& rpt_uint,
-        const QString& peroid = "0",
-        const QString& run = "1");
+        const QString& peroid = "0");
 
     static QVector<double> gen_ppamu_pos(int i_start, int i_stop, int i_ppamu = 1);
 

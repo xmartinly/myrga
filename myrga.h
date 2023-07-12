@@ -137,8 +137,6 @@ class MyRga : public QMainWindow
     void menu_popout();
     // set spec chart x axis ticks and labels
     void set_spec_xaxis();
-    // save current scan settings
-    void save_current();
     // read current config
     void read_current_config(bool only_rcpt = false);
     // setup observers
@@ -157,7 +155,7 @@ class MyRga : public QMainWindow
 
   public slots:
     // receive run from recipe dialog
-    void run_from_recipe(int dur);
+    void run_from_recipe(int c_run);
     // update observers
     void update_obs();
 

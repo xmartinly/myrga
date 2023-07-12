@@ -217,8 +217,7 @@ QMap<QString, QString> DataHelper::gen_recipe_config(const QString& em_opt,
         const QString& flmt,
         const QString& ppamu,
         const QString& rpt_uint,
-        const QString& peroid,
-        const QString& run) {
+        const QString& peroid) {
     QMap<QString, QString> rcpt;
     rcpt.insert("EmOpt",      em_opt);
     rcpt.insert("PressureUnit", pre_unit);
@@ -231,7 +230,6 @@ QMap<QString, QString> DataHelper::gen_recipe_config(const QString& em_opt,
     rcpt.insert("Flmt",       flmt);
     rcpt.insert("PPAmu",      ppamu);
     rcpt.insert("ReportUnit", rpt_uint);
-    rcpt.insert("Run",        run);
     return rcpt;
 }
 

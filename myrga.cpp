@@ -128,27 +128,25 @@ void MyRga::on_tb_link_clicked() {
 /// \brief MyRga::on_tb_ctrl_clicked
 ///
 void MyRga::on_tb_ctrl_clicked() {
-    QMap<QString, QString> recipe;
-    recipe = DataHelper::gen_recipe_config(
-                 "0",
-                 QString::number(ui->cb_unitpressure->currentIndex()),
-                 QString::number(ui->sb_start->value()),
-                 QString::number(ui->sb_end->value()),
-                 ui->le_points->text(),
-                 ui->cb_method->currentText(),
-                 ui->cb_dwell->currentText(),
-                 ui->cb_flmt->currentText(),
-                 ui->cb_ppamu->currentText(),
-                 ui->cb_unitreport->currentText(),
-                 "0",
-                 "0"
-             );
-    if(!DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe")) {
-        QMessageBox::warning(nullptr, u8"Failed", u8"Please check the settings.");
-        return;
+    QMap<QString, QString> recipe = DataHelper::gen_recipe_config(
+                                        "0",
+                                        QString::number(ui->cb_unitpressure->currentIndex()),
+                                        QString::number(ui->sb_start->value()),
+                                        QString::number(ui->sb_end->value()),
+                                        ui->le_points->text(),
+                                        ui->cb_method->currentText(),
+                                        ui->cb_dwell->currentText(),
+                                        ui->cb_flmt->currentText(),
+                                        ui->cb_ppamu->currentText(),
+                                        ui->cb_unitreport->currentText(),
+                                        "1");
+    DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
+    if(rga_inst->get_acquire_state()) {
+        stop_scan();
+    } else {
+        start_scan();
     }
     rga_inst->set_em_auto(0);
-    init_scan();
 }
 ///
 /// \brief MyRga::on_actionRecipe_triggered
@@ -206,7 +204,6 @@ void MyRga::idle_tmr_action() {
         rga_inst->set_acquire_state(false);
         http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     }
-    qDebug() << __FUNCTION__ << over_tm << rga_inst->get_continuous_run();
 }
 ///
 /// \brief MyRga::acq_tmr_action
@@ -391,34 +388,15 @@ void MyRga::init_scan() {
     init_spec_chart();
     set_spec_xAxis();
 }
-///
-/// \brief MyRga::save_current
-///
-void MyRga::save_current() {
-    QMap<QString, QString> recipe = DataHelper::gen_recipe_config(
-                                        "0",
-                                        QString::number(ui->cb_unitpressure->currentIndex()),
-                                        QString::number(ui->sb_start->value()),
-                                        QString::number(ui->sb_end->value()),
-                                        ui->le_points->text(),
-                                        ui->cb_method->currentText(),
-                                        ui->cb_dwell->currentText(),
-                                        ui->cb_flmt->currentText(),
-                                        ui->cb_ppamu->currentText(),
-                                        ui->cb_unitreport->currentText(),
-                                        "0",
-                                        "0");
-    DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
-}
+
 ///
 /// \brief MyRga::run_from_recipe
 /// \param dur
 ///
-void MyRga::run_from_recipe(int dur) {
-    qDebug() << __FUNCTION__ << dur;
-    rga_inst->set_continuous_run(dur);
+void MyRga::run_from_recipe(int c_run) {
     set_last_rcpt();
-    init_scan();
+    start_scan();
+    rga_inst->set_continuous_run(c_run);
 }
 ///
 /// \brief MyRga::read_current_config
@@ -444,11 +422,10 @@ void MyRga::read_current_config(bool only_rcpt) {
     recpt.s_flmtIdx     = qm_rcp.value("Flmt").toStdString().c_str();
     recpt.s_startMass   = qm_rcp.value("StartMass").toStdString().c_str();
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
-    recpt.s_run         = qm_rcp.value("Run").toStdString().c_str();
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
     recpt.sl_points     = s_points.split("/");
-    rga_inst->set_scan_rcpt(recpt);
     qDebug() << qm_rcp;
+    rga_inst->set_scan_rcpt(recpt);
     if(only_rcpt) { // don't reset the connection and status when only read recipe
         return;
     }
@@ -560,7 +537,6 @@ void MyRga::closeEvent(QCloseEvent* event) {
 ///
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
-    qDebug() << qm_values;
     if(!qm_values.count()) {
         QMessageBox::warning(nullptr, u8"Read Failed", u8"No value readed.");
         return;
@@ -800,7 +776,7 @@ void MyRga::start_scan() {
         return;
     }
     acq_tmr->stop();
-    ui->frame_settings->setHidden(false);
+    ui->frame_settings->setHidden(true);
     init_scan();
     acq_tmr->start();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
@@ -814,7 +790,7 @@ void MyRga::stop_scan() {
         return;
     }
     acq_tmr->stop();
-    ui->frame_settings->setHidden(true);
+    ui->frame_settings->setHidden(false);
     http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     rga_inst->write_scan_data(true);
     idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
