@@ -16,13 +16,11 @@ RgaUtility::~RgaUtility() {
 
 
 const int RgaUtility::get_prog_val() {
-    prog_val += prog_val;
     return prog_val;
 }
 
 void RgaUtility::reset_prog_val() {
-    prog_val = get_scan_tm_total() / StaticContainer::STC_ACQINTVL;
-    qDebug() << prog_val;
+    prog_val = floor( StaticContainer::STC_ACQINTVL * 100 / get_scan_tm_total());
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {

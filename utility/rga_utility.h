@@ -381,6 +381,7 @@ class RgaUtility {
     //**  scan data
     void set_scan_data(const QJsonObject& rga_scanData);
     const bool get_is_new_data();
+    void set_is_new_data(bool is_new_data = false);
     //*************************************************************************************//
     //**  run time
     QString get_str_runtm() const;
@@ -393,7 +394,6 @@ class RgaUtility {
     void set_scan_val(const QVector<double>& values);
     void reset_err_list();
     void reset_status();
-    void set_is_new_data(bool is_new_data = false);
     const QString gen_file_header();
     void gen_file_name();
     void add_runtm();

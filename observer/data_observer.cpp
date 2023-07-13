@@ -152,12 +152,12 @@ void ProgressbarObserver::update() {
         return;
     }
     if(inst->get_is_new_data()) {
-        m_zone->setValue(100);
-        inst->reset_prog_val();
+        m_zone->setValue(0);
         return;
     }
-    qDebug() << inst->get_prog_val();
-    m_zone->setValue(inst->get_prog_val());
+    int prog_crnt_val = m_zone->value();
+    qDebug() << inst->get_prog_val() << prog_crnt_val;
+    m_zone->setValue(inst->get_prog_val() + prog_crnt_val);
 }
 
 ///

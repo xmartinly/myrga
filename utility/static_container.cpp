@@ -6,7 +6,7 @@ bool StaticContainer::STC_ISINACQ       = false;
 
 bool StaticContainer::STC_ISMISCINFO    = false;
 
-bool StaticContainer::STC_ISDEBUG       = false;
+bool StaticContainer::STC_ISDEBUG       = true;
 
 int StaticContainer::STC_ACQINTVL       = 250;
 

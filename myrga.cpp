@@ -212,8 +212,6 @@ void MyRga::idle_tmr_action() {
     }
     if(!run_set && over_tm < 0) {
         stop_scan();
-//        rga_inst->set_acquire_state(false);
-//        http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     }
 }
 ///
@@ -227,11 +225,11 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::CloseFlmt));
         RgaUtility::RgaActions flmt_set = rga_inst->get_flmt_setted() == "1" ? RgaUtility::SetFlmt1st : RgaUtility::SetFlmt2nd ;
         http_cli->cmd_exec(rga_inst->gen_rga_action(flmt_set));
-//        rga_inst
         return;
     }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
+        prog_bar->setValue(0);
         return;
     }
     if(rga_inst->get_acquire_state()) {
@@ -240,6 +238,12 @@ void MyRga::acq_tmr_action() {
     if(rga_inst->get_em_auto() && !rga_inst->get_status(RgaUtility::EMState)) {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
+    }
+    int prog_crnt_val = prog_bar->value();
+    int new_prog_val = rga_inst->get_prog_val() + prog_crnt_val;
+    prog_bar->setValue(new_prog_val);
+    if(new_prog_val > 100) {
+        prog_bar->setValue(0);
     }
 }
 ///
@@ -519,17 +523,18 @@ void MyRga::setup_obs() {
     DataObserver* tb_misc = new TextInfoObserver(ui->tb_misc);
     tb_misc->setObjectName("tb_misc_obs");
     obs_subj->add_obs(tb_misc);
-    //******************************************************************//
-    //** text browser misc
-    DataObserver* pro_bar = new ProgressbarObserver(prog_bar);
-    pro_bar->setObjectName("pro_bar_obs");
-    obs_subj->add_obs(pro_bar);
+//    //******************************************************************//
+//    //** text browser misc
+//    DataObserver* pro_bar = new ProgressbarObserver(prog_bar);
+//    pro_bar->setObjectName("pro_bar_obs");
+//    obs_subj->add_obs(pro_bar);
 }
 ///
 /// \brief MyRga::update_obs
 ///
 void MyRga::update_obs() {
     obs_subj->notify_obs();
+//    rga_inst->set_is_new_data(false);
 }
 ///
 /// \brief MyRga::closeEvent
@@ -796,7 +801,6 @@ void MyRga::start_scan() {
     init_scan();
     acq_tmr->start();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
-//    prog_bar->setRange(0, 0);
 }
 
 ///
