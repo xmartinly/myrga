@@ -16,11 +16,19 @@ RgaUtility::~RgaUtility() {
 
 
 const int RgaUtility::get_prog_val() {
+    prog_val += prog_itvl;
+    if(prog_val > 100) {
+        prog_val = 0;
+    }
     return prog_val;
 }
 
+void RgaUtility::gen_prog_itvl() {
+    prog_itvl = floor( StaticContainer::STC_ACQINTVL * 100 / get_scan_tm_total());
+}
+
 void RgaUtility::reset_prog_val() {
-    prog_val = floor( StaticContainer::STC_ACQINTVL * 100 / get_scan_tm_total());
+    prog_val = 100;
 }
 
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
@@ -758,7 +766,7 @@ const QString RgaUtility::get_rga_sn() {
 ///
 void RgaUtility::set_scan_tm_total(double value) {
     m_scanData.d_scanTmTotal = value;
-    reset_prog_val();
+    gen_prog_itvl();
 }
 
 ///

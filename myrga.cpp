@@ -239,10 +239,9 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
     }
-    int prog_crnt_val = prog_bar->value();
-    int new_prog_val = rga_inst->get_prog_val() + prog_crnt_val;
-    prog_bar->setValue(new_prog_val);
-    if(new_prog_val > 100) {
+    prog_bar->setValue(rga_inst->get_prog_val());
+    qDebug() << prog_bar->value();
+    if(prog_bar->value() > 99) {
         prog_bar->setValue(0);
     }
 }
@@ -534,7 +533,6 @@ void MyRga::setup_obs() {
 ///
 void MyRga::update_obs() {
     obs_subj->notify_obs();
-//    rga_inst->set_is_new_data(false);
 }
 ///
 /// \brief MyRga::closeEvent

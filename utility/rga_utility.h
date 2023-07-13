@@ -141,6 +141,7 @@ class RgaUtility {
     //low limit value for show
     double        scan_val_low      = 0;
     //scan interval for progress bar
+    int           prog_itvl         = 0;
     int           prog_val          = 0;
     //local timestamp
     qint64        local_tmstamp     = 0;
@@ -176,6 +177,7 @@ class RgaUtility {
 
 
     const int get_prog_val();
+    void gen_prog_itvl();
     void reset_prog_val();
 
     void set_scan_rcpt(const RecipeSet& rcpt);

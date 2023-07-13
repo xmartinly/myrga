@@ -120,6 +120,7 @@ void TableObserver::update() {
         for (int var = 0; var < i_dataCnt; ++var) {
             m_zone->item(var, 1)->setText(sl_data.at(var));
         }
+        inst->reset_prog_val();
     }
     m_zone->update();
 }
@@ -156,7 +157,6 @@ void ProgressbarObserver::update() {
         return;
     }
     int prog_crnt_val = m_zone->value();
-    qDebug() << inst->get_prog_val() << prog_crnt_val;
     m_zone->setValue(inst->get_prog_val() + prog_crnt_val);
 }
 
