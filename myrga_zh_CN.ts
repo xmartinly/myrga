@@ -618,12 +618,12 @@
     <message>
         <location filename="dlgs/recipe_dlg.ui" line="821"/>
         <source>OneTime</source>
-        <translation></translation>
+        <translation>单次</translation>
     </message>
     <message>
         <location filename="dlgs/recipe_dlg.ui" line="826"/>
         <source>Continuous</source>
-        <translation></translation>
+        <translation>连续</translation>
     </message>
     <message>
         <location filename="dlgs/recipe_dlg.ui" line="848"/>
