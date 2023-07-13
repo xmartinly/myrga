@@ -43,7 +43,7 @@ MyRga::MyRga(QWidget* parent)
     prog_bar = new QProgressBar(this);
     prog_bar->setOrientation(Qt::Horizontal);  // 水平方向
     prog_bar->setRange(0, 100); // 最小值
-    prog_bar->setValue(67);  // 当前进度
+    prog_bar->setValue(100);  // 当前进度
     statusBar()->setSizeGripEnabled(false);
     statusBar()->addPermanentWidget(versio_label, 1);
     statusBar()->addWidget(prog_bar, 0);
@@ -796,7 +796,7 @@ void MyRga::start_scan() {
     init_scan();
     acq_tmr->start();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
-    prog_bar->setRange(0, 0);
+//    prog_bar->setRange(0, 0);
 }
 
 ///
@@ -811,4 +811,5 @@ void MyRga::stop_scan() {
     http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     rga_inst->write_scan_data(true);
     idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
+    prog_bar->setValue(100);
 }
