@@ -14,6 +14,17 @@ RgaUtility::RgaUtility() {
 RgaUtility::~RgaUtility() {
 }
 
+
+const int RgaUtility::get_prog_val() {
+    prog_val += prog_val;
+    return prog_val;
+}
+
+void RgaUtility::reset_prog_val() {
+    prog_val = get_scan_tm_total() / StaticContainer::STC_ACQINTVL;
+    qDebug() << prog_val;
+}
+
 void RgaUtility::set_scan_rcpt(const RecipeSet& rcpt) {
     m_rcpt.resetRcp();
     m_rcpt = rcpt;
@@ -749,6 +760,7 @@ const QString RgaUtility::get_rga_sn() {
 ///
 void RgaUtility::set_scan_tm_total(double value) {
     m_scanData.d_scanTmTotal = value;
+    reset_prog_val();
 }
 
 ///

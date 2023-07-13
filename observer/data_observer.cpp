@@ -153,8 +153,11 @@ void ProgressbarObserver::update() {
     }
     if(inst->get_is_new_data()) {
         m_zone->setValue(100);
+        inst->reset_prog_val();
         return;
     }
+    qDebug() << inst->get_prog_val();
+    m_zone->setValue(inst->get_prog_val());
 }
 
 ///

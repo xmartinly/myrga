@@ -14,7 +14,7 @@ MyRga::MyRga(QWidget* parent)
     ui->setupUi(this);
     ui->frame_points->setVisible(false);
     ui->frm_misc->setVisible(false);
-    ui->tb_recipe->setVisible(false);
+    ui->tb_review->setVisible(false);
     rga_inst = new RgaUtility;
     idle_tmr = new QTimer(this);
     connect(idle_tmr, &QTimer::timeout, this, &MyRga::idle_tmr_action);
