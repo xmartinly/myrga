@@ -91,7 +91,7 @@ class ProgressbarObserver: public DataObserver {
     /// \brief ProgressbarObserver. constructor.
     /// \param progress_bar(QProgressBar*)
     ///
-    ProgressbarObserver(QProgressBar* progress_bar);
+    ProgressbarObserver(QProgressBar *progress_bar);
 
     ///
     /// Descontructer. delete m_zone pointer.

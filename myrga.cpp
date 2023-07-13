@@ -38,13 +38,19 @@ MyRga::MyRga(QWidget* parent)
     connect(chart_right_b_menu, &QMenu::triggered, this, &MyRga::chart_actions);
     connect(ui->qcp_line, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
     connect(ui->qcp_spec, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
+    versio_label = new QLabel(StaticContainer::STC_RVERSION);
+    versio_label->setAlignment(Qt::AlignRight);
+    prog_bar = new QProgressBar(this);
+    prog_bar->setOrientation(Qt::Horizontal);  // 水平方向
+    prog_bar->setRange(0, 100); // 最小值
+    prog_bar->setValue(67);  // 当前进度
+    statusBar()->setSizeGripEnabled(false);
+    statusBar()->addPermanentWidget(versio_label, 1);
+    statusBar()->addWidget(prog_bar, 0);
     setup_obs();
     read_current_config();
     set_last_rcpt();
     init_data_tbl(true);
-    versio_label = new QLabel(StaticContainer::STC_RVERSION);
-    statusBar()->setSizeGripEnabled(false);
-    statusBar()->addPermanentWidget(versio_label, 0);
 }
 ///
 /// \brief MyRga::~MyRga
@@ -513,6 +519,11 @@ void MyRga::setup_obs() {
     DataObserver* tb_misc = new TextInfoObserver(ui->tb_misc);
     tb_misc->setObjectName("tb_misc_obs");
     obs_subj->add_obs(tb_misc);
+    //******************************************************************//
+    //** text browser misc
+    DataObserver* pro_bar = new ProgressbarObserver(prog_bar);
+    pro_bar->setObjectName("pro_bar_obs");
+    obs_subj->add_obs(pro_bar);
 }
 ///
 /// \brief MyRga::update_obs
@@ -785,6 +796,7 @@ void MyRga::start_scan() {
     init_scan();
     acq_tmr->start();
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
+    prog_bar->setRange(0, 0);
 }
 
 ///

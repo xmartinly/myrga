@@ -144,7 +144,15 @@ ProgressbarObserver::~ProgressbarObserver() {
 /// \param data
 ///
 void ProgressbarObserver::update() {
-    if(m_zone == nullptr) {
+    auto inst = StaticContainer::get_crnt_rga();
+    if(m_zone == nullptr || inst == nullptr) {
+        return;
+    }
+    if(!inst->get_acquire_state()) {
+        return;
+    }
+    if(inst->get_is_new_data()) {
+        m_zone->setValue(100);
         return;
     }
 }

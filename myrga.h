@@ -116,6 +116,8 @@ class MyRga : public QMainWindow
     QCPItemLine* v_curs = nullptr;
     // version label
     QLabel* versio_label = nullptr;
+    // progress bar
+    QProgressBar* prog_bar = nullptr;
 
 
   private:
