@@ -117,7 +117,9 @@ class MyRga : public QMainWindow
     // version label
     QLabel* versio_label = nullptr;
     // progress bar
-    QProgressBar* prog_bar = nullptr;
+//    QProgressBar* prog_bar = nullptr;
+    // run info text
+    QString run_info  = u8"Stopped | ";
 
 
   private:

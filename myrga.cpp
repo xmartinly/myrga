@@ -40,13 +40,13 @@ MyRga::MyRga(QWidget* parent)
     connect(ui->qcp_spec, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
     versio_label = new QLabel(StaticContainer::STC_RVERSION);
     versio_label->setAlignment(Qt::AlignRight);
-    prog_bar = new QProgressBar(this);
-    prog_bar->setOrientation(Qt::Horizontal);  // 水平方向
-    prog_bar->setRange(0, 100); // 最小值
-    prog_bar->setValue(100);  // 当前进度
+//    prog_bar = new QProgressBar(this);
+//    prog_bar->setOrientation(Qt::Horizontal);  // 水平方向
+//    prog_bar->setRange(0, 100); // 最小值
+//    prog_bar->setValue(100);  // 当前进度
     statusBar()->setSizeGripEnabled(false);
     statusBar()->addPermanentWidget(versio_label, 1);
-    statusBar()->addWidget(prog_bar, 0);
+//    statusBar()->addWidget(prog_bar, 0);
     setup_obs();
     read_current_config();
     set_last_rcpt();
@@ -192,8 +192,11 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 /// \brief MyRga::idle_tmr_action
 ///
 void MyRga::idle_tmr_action() {
+    bool in_acq = rga_inst->get_acquire_state();
+    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ? u8"Acquiring" : u8"Stopped");
+    versio_label->setText(label_text);
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
-    if(rga_inst->get_acquire_state() && !acq_tmr->isActive()) {
+    if(in_acq && !acq_tmr->isActive()) {
         acq_tmr->start(StaticContainer::STC_ACQINTVL);
     }
     if(rga_inst == nullptr) {
@@ -229,7 +232,7 @@ void MyRga::acq_tmr_action() {
     }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
-        prog_bar->setValue(0);
+//        prog_bar->setValue(0);
         return;
     }
     if(rga_inst->get_acquire_state()) {
@@ -239,11 +242,7 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
     }
-    prog_bar->setValue(rga_inst->get_prog_val());
-    qDebug() << prog_bar->value();
-    if(prog_bar->value() > 99) {
-        prog_bar->setValue(0);
-    }
+//    prog_bar->setValue(rga_inst->get_prog_val());
 }
 ///
 /// \brief MyRga::initDataTbl
@@ -813,5 +812,5 @@ void MyRga::stop_scan() {
     http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
     rga_inst->write_scan_data(true);
     idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
-    prog_bar->setValue(100);
+//    prog_bar->setValue(100);
 }

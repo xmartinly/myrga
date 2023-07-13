@@ -16,15 +16,15 @@ RgaUtility::~RgaUtility() {
 
 
 const int RgaUtility::get_prog_val() {
-    prog_val += prog_itvl;
     if(prog_val > 100) {
         prog_val = 0;
     }
+    prog_val += prog_itvl;
     return prog_val;
 }
 
 void RgaUtility::gen_prog_itvl() {
-    prog_itvl = floor( StaticContainer::STC_ACQINTVL * 100 / get_scan_tm_total());
+    prog_itvl = ceil( StaticContainer::STC_ACQINTVL * 100 / get_scan_tm_total());
 }
 
 void RgaUtility::reset_prog_val() {
