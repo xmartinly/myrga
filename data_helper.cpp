@@ -4,39 +4,39 @@ QString border_toolbtn = "border: 2px dashed darkMagenta; border-radius = 2px;";
 QString border_none = "border: none;";
 
 const QMap<int, QString> DataHelper::C_POSELEMAP  = {
-    {1, u8"Hydrogenium"},
-    {2, u8"Hydrogen"},
-    {3, u8"Helium(3)"},
-    {4, u8"Helium"},
-    {12, u8"Carbon(C)"},
-    {14, u8"Nitrogen(N)"},
-    {16, u8"Oxygen(O)/Methane"},
-    {17, u8"HO/Ammonia"},
-    {18, u8"Water"},
-    {20, u8"Neon"},
-    {28, u8"Nitrogen(N2)/Carbon Monoxide"},
-    {30, u8"Silane"},
-    {31, u8"Ethyl/Methyl Alcohol"},
-    {32, u8"Oxygen(O2))"},
-    {34, u8"Hydrogen Sulfide"},
-    {40, u8"Argon"},
-    {41, u8"Hexane"},
-    {43, u8"Acetone/Heptane/Methyl ethyl ketone/MP oil/TMP oil"},
-    {44, u8"Carbon Dioxide"},
-    {45, u8"Isopropyl Alcohol"},
-    {50, u8"DP oil PPE"},
-    {51, u8"Halocarbon 23"},
-    {69, u8"Carbon tetrafluoride/DP oil Fomblin/Halocarbon 13/PFK*/PFTBA**/Trifluoromethane"},
-    {77, u8"Chlorobenzene"},
-    {78, u8"Benzene/DP oil DC705"},
-    {84, u8"Krypton"},
-    {85, u8"Halocarbon 12/Silicon Tetrafluoride"},
-    {91, u8"Toluene"},
-    {95, u8"Trichloroethylene"},
-    {97, u8"Trichloroethane"},
-    {101, u8"Halocarbon 11/113"},
-    {117, u8"Carbon tetrachloride"},
-    {132, u8"Xenon"},
+    {1, QObject:: tr("Hydrogenium")},
+    {2, QObject:: tr("Hydrogen")},
+    {3, QObject:: tr("Helium(3)")},
+    {4, QObject:: tr("Helium")},
+    {12, QObject:: tr("Carbon(C)")},
+    {14, QObject:: tr("Nitrogen(N)")},
+    {16, QObject:: tr("Oxygen(O)/Methane")},
+    {17, QObject:: tr("HO/Ammonia")},
+    {18, QObject:: tr("Water")},
+    {20, QObject:: tr("Neon")},
+    {28, QObject:: tr("Nitrogen(N2)/Carbon Monoxide")},
+    {30, QObject:: tr("Silane")},
+    {31, QObject:: tr("Ethyl/Methyl Alcohol")},
+    {32, QObject:: tr("Oxygen(O2))")},
+    {34, QObject:: tr("Hydrogen Sulfide")},
+    {40, QObject:: tr("Argon")},
+    {41, QObject:: tr("Hexane")},
+    {43, QObject:: tr("Acetone/Heptane/Methyl ethyl ketone/MP oil/TMP oil")},
+    {44, QObject:: tr("Carbon Dioxide")},
+    {45, QObject:: tr("Isopropyl Alcohol")},
+    {50, QObject:: tr("DP oil PPE")},
+    {51, QObject:: tr("Halocarbon 23")},
+    {69, QObject:: tr("Carbon tetrafluoride/DP oil Fomblin/Halocarbon 13/PFK*/PFTBA**/Trifluoromethane")},
+    {77, QObject:: tr("Chlorobenzene")},
+    {78, QObject:: tr("Benzene/DP oil DC705")},
+    {84, QObject:: tr("Krypton")},
+    {85, QObject:: tr("Halocarbon 12/Silicon Tetrafluoride")},
+    {91, QObject:: tr("Toluene")},
+    {95, QObject:: tr("Trichloroethylene")},
+    {97, QObject:: tr("Trichloroethane")},
+    {101, QObject:: tr("Halocarbon 11/113")},
+    {117, QObject:: tr("Carbon tetrachloride")},
+    {132, QObject:: tr("Xenon")},
 };
 
 DataHelper::DataHelper() {}
@@ -176,8 +176,8 @@ DataHelper::read_config(const QString& file_name, const QString& file_folder, co
     QString s_iniFile = file_folder + '/' + file_name;
     QFile file(s_iniFile);
     if (!file.exists()) {
-        QMessageBox::warning(nullptr, u8"Read Error",
-                             u8"Config not found. " + file_name);
+        QMessageBox::warning(nullptr, QObject:: tr("Read Error"),
+                             QObject:: tr("Config not found. ") + file_name);
         return qm_values;
     }
     QSettings f_iniFile(s_iniFile, QSettings::IniFormat);

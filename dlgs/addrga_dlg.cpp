@@ -64,7 +64,7 @@ int AddRgaDlg::check_setting_conflict(QString tag, QString ip) {
     QStringList sl_rgas = DataHelper::list_config_file(rga_config_path);
     foreach (QString _rga, sl_rgas) {
         if(_rga == tag) {
-            QMessageBox::StandardButton btn = QMessageBox::question(this, u8"Tag Error", u8"Duplicate RGA Tag found.\nOverwrite?", QMessageBox::Yes | QMessageBox::No);
+            QMessageBox::StandardButton btn = QMessageBox::question(this, QObject:: tr("Tag Error"), QObject:: tr("Duplicate RGA Tag found.\nOverwrite?"), QMessageBox::Yes | QMessageBox::No);
             return btn == QMessageBox::Yes;
         }
     }
@@ -78,7 +78,7 @@ void AddRgaDlg::tbl_init() {
     rga_list = DataHelper::list_config_file(rga_config_path);
     int i_rgaLen = rga_list.length();
     QStringList tblHeader;
-    tblHeader << u8"No." << u8"Name";
+    tblHeader << QObject:: tr("No.") << QObject:: tr("Name");
     ui->tbl_rgas->setColumnCount(2);
     ui->tbl_rgas->setHorizontalHeaderLabels(tblHeader);
     ui->tbl_rgas->verticalHeader()->setVisible(false);
@@ -103,12 +103,12 @@ void AddRgaDlg::on_btn_save_clicked() {
     QString rga_port = ui->le_port->text();
     QString s_rgaAddr = rga_ip + ":" + rga_port;
     if(!DataHelper::check_rga_conn(rga_ip, rga_port.toUInt())) {
-        QMessageBox::warning(nullptr, "Connection error", "Can't connect to the address: \n" + s_rgaAddr);
+        QMessageBox::warning(nullptr, QObject:: tr("Connection error"), QObject:: tr("Can't connect to the address: \n") + s_rgaAddr);
         return;
     }
     QString s_tag = ui->le_rga_tag->text();
     if(s_tag.length() < 1) {
-        QMessageBox::warning(nullptr, "Tag error", "Please input RGA tag for indentify.");
+        QMessageBox::warning(nullptr, QObject:: tr("Tag error"), QObject:: tr("Please input RGA tag for indentify."));
         return;
     }
     QString s_ip = ui->ip_widget->getIP();
@@ -121,9 +121,9 @@ void AddRgaDlg::on_btn_save_clicked() {
     qm_rga.insert("IP", s_ip);
     qm_rga.insert("Port", s_port);
     if(DataHelper::save_config(qm_rga, s_tag + ".ini", rga_config_path, "Rga")) {
-        QMessageBox::information(nullptr, "Success", "Rga connection saved.");
+        QMessageBox::information(nullptr, QObject:: tr("Success"), QObject:: tr("Rga connection saved."));
     } else {
-        QMessageBox::warning(nullptr, "Save Failed", "Please check the settings.");
+        QMessageBox::warning(nullptr, QObject:: tr("Save Failed"), QObject:: tr("Please check the settings."));
     }
     if(is_from_edit) {
         this->close();
@@ -136,7 +136,7 @@ void AddRgaDlg::on_tbl_rgas_cellClicked(int row, int) {
     QStringList sl_rgas = DataHelper::list_config_file(rga_config_path);
     QMap<QString, QString> qm_values = DataHelper::read_config(sl_rgas.at(row) + ".ini", rga_config_path, "Rga");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, "Read Failed", "No value readed.");
+        QMessageBox::warning(nullptr, QObject:: tr("Read Failed"), QObject:: tr("No value readed."));
         return;
     }
     //read tag

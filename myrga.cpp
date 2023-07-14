@@ -193,7 +193,7 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     bool in_acq = rga_inst->get_acquire_state();
-    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ? u8"Acquiring" : u8"Stopped");
+    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  tr("Acquiring") :  tr("Stopped"));
     versio_label->setText(label_text);
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
     if(in_acq && !acq_tmr->isActive()) {
@@ -255,7 +255,7 @@ void MyRga::init_data_tbl(bool is_misc_info) {
     tbl->clear();
     tbl->setRowCount(0);
     tbl->setColumnCount(2);
-    QStringList tblHeader_main = {"Item", "Value"};
+    QStringList tblHeader_main = {tr("Item"), tr("Value")};
     tbl->setHorizontalHeaderLabels(tblHeader_main);
     tbl->verticalHeader()->setVisible(false);
     tbl->horizontalHeader()->setStretchLastSection(true);
@@ -538,7 +538,7 @@ void MyRga::update_obs() {
 /// \param event
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
-    QMessageBox::StandardButton result = QMessageBox::question(this, u8"Exit", "Are you sure to exit?",
+    QMessageBox::StandardButton result = QMessageBox::question(this, tr("Exit"), tr("Are you sure to exit?"),
                                          QMessageBox::Yes | QMessageBox::No,
                                          QMessageBox::No);
     if (result == QMessageBox::Yes) {
@@ -556,7 +556,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, u8"Read Failed", u8"No value readed.");
+        QMessageBox::warning(nullptr, tr("Read Failed"), tr("No value readed."));
         return;
     }
     //read Method
@@ -650,7 +650,7 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         rga_addr_click_cnt = 0;
     }
     if(rga_addr_click_cnt == 5 && rga_inst->get_in_ctrl()) {
-        QMessageBox::StandardButton btn = QMessageBox::question(this, u8"Reboot", u8"Are you sure to reboot RGA?", QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  tr("Reboot"),  tr("Are you sure to reboot RGA?"), QMessageBox::Yes | QMessageBox::No);
         if(btn == QMessageBox::Yes) {
             http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
             acq_tmr->stop();
@@ -668,8 +668,8 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     }
     if(row == 7 && !rga_inst->get_acquire_state()) {
         bool save_data = rga_inst->get_is_save_data();
-        QString is_save = u8"Set data log %1?";
-        QMessageBox::StandardButton btn = QMessageBox::question(this, "DataLog", is_save.arg(save_data ? "off" : "on"), QMessageBox::Yes | QMessageBox::No);
+        QString is_save =  tr("Set data log %1?");
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  tr("DataLog"), is_save.arg(save_data ? tr("off") : ("on")), QMessageBox::Yes | QMessageBox::No);
         save_data = !save_data;
         if(btn == QMessageBox::Yes) {
             rga_inst->set_is_save_data(save_data);
