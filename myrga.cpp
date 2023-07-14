@@ -310,11 +310,11 @@ void MyRga::init_spec_chart() {
     spec_chart->xAxis->setTickLabelRotation(15);
     spec_chart->xAxis->setSubTicks(false);
     spec_chart->xAxis->setTickLength(2, 0);
-    spec_chart->xAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
+//    spec_chart->xAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
+//    spec_chart->yAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
     spec_chart->yAxis->setNumberFormat("e"); // e = exponential, b = beautiful decimal powers
     spec_chart->yAxis->setNumberPrecision(0);
     spec_chart->yAxis->setRange(1e-14, 5e-2);
-    spec_chart->yAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
 }
 ///
 /// \brief MyRga::initLineChart
@@ -341,6 +341,8 @@ void MyRga::init_line_chart() {
     line_chart->yAxis->setNumberPrecision(0);
     line_chart->yAxis->setRange(1e-14, 5e-2);
     line_chart->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
+//    line_chart->xAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
+//    line_chart->yAxis->setLabelFont(QFont(QLatin1String("sans serif"), 8));
     for(int line_index = 0; line_index < i_lineCnt; line_index++) {
         line_chart->addGraph();
         QPen qp_linePen = DataHelper::get_pen(line_index * 13);
