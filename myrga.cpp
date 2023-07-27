@@ -232,7 +232,6 @@ void MyRga::acq_tmr_action() {
     }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
-//        prog_bar->setValue(0);
         return;
     }
     if(rga_inst->get_acquire_state()) {
@@ -535,6 +534,7 @@ void MyRga::setup_obs() {
 void MyRga::update_obs() {
     obs_subj->notify_obs();
 }
+
 ///
 /// \brief MyRga::closeEvent
 /// \param event
@@ -552,6 +552,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
         event->ignore();
     }
 }
+
 ///
 /// \brief MyRga::set_last_rcpt
 ///

@@ -62,311 +62,311 @@
         <translation>MyRGA</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="135"/>
+        <location filename="myrga.ui" line="148"/>
         <source>Sweep range</source>
         <translation>扫描范围</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="138"/>
+        <location filename="myrga.ui" line="151"/>
         <source>Range</source>
         <translation>范围</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="157"/>
+        <location filename="myrga.ui" line="170"/>
         <source>Mass begin.</source>
         <translation>开始质量数.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="182"/>
+        <location filename="myrga.ui" line="195"/>
         <source>→ </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="204"/>
+        <location filename="myrga.ui" line="217"/>
         <source>Mass end.</source>
         <translation>结束质量数.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="241"/>
+        <location filename="myrga.ui" line="254"/>
         <source>Scan Method</source>
         <translation>方式</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="244"/>
+        <location filename="myrga.ui" line="257"/>
         <source>Method</source>
         <translation>方式</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="266"/>
+        <location filename="myrga.ui" line="279"/>
         <source>Scan method.</source>
         <translation>扫描方式.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="270"/>
+        <location filename="myrga.ui" line="283"/>
         <source>Sweep</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="275"/>
-        <location filename="myrga.ui" line="580"/>
+        <location filename="myrga.ui" line="288"/>
+        <location filename="myrga.ui" line="593"/>
         <source>Points</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="312"/>
+        <location filename="myrga.ui" line="325"/>
         <source>Pressure Unit</source>
         <translation>气压单位</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="315"/>
+        <location filename="myrga.ui" line="328"/>
         <source>Pressure</source>
         <translation>气压</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="334"/>
+        <location filename="myrga.ui" line="347"/>
         <source>Pressure unit for total pressure and partial pressure.</source>
         <translation>总压和分压的压力单位.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="338"/>
+        <location filename="myrga.ui" line="351"/>
         <source>Torr</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="343"/>
+        <location filename="myrga.ui" line="356"/>
         <source>mBar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="348"/>
+        <location filename="myrga.ui" line="361"/>
         <source>Pa</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="392"/>
+        <location filename="myrga.ui" line="405"/>
         <source>Scan Dwell</source>
         <translation>间隔</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="395"/>
+        <location filename="myrga.ui" line="408"/>
         <source>Dwell</source>
         <translation>间隔</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="414"/>
+        <location filename="myrga.ui" line="427"/>
         <source>Point dwell time(ms).</source>
         <translation>每个点扫描间隔(毫秒).</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="421"/>
+        <location filename="myrga.ui" line="434"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="426"/>
+        <location filename="myrga.ui" line="439"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="431"/>
+        <location filename="myrga.ui" line="444"/>
         <source>16</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="436"/>
+        <location filename="myrga.ui" line="449"/>
         <source>32</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="441"/>
+        <location filename="myrga.ui" line="454"/>
         <source>64</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="446"/>
+        <location filename="myrga.ui" line="459"/>
         <source>128</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="451"/>
+        <location filename="myrga.ui" line="464"/>
         <source>256</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="488"/>
+        <location filename="myrga.ui" line="501"/>
         <source>Scan PPAmu</source>
         <translation>PPAmu</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="491"/>
+        <location filename="myrga.ui" line="504"/>
         <source>PPAmu</source>
-        <translation></translation>
+        <translation type="unfinished">点位</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="510"/>
+        <location filename="myrga.ui" line="523"/>
         <source>Points per amu.</source>
         <translation>每点均分份数.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="517"/>
-        <location filename="myrga.ui" line="730"/>
+        <location filename="myrga.ui" line="530"/>
+        <location filename="myrga.ui" line="743"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="522"/>
+        <location filename="myrga.ui" line="535"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="527"/>
+        <location filename="myrga.ui" line="540"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="577"/>
+        <location filename="myrga.ui" line="590"/>
         <source>Selected points</source>
         <translation>选择点位来扫描.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="605"/>
+        <location filename="myrga.ui" line="618"/>
         <source>Mass points.</source>
         <translation>选择的点位.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="608"/>
+        <location filename="myrga.ui" line="621"/>
         <source>2/4/16/18/28/32/44</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="636"/>
+        <location filename="myrga.ui" line="649"/>
         <source>Data type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="639"/>
+        <location filename="myrga.ui" line="652"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="658"/>
+        <location filename="myrga.ui" line="671"/>
         <source>Report unit type.</source>
         <translation>反馈数据单位.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="662"/>
+        <location filename="myrga.ui" line="675"/>
         <source>Current</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="667"/>
+        <location filename="myrga.ui" line="680"/>
         <source>PP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="704"/>
+        <location filename="myrga.ui" line="717"/>
         <source>Select filament</source>
         <translation>选择工作灯丝.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="707"/>
+        <location filename="myrga.ui" line="720"/>
         <source>Flmt</source>
         <translation>灯丝</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="726"/>
+        <location filename="myrga.ui" line="739"/>
         <source>Filament index for this recipe.</source>
         <translation>当前扫描所用灯丝.</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="735"/>
+        <location filename="myrga.ui" line="748"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="771"/>
+        <location filename="myrga.ui" line="784"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="973"/>
+        <location filename="myrga.ui" line="986"/>
         <source>Toggle Side</source>
         <translation>切换左边栏显示</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1021"/>
+        <location filename="myrga.ui" line="1034"/>
         <source>Communication</source>
         <translation>通讯</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1053"/>
-        <location filename="myrga.ui" line="1347"/>
+        <location filename="myrga.ui" line="1066"/>
+        <location filename="myrga.ui" line="1360"/>
         <source>Recipe</source>
         <translation>配方</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1085"/>
+        <location filename="myrga.ui" line="1098"/>
         <source>Data Review</source>
         <translation>数据回溯</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1117"/>
+        <location filename="myrga.ui" line="1130"/>
         <source>Information</source>
         <translation>其它信息</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1149"/>
+        <location filename="myrga.ui" line="1162"/>
         <source>Toggle EM</source>
         <translation>开关倍增器</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1181"/>
+        <location filename="myrga.ui" line="1194"/>
         <source>Link</source>
         <translation>链接</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1277"/>
+        <location filename="myrga.ui" line="1290"/>
         <source>Toggle Filament</source>
         <translation>开关灯丝</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1316"/>
+        <location filename="myrga.ui" line="1329"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1323"/>
+        <location filename="myrga.ui" line="1336"/>
         <source>Setting</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1330"/>
+        <location filename="myrga.ui" line="1343"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1342"/>
+        <location filename="myrga.ui" line="1355"/>
         <source>Review</source>
         <translation>数据回溯</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1352"/>
+        <location filename="myrga.ui" line="1365"/>
         <source>Comm</source>
         <translation>通讯</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1357"/>
+        <location filename="myrga.ui" line="1370"/>
         <source>Manual</source>
         <translation>手册</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1362"/>
+        <location filename="myrga.ui" line="1375"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="myrga.ui" line="1367"/>
-        <location filename="myrga.cpp" line="541"/>
+        <location filename="myrga.ui" line="1380"/>
+        <location filename="myrga.cpp" line="543"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -396,52 +396,52 @@
         <translation>已停止</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="258"/>
+        <location filename="myrga.cpp" line="257"/>
         <source>Item</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="258"/>
+        <location filename="myrga.cpp" line="257"/>
         <source>Value</source>
         <translation>值</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="541"/>
+        <location filename="myrga.cpp" line="543"/>
         <source>Are you sure to exit?</source>
         <translation>是否确定退出?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="559"/>
+        <location filename="myrga.cpp" line="562"/>
         <source>Read Failed</source>
         <translation>读取错误</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="559"/>
+        <location filename="myrga.cpp" line="562"/>
         <source>No value readed.</source>
         <translation>没有读取任何值.</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="653"/>
+        <location filename="myrga.cpp" line="656"/>
         <source>Reboot</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="653"/>
+        <location filename="myrga.cpp" line="656"/>
         <source>Are you sure to reboot RGA?</source>
         <translation>是否确认重启?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="671"/>
+        <location filename="myrga.cpp" line="674"/>
         <source>Set data log %1?</source>
         <translation>保存数据 %1?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="672"/>
+        <location filename="myrga.cpp" line="675"/>
         <source>DataLog</source>
         <translation>数据记录</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="672"/>
+        <location filename="myrga.cpp" line="675"/>
         <source>off</source>
         <translation>关</translation>
     </message>
