@@ -294,9 +294,10 @@ void RgaUtility::write_scan_data(bool final) {
     }
     QString s_pres = sl_data.takeFirst();
     QString s_data = sl_data.join(",");
+    QString scan_tm = QDateTime::fromMSecsSinceEpoch(get_scan_tmstmp()).toString("yyyy-mm-dd HH:mm:ss.z");
     s_data.prepend(",,,");
     s_data.prepend(s_pres);
-    s_data.prepend(QString::number(get_scan_tmstmp()) + ",");
+    s_data.prepend(scan_tm + ",");
     s_data.prepend(QString::number(get_scan_num()) + ",");
     s_data.append("\n");
     string_data.append(s_data);
