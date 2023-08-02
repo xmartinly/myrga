@@ -17,7 +17,7 @@ const QMap<int, QString> DataHelper::C_POSELEMAP  = {
     {28, QObject:: tr("Nitrogen(N2)/Carbon Monoxide")},
     {30, QObject:: tr("Silane")},
     {31, QObject:: tr("Ethyl/Methyl Alcohol")},
-    {32, QObject:: tr("Oxygen(O2))")},
+    {32, QObject:: tr("Oxygen(O2)")},
     {34, QObject:: tr("Hydrogen Sulfide")},
     {40, QObject:: tr("Argon")},
     {41, QObject:: tr("Hexane")},
