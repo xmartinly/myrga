@@ -123,5 +123,6 @@
         <file>Resource/Picture/gif/loading.gif</file>
         <file>Resource/Picture/svg/information.svg</file>
         <file>Resource/Picture/svg/information_a.svg</file>
+        <file>Resource/Picture/png/nimitz_logo.png</file>
     </qresource>
 </RCC>

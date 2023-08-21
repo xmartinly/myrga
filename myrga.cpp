@@ -321,6 +321,9 @@ void MyRga::init_spec_chart() {
 void MyRga::init_line_chart() {
     QStringList sl_col = rga_inst->get_tbl_col(true);
     QCustomPlot* line_chart = ui->qcp_line;
+    auto line_title   = new QCPTextElement(line_chart, "N/A", QFont("Courier New", 10, QFont::Bold));
+    line_chart->legend->insertRow(0);
+    line_chart->legend->addElement(0, 0, line_title);
     int i_lineCnt = sl_col.count();
     line_chart->setNoAntialiasingOnDrag(true);
     line_chart->clearPlottables();
@@ -721,13 +724,15 @@ void MyRga::chart_right_click(QMouseEvent* event) {
     qcp_line->legend->setVisible(true);
     qcp_line->legend->clearItems();
     QList<double> dl_specData = {};
+    QCPTextElement* title = static_cast<QCPTextElement*>(qcp_line->legend->element(0, 0));
+    title->setText("<" + y_scale + "> " + QTime::fromMSecsSinceStartOfDay(int(x_pos * 1000)).toString("HH:mm:ss"));
     for(int i = 0; i < line_graph_count ; i ++) {
         double _value = qcp_line->graph(i)->data()->findBegin(x_pos)->value;
         dl_specData << _value;
         QString _valueString = QString::number(_value, 'e', 3);
         if(sel_mass.contains(i)) {
             QString _numString = ui->tw_data->item(i, 0)->text();
-            qcp_line->plottable(i)->setName(_numString + " : " + _valueString );
+            qcp_line->plottable(i)->setName(_numString + ": " + _valueString );
             qcp_line->plottable(i)->addToLegend();
         }
         qcp_line->replot(QCustomPlot::rpQueuedReplot);
@@ -755,6 +760,7 @@ void MyRga::chart_actions(QAction* action) {
         QSharedPointer<QCPAxisTickerLog> log_ticker(new QCPAxisTickerLog);
         qcp_line->yAxis->setScaleType(line_scale_type ? QCPAxis::stLinear : QCPAxis::stLogarithmic);
         qcp_line->yAxis->setTicker(line_scale_type ? linear_ticker : log_ticker);
+        y_scale = line_scale_type ? tr("Linear") : tr("Log");
         qcp_line->rescaleAxes();
         qcp_line->replot();
         return;

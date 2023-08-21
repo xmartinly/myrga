@@ -121,6 +121,8 @@ class MyRga : public QMainWindow
     // run info text
     QString run_info  = u8"Stopped | ";
 
+    QString y_scale = tr("Log");
+
 
   private:
     // initialize data table
