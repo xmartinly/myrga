@@ -1,4 +1,4 @@
-#ifndef DATAHELPER_H
+﻿#ifndef DATAHELPER_H
 #define DATAHELPER_H
 
 #include "utility/comm_http.h"
@@ -67,6 +67,8 @@ class DataHelper {
             const QString& peroid = "0");
 
     static QVector<double> gen_ppamu_pos(int i_start, int i_stop, int i_ppamu = 1);
+
+    static QString tp_convert(int tp_unit = 0);
 
     template <typename T_>
     static T_ findMax(const QVector<T_> data_vector) {

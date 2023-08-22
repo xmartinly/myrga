@@ -178,8 +178,8 @@ DataHelper::read_config(const QString& file_name, const QString& file_folder, co
     QString s_iniFile = file_folder + '/' + file_name;
     QFile file(s_iniFile);
     if (!file.exists()) {
-        QMessageBox::warning(nullptr, QObject:: tr("Read Error"),
-                             QObject:: tr("Config not found. ") + file_name);
+        QMessageBox::warning(nullptr, u8"读取失败",
+                             u8"未找到配置文件" + file_name);
         return qm_values;
     }
     QSettings f_iniFile(s_iniFile, QSettings::IniFormat);
@@ -249,6 +249,26 @@ QVector<double> DataHelper::gen_ppamu_pos(int i_start, int i_stop, int i_ppamu) 
         vd_step.append(1 + d_single * var);
     }
     return vd_step;
+}
+
+///
+/// \brief DataHelper::tp_convert
+/// \param tp_unit
+/// \return
+///
+QString DataHelper::tp_convert(int tp_unit) {
+    QString tp_string = "Torr";
+    switch (tp_unit) {
+        case 1:
+            tp_string = "mBar";
+            break;
+        case 2:
+            tp_string = "Pa";
+            break;
+        default:
+            break;
+    }
+    return tp_string;
 }
 
 ///

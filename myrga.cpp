@@ -144,11 +144,11 @@ void MyRga::on_tb_ctrl_clicked() {
                                         QString::number(ui->sb_start->value()),
                                         QString::number(ui->sb_end->value()),
                                         ui->le_points->text(),
-                                        ui->cb_method->currentText(),
-                                        ui->cb_dwell->currentText(),
-                                        ui->cb_flmt->currentText(),
-                                        ui->cb_ppamu->currentText(),
-                                        ui->cb_unitreport->currentText(),
+                                        QString::number(ui->cb_method->currentIndex()),
+                                        QString::number(ui->cb_dwell->currentIndex()),
+                                        QString::number(ui->cb_flmt->currentIndex()),
+                                        QString::number(ui->cb_ppamu->currentIndex()),
+                                        QString::number(ui->cb_unitreport->currentIndex()),
                                         "1");
     DataHelper::save_config(recipe, "lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
     if(rga_inst->get_acquire_state()) {
@@ -193,7 +193,7 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     bool in_acq = rga_inst->get_acquire_state();
-    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  tr("Acquiring") :  tr("Stopped"));
+    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  u8"搜集中" :  u8"已停止");
     versio_label->setText(label_text);
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
     if(in_acq && !acq_tmr->isActive()) {
@@ -254,7 +254,7 @@ void MyRga::init_data_tbl(bool is_misc_info) {
     tbl->clear();
     tbl->setRowCount(0);
     tbl->setColumnCount(2);
-    QStringList tblHeader_main = {tr("Item"), tr("Value")};
+    QStringList tblHeader_main = {u8"项目", u8"值"};
     tbl->setHorizontalHeaderLabels(tblHeader_main);
     tbl->verticalHeader()->setVisible(false);
     tbl->horizontalHeader()->setStretchLastSection(true);
@@ -395,6 +395,7 @@ void MyRga::init_scan() {
     read_current_config(true);
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
+    qDebug() << rga_inst->get_scan_set();
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
     if(rga_inst->get_is_save_data()) {
@@ -431,13 +432,13 @@ void MyRga::read_current_config(bool only_rcpt) {
     RecipeSet recpt;
     recpt.s_rcpName     = "myRGA";
     recpt.i_period      = qm_rcp.value("Peroid").toInt() * 1000;
-    recpt.s_method      = qm_rcp.value("Method").toStdString().c_str();
-    recpt.s_dwell       = qm_rcp.value("Dwell").toStdString().c_str();
-    recpt.s_rUnit       = qm_rcp.value("ReportUnit").toStdString().c_str();
-    recpt.s_pUnit       = qm_rcp.value("PressureUnit").toStdString().c_str();
-    recpt.s_emOpt       = qm_rcp.value("EmOpt").toStdString().c_str();
-    recpt.s_ppamu       = qm_rcp.value("PPAmu").toStdString().c_str();
-    recpt.s_flmtIdx     = qm_rcp.value("Flmt").toStdString().c_str();
+    recpt.s_method      = qm_rcp.value("Method").toInt() == 1 ? "Points" : "Sweep";
+    recpt.s_dwell       = QString::number(qm_rcp.value("Dwell").toInt());
+    recpt.s_rUnit       = qm_rcp.value("ReportUnit").toInt() == 1 ? "Current" : "PP";
+    recpt.s_pUnit       = DataHelper::tp_convert(qm_rcp.value("PressureUnit").toInt());
+    recpt.s_emOpt       = qm_rcp.value("EmOpt").toInt() == 1 ? "On" : "Off";
+    recpt.s_ppamu       = QString::number(qm_rcp.value("PPAmu").toInt());
+    recpt.s_flmtIdx     = QString::number(qm_rcp.value("Flmt").toInt() + 1);
     recpt.s_startMass   = qm_rcp.value("StartMass").toStdString().c_str();
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
     QString s_points    = qm_rcp.value("Points").toStdString().c_str();
@@ -543,7 +544,7 @@ void MyRga::update_obs() {
 /// \param event
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
-    QMessageBox::StandardButton result = QMessageBox::question(this, tr("Exit"), tr("Are you sure to exit?"),
+    QMessageBox::StandardButton result = QMessageBox::question(this, u8"退出", u8"是否确认退出?",
                                          QMessageBox::Yes | QMessageBox::No,
                                          QMessageBox::No);
     if (result == QMessageBox::Yes) {
@@ -562,7 +563,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, tr("Read Failed"), tr("No value readed."));
+        QMessageBox::warning(nullptr, u8"错误", u8"未读取到任何数据");
         return;
     }
     //read Method
@@ -656,7 +657,7 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         rga_addr_click_cnt = 0;
     }
     if(rga_addr_click_cnt == 5 && rga_inst->get_in_ctrl()) {
-        QMessageBox::StandardButton btn = QMessageBox::question(this,  tr("Reboot"),  tr("Are you sure to reboot RGA?"), QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  u8"重启",  u8"是否确定重启?", QMessageBox::Yes | QMessageBox::No);
         if(btn == QMessageBox::Yes) {
             http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
             acq_tmr->stop();
@@ -674,8 +675,8 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     }
     if(row == 7 && !rga_inst->get_acquire_state()) {
         bool save_data = rga_inst->get_is_save_data();
-        QString is_save =  tr("Set data log %1?");
-        QMessageBox::StandardButton btn = QMessageBox::question(this,  tr("DataLog"), is_save.arg(save_data ? tr("off") : ("on")), QMessageBox::Yes | QMessageBox::No);
+        QString is_save =  u8"设置数据保存 %1?";
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  u8"数据记录", is_save.arg(save_data ? u8"关" : u8"开"), QMessageBox::Yes | QMessageBox::No);
         save_data = !save_data;
         if(btn == QMessageBox::Yes) {
             rga_inst->set_is_save_data(save_data);
@@ -760,7 +761,7 @@ void MyRga::chart_actions(QAction* action) {
         QSharedPointer<QCPAxisTickerLog> log_ticker(new QCPAxisTickerLog);
         qcp_line->yAxis->setScaleType(line_scale_type ? QCPAxis::stLinear : QCPAxis::stLogarithmic);
         qcp_line->yAxis->setTicker(line_scale_type ? linear_ticker : log_ticker);
-        y_scale = line_scale_type ? tr("Linear") : tr("Log");
+        y_scale = line_scale_type ? u8"线性" : u8"对数";
         qcp_line->rescaleAxes();
         qcp_line->replot();
         return;

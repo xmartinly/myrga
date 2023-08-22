@@ -3,8 +3,8 @@
 
 #include <QApplication>
 
-#include <QLocale>
-#include <QTranslator>
+//#include <QLocale>
+//#include <QTranslator>
 
 #ifdef VLD_MODULE
     #include "vld.h"
@@ -19,15 +19,15 @@ int main(int argc, char* argv[]) {
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     QApplication a(argc, argv);
-    QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString& locale : uiLanguages) {
-        const QString baseName = "myrga_" + QLocale(locale).name();
-        if (translator.load(":/i18n/" + baseName)) {
-            a.installTranslator(&translator);
-            break;
-        }
-    }
+//    QTranslator translator;
+//    const QStringList uiLanguages = QLocale::system().uiLanguages();
+//    for (const QString& locale : uiLanguages) {
+//        const QString baseName = "myrga_" + QLocale(locale).name();
+//        if (translator.load(":/i18n/" + baseName)) {
+//            a.installTranslator(&translator);
+//            break;
+//        }
+//    }
     QFile qss(":/Resource/Qss/custom.qss");
     qss.open(QFile::ReadOnly);
     if(qss.isOpen()) {

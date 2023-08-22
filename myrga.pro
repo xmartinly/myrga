@@ -51,8 +51,8 @@ FORMS += \
 TRANSLATIONS += \
     myrga_zh_CN.ts
 
-CONFIG += lrelease
-CONFIG += embed_translations
+#CONFIG += lrelease
+#CONFIG += embed_translations
 
 
 PRECOMPILED_HEADER = stable.h

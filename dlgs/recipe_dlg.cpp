@@ -1,4 +1,4 @@
-#include "recipe_dlg.h"
+﻿#include "recipe_dlg.h"
 #include "ui_recipe_dlg.h"
 
 ///
@@ -67,7 +67,7 @@ void RecipeDlg::recipe_tbl_init() {
     recipe_list = DataHelper::list_config_file(recipe_config_path);
     int i_recipeCount = recipe_list.length();
     QStringList tblHeader;
-    tblHeader << tr("No.") << tr("Name");
+    tblHeader << u8"序号" << u8"标签";
     ui->tbl_recipe->setColumnCount(2);
     ui->tbl_recipe->setHorizontalHeaderLabels(tblHeader);
     ui->tbl_recipe->verticalHeader()->setVisible(false);
@@ -93,14 +93,14 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     QStringList sl_recipes = DataHelper::list_config_file(recipe_config_path);
     QMap<QString, QString> qm_values = DataHelper::read_config(sl_recipes.at(row) + ".ini", recipe_config_path, "Recipe");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, QObject:: tr("Read Failed"), QObject:: tr("No value readed."));
+        QMessageBox::warning(nullptr, u8"读取错误", u8"未读取到数据");
         return;
     }
     //read Method
     if(!qm_values.contains("Method")) {
         return;
     }
-    QString s_method = qm_values.find("Method")->toStdString().c_str();
+    int i_method = qm_values.find("Method")->toInt();
     //read Peroid
     if(!qm_values.contains("Peroid")) {
         return;
@@ -125,17 +125,17 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     if(!qm_values.contains("EmOpt")) {
         return;
     }
-    QString s_emOpt = qm_values.find("EmOpt")->toStdString().c_str();
+    int i_emOpt = qm_values.find("EmOpt")->toInt();
     //read Dwell
     if(!qm_values.contains("Dwell")) {
         return;
     }
-    QString s_dwell = qm_values.find("Dwell")->toStdString().c_str();
+    int i_dwell = qm_values.find("Dwell")->toInt();
     //read PPAmu
     if(!qm_values.contains("PPAmu")) {
         return;
     }
-    QString s_ppamu = qm_values.find("PPAmu")->toStdString().c_str();
+    int i_ppamu = qm_values.find("PPAmu")->toInt();
     //read Pressure unit
     if(!qm_values.contains("PressureUnit")) {
         return;
@@ -145,26 +145,24 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     if(!qm_values.contains("ReportUnit")) {
         return;
     }
-    QString s_reportUnit = qm_values.find("ReportUnit")->toStdString().c_str();
+    int i_reportUnit = qm_values.find("ReportUnit")->toInt();
     if(!qm_values.contains("Flmt")) {
         return;
     }
-    QString s_flmt = qm_values.find("Flmt")->toStdString().c_str();
-    bool b_isSweep  = s_method  == "Sweep";
-    bool b_isEmOn   = s_emOpt   == "1";
-    on_cb_method_currentIndexChanged(!b_isSweep);
-    ui->cb_emauto->setChecked(b_isEmOn);
-    ui->cb_method->setCurrentIndex(!b_isSweep);
+    int i_flmt = qm_values.find("Flmt")->toInt();
+    on_cb_method_currentIndexChanged(!i_method);
+    ui->cb_emauto->setChecked(i_emOpt);
+    ui->cb_method->setCurrentIndex(i_method);
     ui->te_time->setTime(DataHelper::sec_to_tm(i_period));
     ui->le_name->setText(sl_recipes.at(row));
     ui->le_points->setText(s_points);
     ui->sb_start->setValue(i_startMass);
     ui->sb_end->setValue(i_stopMass);
-    ui->cb_dwell->setCurrentText(s_dwell);
-    ui->cb_flmt->setCurrentText(s_flmt);
-    ui->cb_ppamu->setCurrentText(s_ppamu);
+    ui->cb_dwell->setCurrentIndex(i_dwell);
+    ui->cb_flmt->setCurrentIndex(i_flmt);
+    ui->cb_ppamu->setCurrentIndex(i_ppamu);
     ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
-    ui->cb_unitreport->setCurrentText(s_reportUnit);
+    ui->cb_unitreport->setCurrentIndex(i_reportUnit);
 }
 
 
@@ -177,7 +175,7 @@ void RecipeDlg::on_btn_run_clicked() {
 void RecipeDlg::recipe_save(bool is_run) {
     QString s_recipeName        =  ui->le_name->text();
     if(s_recipeName.length() < 1) {
-        QMessageBox::warning(nullptr, "Recipe Name", "Please input recipe name.");
+        QMessageBox::warning(nullptr, u8"保存错误", u8"请输入配方标签");
         return;
     } else {
         s_recipeName += ".ini";
@@ -195,19 +193,19 @@ void RecipeDlg::recipe_save(bool is_run) {
                  QString::number(ui->sb_start->value()),
                  QString::number(ui->sb_end->value()),
                  ui->le_points->text(),
-                 ui->cb_method->currentText(),
-                 ui->cb_dwell->currentText(),
-                 ui->cb_flmt->currentText(),
-                 ui->cb_ppamu->currentText(),
-                 ui->cb_unitreport->currentText(),
+                 QString::number(ui->cb_method->currentIndex()),
+                 QString::number(ui->cb_dwell->currentIndex()),
+                 QString::number(ui->cb_flmt->currentIndex()),
+                 QString::number(ui->cb_ppamu->currentIndex()),
+                 QString::number(ui->cb_unitreport->currentIndex()),
                  QString::number(i_acquirePeriod));
     if(DataHelper::save_config(recipe, s_recipeName, file_path, "Recipe")) {
         if(is_run) {
             return;
         }
-        QMessageBox::information(nullptr, "Success", "Recipe config saved.");
+        QMessageBox::information(nullptr, u8"成功", u8"配方已保存");
     } else {
-        QMessageBox::warning(nullptr, "Save Failed", "Please check the settings.");
+        QMessageBox::warning(nullptr, u8"失败", u8"保存失败, 请检查设置.");
     }
 }
 

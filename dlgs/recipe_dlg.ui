@@ -499,12 +499,12 @@
          </property>
          <item>
           <property name="text">
-           <string>Current</string>
+           <string>电流</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>PP</string>
+           <string>分压</string>
           </property>
          </item>
         </widget>

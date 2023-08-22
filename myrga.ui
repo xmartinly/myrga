@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MyRga</string>
+   <string>myRGA</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_7">
@@ -672,12 +672,12 @@
                   </property>
                   <item>
                    <property name="text">
-                    <string>Current</string>
+                    <string>电流</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>PP</string>
+                    <string>分压</string>
                    </property>
                   </item>
                  </widget>
@@ -1321,7 +1321,7 @@
      <x>0</x>
      <y>0</y>
      <width>1350</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
