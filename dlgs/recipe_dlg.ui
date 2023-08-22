@@ -49,7 +49,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Name</string>
+          <string>标签</string>
          </property>
         </widget>
        </item>
@@ -101,7 +101,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Method</string>
+          <string>收集方式</string>
          </property>
         </widget>
        </item>
@@ -124,12 +124,12 @@
          </property>
          <item>
           <property name="text">
-           <string>Sweep</string>
+           <string>范围扫描</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Points</string>
+           <string>点位选择</string>
           </property>
          </item>
         </widget>
@@ -157,7 +157,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Range</string>
+          <string>范围</string>
          </property>
         </widget>
        </item>
@@ -255,7 +255,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Points</string>
+          <string>点位</string>
          </property>
         </widget>
        </item>
@@ -319,7 +319,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Dwell</string>
+          <string>扫描间隔</string>
          </property>
         </widget>
        </item>
@@ -403,7 +403,7 @@
           </size>
          </property>
          <property name="text">
-          <string>PPAmu</string>
+          <string>每点分隔</string>
          </property>
         </widget>
        </item>
@@ -476,7 +476,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Type</string>
+          <string>数据类型</string>
          </property>
         </widget>
        </item>
@@ -532,7 +532,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Pressure</string>
+          <string>气压单位</string>
          </property>
         </widget>
        </item>
@@ -602,7 +602,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Flmt</string>
+          <string>激活灯丝</string>
          </property>
         </widget>
        </item>
@@ -658,7 +658,7 @@
           </size>
          </property>
          <property name="text">
-          <string>RunTime</string>
+          <string>运行时长</string>
          </property>
         </widget>
        </item>
@@ -740,7 +740,7 @@
           </size>
          </property>
          <property name="text">
-          <string>EM</string>
+          <string>倍增器</string>
          </property>
         </widget>
        </item>
@@ -762,7 +762,7 @@
           <string>EM operation method.</string>
          </property>
          <property name="text">
-          <string>Auto On</string>
+          <string>自动开</string>
          </property>
         </widget>
        </item>
@@ -818,12 +818,12 @@
          </property>
          <item>
           <property name="text">
-           <string>OneTime</string>
+           <string>单次</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Continuous</string>
+           <string>连续</string>
           </property>
          </item>
         </widget>
@@ -845,7 +845,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Run</string>
+        <string>运行</string>
        </property>
       </widget>
      </item>
@@ -880,7 +880,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Delete</string>
+        <string>删除</string>
        </property>
       </widget>
      </item>
@@ -915,7 +915,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Save</string>
+        <string>保存</string>
        </property>
       </widget>
      </item>

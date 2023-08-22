@@ -1,4 +1,4 @@
-#include "static_container.h"
+﻿#include "static_container.h"
 
 bool StaticContainer::STC_CELLCLICKED   = false;
 

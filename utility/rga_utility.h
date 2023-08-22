@@ -1,4 +1,4 @@
-#ifndef RGAUTILITY_H
+﻿#ifndef RGAUTILITY_H
 #define RGAUTILITY_H
 
 #include "rga_structs.h"
@@ -118,19 +118,19 @@ class RgaUtility {
     QStringList   m_closeSet;
     //table headers
     QStringList   m_mainTblHead = {
-        u8"Addr",     //0
-        u8"SN",       //1
-        u8"Recipe",   //2
-        u8"Filament", //3
-        u8"EM",       //4
-        u8"Dwell",    //5
-        u8"RptUnit",  //6
-        u8"Datalog",  //7
-        u8"Error",    //8
-        u8"RunTm",    //9
-        u8"ScanTm",   //10
-        u8"TotalPressure",    //11
-        u8"ScanNum"   //12
+        u8"地址",     //0
+        u8"序列号",       //1
+        u8"配方",   //2
+        u8"灯丝", //3
+        u8"倍增器",       //4
+        u8"间隔",    //5
+        u8"报告单位",  //6
+        u8"数据记录",  //7
+        u8"错误",    //8
+        u8"运行时间",    //9
+        u8"扫描时间",   //10
+        u8"总压",    //11
+        u8"扫描次数"   //12
     };
 
     QFile*        data_file_ptr     = nullptr;

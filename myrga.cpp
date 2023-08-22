@@ -321,7 +321,7 @@ void MyRga::init_spec_chart() {
 void MyRga::init_line_chart() {
     QStringList sl_col = rga_inst->get_tbl_col(true);
     QCustomPlot* line_chart = ui->qcp_line;
-    auto line_title   = new QCPTextElement(line_chart, "N/A", QFont("Courier New", 10, QFont::Bold));
+    auto line_title   = new QCPTextElement(line_chart, "", QFont("Courier New", 10, QFont::Bold));
     line_chart->legend->insertRow(0);
     line_chart->legend->addElement(0, 0, line_title);
     int i_lineCnt = sl_col.count();

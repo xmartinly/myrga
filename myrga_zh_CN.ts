@@ -366,7 +366,7 @@
     </message>
     <message>
         <location filename="myrga.ui" line="1380"/>
-        <location filename="myrga.cpp" line="543"/>
+        <location filename="myrga.cpp" line="546"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -406,220 +406,362 @@
         <translation>值</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="543"/>
+        <location filename="myrga.cpp" line="546"/>
         <source>Are you sure to exit?</source>
         <translation>是否确定退出?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="562"/>
+        <location filename="myrga.cpp" line="565"/>
         <source>Read Failed</source>
         <translation>读取错误</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="562"/>
+        <location filename="myrga.cpp" line="565"/>
         <source>No value readed.</source>
         <translation>没有读取任何值.</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="656"/>
+        <location filename="myrga.cpp" line="659"/>
         <source>Reboot</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="656"/>
+        <location filename="myrga.cpp" line="659"/>
         <source>Are you sure to reboot RGA?</source>
         <translation>是否确认重启?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="674"/>
+        <location filename="myrga.cpp" line="677"/>
         <source>Set data log %1?</source>
         <translation>保存数据 %1?</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="675"/>
+        <location filename="myrga.cpp" line="678"/>
         <source>DataLog</source>
         <translation>数据记录</translation>
     </message>
     <message>
-        <location filename="myrga.cpp" line="675"/>
+        <location filename="myrga.cpp" line="678"/>
         <source>off</source>
         <translation>关</translation>
+    </message>
+    <message>
+        <location filename="myrga.cpp" line="763"/>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="myrga.cpp" line="763"/>
+        <location filename="myrga.h" line="124"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="data_helper.cpp" line="7"/>
         <source>Hydrogenium</source>
-        <translation>氢</translation>
+        <translation type="vanished">氢</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="8"/>
         <source>Hydrogen</source>
-        <translation>氢气</translation>
+        <translation type="vanished">氢气</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="9"/>
         <source>Helium(3)</source>
-        <translation>氦(3)</translation>
+        <translation type="vanished">氦(3)</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="10"/>
         <source>Helium</source>
-        <translation>氦气</translation>
+        <translation type="vanished">氦气</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="11"/>
         <source>Carbon(C)</source>
-        <translation>碳</translation>
+        <translation type="vanished">碳</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="12"/>
         <source>Nitrogen(N)</source>
-        <translation>氮</translation>
+        <translation type="vanished">氮</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="13"/>
         <source>Oxygen(O)/Methane</source>
-        <translation>氧气/甲烷</translation>
+        <translation type="vanished">氧气/甲烷</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="14"/>
         <source>HO/Ammonia</source>
-        <translation>HO/氨</translation>
+        <translation type="vanished">HO/氨</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="15"/>
         <source>Water</source>
-        <translation>水</translation>
+        <translation type="vanished">水</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="16"/>
         <source>Neon</source>
-        <translation>氖</translation>
+        <translation type="vanished">氖</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="17"/>
         <source>Nitrogen(N2)/Carbon Monoxide</source>
-        <translation>氮气/一氧化碳</translation>
+        <translation type="vanished">氮气/一氧化碳</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="18"/>
         <source>Silane</source>
-        <translation>硅烷</translation>
+        <translation type="vanished">硅烷</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="19"/>
         <source>Ethyl/Methyl Alcohol</source>
-        <translation>乙醇/甲醇</translation>
+        <translation type="vanished">乙醇/甲醇</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="20"/>
         <source>Oxygen(O2))</source>
-        <translation>氧气</translation>
+        <translation type="vanished">氧气</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="21"/>
         <source>Hydrogen Sulfide</source>
-        <translation>硫化氢</translation>
+        <translation type="vanished">硫化氢</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="22"/>
         <source>Argon</source>
-        <translation>氩气</translation>
+        <translation type="vanished">氩气</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="23"/>
         <source>Hexane</source>
-        <translation>己烷</translation>
+        <translation type="vanished">己烷</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="24"/>
         <source>Acetone/Heptane/Methyl ethyl ketone/MP oil/TMP oil</source>
-        <translation>丙酮/庚烷/甲乙酮/MP油/TMP油</translation>
+        <translation type="vanished">丙酮/庚烷/甲乙酮/MP油/TMP油</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="25"/>
         <source>Carbon Dioxide</source>
-        <translation>二氧化碳</translation>
+        <translation type="vanished">二氧化碳</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="26"/>
         <source>Isopropyl Alcohol</source>
-        <translation>异丙醇</translation>
+        <translation type="vanished">异丙醇</translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="27"/>
-        <source>DP oil PPE</source>
-        <translation>DP油</translation>
+        <source>DP油(PPE)</source>
+        <oldsource>DP oil PPE</oldsource>
+        <translation type="unfinished">DP油</translation>
+    </message>
+    <message>
+        <source>Halocarbon 23</source>
+        <translation type="vanished">卤化碳23</translation>
+    </message>
+    <message>
+        <source>Carbon tetrafluoride/DP oil Fomblin/Halocarbon 13/PFK*/PFTBA**/Trifluoromethane</source>
+        <translation type="vanished">四氟化碳/DP油 丰布林/卤化碳 13/PFK*/PFTBA**/三氟甲烷</translation>
+    </message>
+    <message>
+        <source>Chlorobenzene</source>
+        <translation type="vanished">氯苯</translation>
+    </message>
+    <message>
+        <source>Benzene/DP oil DC705</source>
+        <translation type="vanished">苯/DP油 DC705</translation>
+    </message>
+    <message>
+        <source>Krypton</source>
+        <translation type="vanished">氪</translation>
+    </message>
+    <message>
+        <source>Halocarbon 12/Silicon Tetrafluoride</source>
+        <translation type="vanished">卤碳 12/四氟化硅</translation>
+    </message>
+    <message>
+        <source>Toluene</source>
+        <translation type="vanished">甲苯</translation>
+    </message>
+    <message>
+        <source>Trichloroethane</source>
+        <translation type="vanished">三氯乙烷</translation>
+    </message>
+    <message>
+        <source>Halocarbon 11/113</source>
+        <translation type="vanished">卤化碳 11/113</translation>
+    </message>
+    <message>
+        <source>Carbon tetrachloride</source>
+        <translation type="vanished">四氯化碳</translation>
+    </message>
+    <message>
+        <source>Xenon</source>
+        <translation type="vanished">氙</translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="7"/>
+        <source>氢</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="8"/>
+        <source>氢气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="9"/>
+        <source>氦气(3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="10"/>
+        <source>氦气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="11"/>
+        <source>碳(C)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="12"/>
+        <source>氮(N)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="13"/>
+        <source>氧(O)/甲烷</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="14"/>
+        <source>HO/氨</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="15"/>
+        <source>水</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="16"/>
+        <source>氖</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="17"/>
+        <source>氮气(N2)/一氧化碳</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="18"/>
+        <source>硅烷</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="19"/>
+        <source>乙醇/甲醇</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="20"/>
+        <source>氧气(O2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="21"/>
+        <source>硫化氢</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="22"/>
+        <source>氩气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="23"/>
+        <source>己烷</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="24"/>
+        <source>丙酮/庚烷/甲乙酮/MP油/TMP油</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="25"/>
+        <source>二氧化碳</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="26"/>
+        <source>异丙醇</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="28"/>
-        <source>Halocarbon 23</source>
-        <translation>卤化碳23</translation>
+        <source>卤化碳23</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="29"/>
-        <source>Carbon tetrafluoride/DP oil Fomblin/Halocarbon 13/PFK*/PFTBA**/Trifluoromethane</source>
-        <translation>四氟化碳/DP油 丰布林/卤化碳 13/PFK*/PFTBA**/三氟甲烷</translation>
+        <source>PP</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="30"/>
-        <source>Chlorobenzene</source>
-        <translation>氯苯</translation>
+        <source>DMC</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="31"/>
-        <source>Benzene/DP oil DC705</source>
-        <translation>苯/DP油 DC705</translation>
+        <source>四氟化碳/DP油 丰布林/卤化碳 13/PFK*/PFTBA**/三氟甲烷</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="32"/>
-        <source>Krypton</source>
-        <translation>氪</translation>
+        <source>氯苯/EC</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="33"/>
-        <source>Halocarbon 12/Silicon Tetrafluoride</source>
-        <translation>卤碳 12/四氟化硅</translation>
+        <source>苯/DP油(DC705)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="34"/>
-        <source>Toluene</source>
-        <translation>甲苯</translation>
+        <source>氪</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="35"/>
-        <source>Trichloroethylene</source>
-        <translation></translation>
+        <source>卤碳 12/四氟化硅</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="36"/>
-        <source>Trichloroethane</source>
-        <translation>三氯乙烷</translation>
+        <source>三氯乙烷/EMC</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="37"/>
-        <source>Halocarbon 11/113</source>
-        <translation>卤化碳 11/113</translation>
-    </message>
-    <message>
         <location filename="data_helper.cpp" line="38"/>
-        <source>Carbon tetrachloride</source>
-        <translation>四氯化碳</translation>
+        <source>三氯乙烯</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="data_helper.cpp" line="39"/>
-        <source>Xenon</source>
-        <translation>氙</translation>
+        <source>卤化碳 11/113</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="179"/>
+        <location filename="data_helper.cpp" line="40"/>
+        <source>四氯化碳</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="41"/>
+        <source>氙气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data_helper.cpp" line="181"/>
         <source>Read Error</source>
         <translation>读取错误</translation>
     </message>
     <message>
-        <location filename="data_helper.cpp" line="180"/>
+        <location filename="data_helper.cpp" line="182"/>
         <source>Config not found. </source>
         <translation>未找到配置文件.</translation>
     </message>
