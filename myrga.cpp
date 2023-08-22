@@ -40,6 +40,9 @@ MyRga::MyRga(QWidget* parent)
     connect(ui->qcp_spec, &QCustomPlot::mousePress, this, &MyRga::chart_right_click);
     versio_label = new QLabel(StaticContainer::STC_RVERSION);
     versio_label->setAlignment(Qt::AlignRight);
+    auto line_title   = new QCPTextElement(ui->qcp_line, "", QFont("Courier New", 10, QFont::Bold));
+    ui->qcp_line->legend->insertRow(0);
+    ui->qcp_line->legend->addElement(0, 0, line_title);
 //    prog_bar = new QProgressBar(this);
 //    prog_bar->setOrientation(Qt::Horizontal);  // 水平方向
 //    prog_bar->setRange(0, 100); // 最小值
@@ -193,7 +196,7 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     bool in_acq = rga_inst->get_acquire_state();
-    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  u8"搜集中" :  u8"已停止");
+    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  u8"收集中" :  u8"已停止");
     versio_label->setText(label_text);
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
     if(in_acq && !acq_tmr->isActive()) {
@@ -321,9 +324,6 @@ void MyRga::init_spec_chart() {
 void MyRga::init_line_chart() {
     QStringList sl_col = rga_inst->get_tbl_col(true);
     QCustomPlot* line_chart = ui->qcp_line;
-    auto line_title   = new QCPTextElement(line_chart, "", QFont("Courier New", 10, QFont::Bold));
-    line_chart->legend->insertRow(0);
-    line_chart->legend->addElement(0, 0, line_title);
     int i_lineCnt = sl_col.count();
     line_chart->setNoAntialiasingOnDrag(true);
     line_chart->clearPlottables();
@@ -609,7 +609,7 @@ void MyRga::set_last_rcpt() {
     if(!qm_values.contains("Flmt")) {
         return;
     }
-    int i_flmt = qm_values.find("Flmt")->toInt();
+    int i_flmt = qm_values.find("Flmt")->toInt() + 1;
     on_cb_method_currentIndexChanged(i_method);
     ui->cb_method->setCurrentIndex(i_method);
     ui->le_points->setText(s_points);
