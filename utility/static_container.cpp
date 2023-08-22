@@ -14,7 +14,14 @@ int StaticContainer::STC_IDLINTVL       = 500;
 
 int StaticContainer::STC_LONGINTVL      = 2000;
 
-QString StaticContainer::STC_RVERSION     = " myRGA Comm. v1.0.1 \t";
+QString StaticContainer::STC_RVERSION     = " myRGA Comm. v1.0.2 \t";
+
+QMap<QString, QString> StaticContainer::STC_RVER = {
+    {"2023/6/28 v1.0.4", u8"fix data save issue"},
+    {"2023/5/6 v1.0.3", u8"fix scan time not show issue"},
+    {"2023/5/5 v1.0.2", u8"multithread calculate response, lower system resource"},
+
+};
 
 RgaUtility* StaticContainer::m_crntRga  = nullptr;
 

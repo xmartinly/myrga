@@ -1,4 +1,4 @@
-#include "rga_utility.h"
+﻿#include "rga_utility.h"
 #include "static_container.h"
 #include <QDateTime>
 #include <QTime>
@@ -1126,7 +1126,8 @@ void RgaUtility::set_scan_data(const QJsonObject& rga_scanData) {
     //**********************************************************************************//
     //** scan values
     QJsonArray ja_scanVal   = rga_scanData.value("d_values").toArray();
-    set_total_pres(ja_scanVal.first().toDouble());
+    set_total_pres(ja_scanVal.first().toDouble()*DataHelper::tp_factor(m_rcpt.s_pUnit.toInt()));
+    qDebug() << DataHelper::tp_factor(m_rcpt.s_pUnit.toInt()) << m_rcpt.s_pUnit.toInt();
     foreach (QJsonValue val, ja_scanVal) {
         m_scanData.vd_scanValues.append(val.toDouble());
     }

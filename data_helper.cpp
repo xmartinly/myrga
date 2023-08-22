@@ -323,6 +323,20 @@ QString DataHelper::ppamu_convert(int ppamu) {
     return ppamu_string;
 }
 
+double DataHelper::tp_factor(int tp_unit) {
+    //0: torr, 1: mbar, 2: pa
+    double d_pressure_factor = 1;
+    switch (tp_unit) {
+        case 1: //mbar
+            d_pressure_factor *= 1.3332;
+            break;
+        case 2: //Pa
+            d_pressure_factor *= 133.32;
+            break;
+    }
+    return d_pressure_factor;
+}
+
 ///
 /// \brief DataHelper::pow2Calc
 /// \param data
@@ -395,15 +409,15 @@ double DataHelper::cal_pp_val(int i_amu, double d_crnt_val, double d_s_sen, bool
     Q_ASSERT_X(d_crnt_val > 0, Q_FUNC_INFO, "d_crnt_val error");
     double d_magic = 1;
     //0: torr, 1: mbar, 2: pa
-    double d_pressure_factor = 1;
-    switch (i_unit) {
-        case 1: //mbar
-            d_pressure_factor *= 1.3332;
-            break;
-        case 2: //Pa
-            d_pressure_factor *= 133.32;
-            break;
-    }
+//    double d_pressure_factor = 1;
+//    switch (i_unit) {
+//        case 1: //mbar
+//            d_pressure_factor *= 1.3332;
+//            break;
+//        case 2: //Pa
+//            d_pressure_factor *= 133.32;
+//            break;
+//    }
     double d_ff_n28 = 1.00, d_ff_ab = 1.00, d_xf_ab = 1.00, d_tf_b = 28.0 / i_amu, d_df_ab = 1.00, d_em_g = 1.00;
     if(b_em_state) {
         d_em_g = d_em_gain;
@@ -484,7 +498,7 @@ double DataHelper::cal_pp_val(int i_amu, double d_crnt_val, double d_s_sen, bool
     }
 //    qDebug() << b_em_state << d_em_g << d_s_sen;
     double d_calc_factor = d_ff_n28 / (d_ff_ab * d_xf_ab * d_tf_b * d_df_ab * d_s_sen * d_em_g);
-    return d_crnt_val * d_calc_factor * d_pressure_factor * d_magic;
+    return d_crnt_val * d_calc_factor * tp_factor(i_unit) * d_magic;
 }
 
 ///

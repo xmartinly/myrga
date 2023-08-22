@@ -436,6 +436,7 @@ void MyRga::read_current_config(bool only_rcpt) {
     recpt.s_dwell       = DataHelper::dwell_convert(qm_rcp.value("Dwell").toInt());
     recpt.s_rUnit       = qm_rcp.value("ReportUnit").toInt() ? "PP" : "Current";
     recpt.s_pUnit       = qm_rcp.value("PressureUnit").toInt();
+    qDebug() << qm_rcp.value("PressureUnit");
     recpt.s_emOpt       = qm_rcp.value("EmOpt").toInt() ? "on" : "off";
     recpt.s_ppamu       = DataHelper::ppamu_convert(qm_rcp.value("PPAmu").toInt());
     recpt.s_flmtIdx     = QString::number(qm_rcp.value("Flmt").toInt() + 1);
@@ -823,3 +824,23 @@ void MyRga::stop_scan() {
     idle_tmr->setInterval(StaticContainer::STC_IDLINTVL);
 //    prog_bar->setValue(100);
 }
+
+///
+/// \brief MyRga::on_actionManual_triggered
+///
+void MyRga::on_actionManual_triggered() {
+    QString qtManulFile = "./LINXON_Operating_Manual CHS 074-723-P1A.pdf";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(qtManulFile));
+}
+
+
+void MyRga::on_actionAbout_triggered() {
+    QString s_about = "";
+    QMap<QString, QString>::const_iterator it = StaticContainer::STC_RVER.constBegin();
+    while (it != StaticContainer::STC_RVER.constEnd()) {
+        s_about.append(it.key() + "\n  " + it.value() + "\n");
+        ++it;
+    }
+    QMessageBox::information(this, u8"关于", s_about);
+}
+

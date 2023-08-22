@@ -71,6 +71,7 @@ class DataHelper {
     static QString tp_convert(int tp_unit = 0);
     static QString dwell_convert(int dwell = 0);
     static QString ppamu_convert(int ppamu = 0);
+    static double tp_factor(int tp_unit = 0);
 
     template <typename T_>
     static T_ findMax(const QVector<T_> data_vector) {

@@ -1,4 +1,4 @@
-#ifndef STATICCONTAINER_H
+﻿#ifndef STATICCONTAINER_H
 #define STATICCONTAINER_H
 
 #include <QObject>
@@ -31,6 +31,8 @@ class StaticContainer: public QObject {
     static int     STC_IDLINTVL;
 
     static int     STC_LONGINTVL;
+
+    static QMap<QString, QString> STC_RVER;
 
     static RgaUtility* get_crnt_rga();
     static void setCrntRga(RgaUtility* new_crntRga);

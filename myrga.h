@@ -76,6 +76,10 @@ class MyRga : public QMainWindow
 
     void print_chart(QPrinter* printer);
 
+    void on_actionManual_triggered();
+
+    void on_actionAbout_triggered();
+
   private:
     Ui::MyRga* ui;
     // RgaUtility
