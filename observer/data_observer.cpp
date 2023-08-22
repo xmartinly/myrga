@@ -43,19 +43,19 @@ void TableObserver::update() {
         int  i_errCnt = inst->get_err_cnt();
         bool b_isHasErr = i_errCnt > 0;
         QString s_errCnt = QString::number(i_errCnt);
-        QString s_flmtState = "Off";
-        QString s_emState = "Off";
+        QString s_flmtState = off_text;
+        QString s_emState = off_text;
         if(b_isFlmtPending) {
-            s_flmtState = "Pending";
+            s_flmtState = pending_text;
         }
         if(b_isFlmtOpen) {
-            s_flmtState = "On";
+            s_flmtState = on_text;
         }
         if(b_isEmPending) {
-            s_emState = "Pending";
+            s_emState = pending_text;
         }
         if(b_isEmOpen) {
-            s_emState = "On";
+            s_emState = on_text;
         }
         //        "Addr",     //0
         //        "SN",       //1
@@ -94,7 +94,7 @@ void TableObserver::update() {
         //report unit       6
         m_zone->item(6, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptRptUnit));
         //datalog state       7
-        m_zone->item(7, 1)->setText(b_isSaveData ? "On" : "Off");
+        m_zone->item(7, 1)->setText(b_isSaveData ? on_text : off_text);
         m_zone->item(7, 1)->setToolTip(b_isSaveData ? inst->get_file_name() : "");
         //error list    8
         m_zone->item(8, 1)->setText(s_errCnt);

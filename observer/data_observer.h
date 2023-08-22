@@ -80,6 +80,9 @@ class TableObserver: public DataObserver {
     /// \brief m_zone(QTableWidge*)
     ///
     QTableWidget*       m_zone          = nullptr;
+    QString on_text = u8"开";
+    QString off_text = u8"关";
+    QString pending_text = u8"开启中";
 };
 
 ///
@@ -91,7 +94,7 @@ class ProgressbarObserver: public DataObserver {
     /// \brief ProgressbarObserver. constructor.
     /// \param progress_bar(QProgressBar*)
     ///
-    ProgressbarObserver(QProgressBar *progress_bar);
+    ProgressbarObserver(QProgressBar* progress_bar);
 
     ///
     /// Descontructer. delete m_zone pointer.

@@ -432,12 +432,12 @@ void MyRga::read_current_config(bool only_rcpt) {
     RecipeSet recpt;
     recpt.s_rcpName     = "myRGA";
     recpt.i_period      = qm_rcp.value("Peroid").toInt() * 1000;
-    recpt.s_method      = qm_rcp.value("Method").toInt() == 1 ? "Points" : "Sweep";
-    recpt.s_dwell       = QString::number(qm_rcp.value("Dwell").toInt());
-    recpt.s_rUnit       = qm_rcp.value("ReportUnit").toInt() == 1 ? "Current" : "PP";
-    recpt.s_pUnit       = DataHelper::tp_convert(qm_rcp.value("PressureUnit").toInt());
-    recpt.s_emOpt       = qm_rcp.value("EmOpt").toInt() == 1 ? "On" : "Off";
-    recpt.s_ppamu       = QString::number(qm_rcp.value("PPAmu").toInt());
+    recpt.s_method      = qm_rcp.value("Method").toInt() ? "Points" : "Sweep";
+    recpt.s_dwell       = DataHelper::dwell_convert(qm_rcp.value("Dwell").toInt());
+    recpt.s_rUnit       = qm_rcp.value("ReportUnit").toInt() ? "PP" : "Current";
+    recpt.s_pUnit       = qm_rcp.value("PressureUnit").toInt();
+    recpt.s_emOpt       = qm_rcp.value("EmOpt").toInt() ? "on" : "off";
+    recpt.s_ppamu       = DataHelper::ppamu_convert(qm_rcp.value("PPAmu").toInt());
     recpt.s_flmtIdx     = QString::number(qm_rcp.value("Flmt").toInt() + 1);
     recpt.s_startMass   = qm_rcp.value("StartMass").toStdString().c_str();
     recpt.s_stopMass    = qm_rcp.value("StopMass").toStdString().c_str();
@@ -570,7 +570,7 @@ void MyRga::set_last_rcpt() {
     if(!qm_values.contains("Method")) {
         return;
     }
-    QString s_method = qm_values.find("Method")->toStdString().c_str();
+    int i_method = qm_values.find("Method")->toInt();
     //read StartMass
     if(!qm_values.contains("StartMass")) {
         return;
@@ -590,12 +590,12 @@ void MyRga::set_last_rcpt() {
     if(!qm_values.contains("Dwell")) {
         return;
     }
-    QString s_dwell = qm_values.find("Dwell")->toStdString().c_str();
+    int i_dwell = qm_values.find("Dwell")->toInt();
     //read PPAmu
     if(!qm_values.contains("PPAmu")) {
         return;
     }
-    QString s_ppamu = qm_values.find("PPAmu")->toStdString().c_str();
+    int i_ppamu = qm_values.find("PPAmu")->toInt();
     //read Pressure unit
     if(!qm_values.contains("PressureUnit")) {
         return;
@@ -605,22 +605,21 @@ void MyRga::set_last_rcpt() {
     if(!qm_values.contains("ReportUnit")) {
         return;
     }
-    QString s_reportUnit = qm_values.find("ReportUnit")->toStdString().c_str();
+    int i_reportUnit = qm_values.find("ReportUnit")->toInt();
     if(!qm_values.contains("Flmt")) {
         return;
     }
-    QString s_flmt = qm_values.find("Flmt")->toStdString().c_str();
-    bool b_isSweep  = s_method  == "Sweep";
-    on_cb_method_currentIndexChanged(!b_isSweep);
-    ui->cb_method->setCurrentIndex(!b_isSweep);
+    int i_flmt = qm_values.find("Flmt")->toInt();
+    on_cb_method_currentIndexChanged(i_method);
+    ui->cb_method->setCurrentIndex(i_method);
     ui->le_points->setText(s_points);
     ui->sb_start->setValue(i_startMass);
     ui->sb_end->setValue(i_stopMass);
-    ui->cb_dwell->setCurrentText(s_dwell);
-    ui->cb_flmt->setCurrentText(s_flmt);
-    ui->cb_ppamu->setCurrentText(s_ppamu);
+    ui->cb_dwell->setCurrentIndex(i_dwell);
+    ui->cb_flmt->setCurrentIndex(i_flmt);
+    ui->cb_ppamu->setCurrentIndex(i_ppamu);
     ui->cb_unitpressure->setCurrentIndex(i_pressureUnit);
-    ui->cb_unitreport->setCurrentText(s_reportUnit);
+    ui->cb_unitreport->setCurrentIndex(i_reportUnit);
 }
 ///
 /// \brief MyRga::rga_disconn. actions: scan stop, close em, close emission, release control

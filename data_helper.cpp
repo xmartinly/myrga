@@ -272,6 +272,58 @@ QString DataHelper::tp_convert(int tp_unit) {
 }
 
 ///
+/// \brief DataHelper::ppamu_convert
+/// \param ppamu
+/// \return
+///
+QString DataHelper::dwell_convert(int dwell) {
+    QString dwell_string = "32";
+    switch (dwell) {
+        case 0:
+            dwell_string = "4";
+            break;
+        case 1:
+            dwell_string = "8";
+            break;
+        case 2:
+            dwell_string = "16";
+            break;
+        case 3:
+            dwell_string = "32";
+            break;
+        case 4:
+            dwell_string = "64";
+            break;
+        case 5:
+            dwell_string = "128";
+            break;
+        default:
+            break;
+    }
+    return dwell_string;
+}
+
+///
+/// \brief DataHelper::ppamu_convert
+/// \param ppamu
+/// \return
+///
+QString DataHelper::ppamu_convert(int ppamu) {
+    QString ppamu_string = "1";
+    switch (ppamu) {
+        case 1:
+            ppamu_string = "5";
+            break;
+        case 2:
+            ppamu_string = "10";
+            break;
+        default:
+            break;
+    }
+    return ppamu_string;
+}
+
+///
 /// \brief DataHelper::pow2Calc
 /// \param data
 /// \param d_magic

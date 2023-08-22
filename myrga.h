@@ -1,4 +1,4 @@
-#ifndef MYRGA_H
+﻿#ifndef MYRGA_H
 #define MYRGA_H
 
 
@@ -109,9 +109,9 @@ class MyRga : public QMainWindow
     // line/spec chart menu
     QMenu* chart_right_b_menu = nullptr;
     // chart menu actions
-    QAction* action_y_type = new QAction(tr("Toggle yAxis"), this);
-    QAction* action_print = new QAction(tr("Print"), this);
-    QAction* action_rescale = new QAction(tr("Reset"), this);
+    QAction* action_y_type = new QAction(u8"切换y轴坐标系", this);
+    QAction* action_print = new QAction(u8"打印", this);
+    QAction* action_rescale = new QAction(u8"复位", this);
     // visual cursor
     QCPItemLine* v_curs = nullptr;
     // version label
@@ -119,9 +119,9 @@ class MyRga : public QMainWindow
     // progress bar
 //    QProgressBar* prog_bar = nullptr;
     // run info text
-    QString run_info  = u8"Stopped | ";
+    QString run_info  = u8"已停止 | ";
 
-    QString y_scale = tr("Log");
+    QString y_scale = u8"对数";
 
 
   private:
