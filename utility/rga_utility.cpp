@@ -1126,11 +1126,20 @@ void RgaUtility::set_scan_data(const QJsonObject& rga_scanData) {
     //**********************************************************************************//
     //** scan values
     QJsonArray ja_scanVal   = rga_scanData.value("d_values").toArray();
-    set_total_pres(ja_scanVal.first().toDouble()*DataHelper::tp_factor(m_rcpt.s_pUnit.toInt()));
-    qDebug() << DataHelper::tp_factor(m_rcpt.s_pUnit.toInt()) << m_rcpt.s_pUnit.toInt();
-    foreach (QJsonValue val, ja_scanVal) {
-        m_scanData.vd_scanValues.append(val.toDouble());
+    int val_count = ja_scanVal.count();
+    if(val_count < 2) {
+        return;
     }
+    double tp_factor = DataHelper::tp_factor(m_rcpt.s_pUnit.toInt());
+    double total_pres = ja_scanVal.takeAt(0).toDouble();
+    set_total_pres(total_pres);
+    if(get_rcpt_info(RgaUtility::RcptRptUnit) == "Current") {
+        tp_factor = 1;
+    }
+    foreach (QJsonValue val, ja_scanVal) {
+        m_scanData.vd_scanValues.append(val.toDouble() * tp_factor);
+    }
+    m_scanData.vd_scanValues.prepend(total_pres);
     set_is_new_data(true);
 }
 

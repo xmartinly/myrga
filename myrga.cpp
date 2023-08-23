@@ -395,7 +395,9 @@ void MyRga::init_scan() {
     read_current_config(true);
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
-    qDebug() << rga_inst->get_scan_set();
+    foreach (auto s, rga_inst->get_scan_set()) {
+        qDebug() << s;
+    }
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
     if(rga_inst->get_is_save_data()) {
@@ -435,8 +437,7 @@ void MyRga::read_current_config(bool only_rcpt) {
     recpt.s_method      = qm_rcp.value("Method").toInt() ? "Points" : "Sweep";
     recpt.s_dwell       = DataHelper::dwell_convert(qm_rcp.value("Dwell").toInt());
     recpt.s_rUnit       = qm_rcp.value("ReportUnit").toInt() ? "PP" : "Current";
-    recpt.s_pUnit       = qm_rcp.value("PressureUnit").toInt();
-    qDebug() << qm_rcp.value("PressureUnit");
+    recpt.s_pUnit       = qm_rcp.value("PressureUnit");
     recpt.s_emOpt       = qm_rcp.value("EmOpt").toInt() ? "on" : "off";
     recpt.s_ppamu       = DataHelper::ppamu_convert(qm_rcp.value("PPAmu").toInt());
     recpt.s_flmtIdx     = QString::number(qm_rcp.value("Flmt").toInt() + 1);
@@ -610,7 +611,7 @@ void MyRga::set_last_rcpt() {
     if(!qm_values.contains("Flmt")) {
         return;
     }
-    int i_flmt = qm_values.find("Flmt")->toInt() + 1;
+    int i_flmt = qm_values.find("Flmt")->toInt();
     on_cb_method_currentIndexChanged(i_method);
     ui->cb_method->setCurrentIndex(i_method);
     ui->le_points->setText(s_points);

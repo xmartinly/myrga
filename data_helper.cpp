@@ -408,21 +408,12 @@ QString DataHelper::get_pos_el(int idx) {
 double DataHelper::cal_pp_val(int i_amu, double d_crnt_val, double d_s_sen, bool b_em_state, double d_em_gain, int i_unit) {
     Q_ASSERT_X(d_crnt_val > 0, Q_FUNC_INFO, "d_crnt_val error");
     double d_magic = 1;
-    //0: torr, 1: mbar, 2: pa
-//    double d_pressure_factor = 1;
-//    switch (i_unit) {
-//        case 1: //mbar
-//            d_pressure_factor *= 1.3332;
-//            break;
-//        case 2: //Pa
-//            d_pressure_factor *= 133.32;
-//            break;
-//    }
     double d_ff_n28 = 1.00, d_ff_ab = 1.00, d_xf_ab = 1.00, d_tf_b = 28.0 / i_amu, d_df_ab = 1.00, d_em_g = 1.00;
     if(b_em_state) {
         d_em_g = d_em_gain;
 //        d_df_ab = pow(d_tf_b, 0.3);
     }
+//    qDebug() << tp_factor(i_unit);
     switch (i_amu) {
         case 2:                     //H2
             d_ff_ab = 0.98;

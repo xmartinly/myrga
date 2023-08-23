@@ -45,6 +45,7 @@ void TableObserver::update() {
         QString s_errCnt = QString::number(i_errCnt);
         QString s_flmtState = off_text;
         QString s_emState = off_text;
+        QString s_rptUnit = inst->get_rcpt_info(RgaUtility::RcptRptUnit) == "Current" ? u8"电流" : u8"分压";
         if(b_isFlmtPending) {
             s_flmtState = pending_text;
         }
@@ -57,19 +58,17 @@ void TableObserver::update() {
         if(b_isEmOpen) {
             s_emState = on_text;
         }
-        //        "Addr",     //0
-        //        "SN",       //1
-        //        "Recipe",   //2
-        //        "Filament", //3
-        //        "EM",       //4
-        //        "Dwell",    //5
-        //        "RptUnit",  //6
-        //        "DataLog",  //7
-        //        "Error",    //8
-        //        "RunTm",    //9
-        //        "ScanTm",   //10
-        //        "TotalPressure",    //11
-        //        "ScanNum"   //12
+//        u8"地址",     //0
+//        u8"序列号",       //1
+//        u8"灯丝", //2
+//        u8"倍增器",       //3
+//        u8"间隔",    //4
+//        u8"报告单位",  //5
+//        u8"数据记录",  //6
+//        u8"错误",    //7
+//        u8"运行时间",    //8
+//        u8"扫描时间",   //9
+//        u8"扫描次数"   //10
         //addr  0
         QString rga_addr = inst->get_rga_addr();
         rga_addr.replace("http://", "");
@@ -79,37 +78,35 @@ void TableObserver::update() {
         m_zone->item(1, 1)->setText(inst->get_rga_sn());
         m_zone->item(1, 1)->setBackground(b_isInCtrl ? Qt::darkGreen : Qt::white);
         m_zone->item(1, 1)->setForeground(b_isInCtrl ? Qt::white : Qt::black);
-        //recipe    2
-        m_zone->item(2, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptName));
-        //filament status   3
-        m_zone->item(3, 1)->setText(s_flmtState + "\t" + inst->get_flmt_idx());
-        m_zone->item(3, 1)->setBackground(b_isFlmtOpen ? Qt::darkGreen : Qt::white);
-        m_zone->item(3, 1)->setForeground(b_isFlmtOpen ? Qt::white : Qt::black);
-        //em status     4
-        m_zone->item(4, 1)->setText(s_emState);
-        m_zone->item(4, 1)->setBackground(b_isEmOpen ? Qt::darkGreen : Qt::white);
-        m_zone->item(4, 1)->setForeground(b_isEmOpen ? Qt::white : Qt::black);
-        //dwell     5
-        m_zone->item(5, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptDwell));
-        //report unit       6
-        m_zone->item(6, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptRptUnit));
-        //datalog state       7
-        m_zone->item(7, 1)->setText(b_isSaveData ? on_text : off_text);
-        m_zone->item(7, 1)->setToolTip(b_isSaveData ? inst->get_file_name() : "");
-        //error list    8
-        m_zone->item(8, 1)->setText(s_errCnt);
-        m_zone->item(8, 1)->setForeground(b_isHasErr ? Qt::darkMagenta : Qt::black);
-        //run tm    9
+        //filament status  2
+        m_zone->item(2, 1)->setText(s_flmtState + "\t" + inst->get_flmt_idx());
+        m_zone->item(2, 1)->setBackground(b_isFlmtOpen ? Qt::darkGreen : Qt::white);
+        m_zone->item(2, 1)->setForeground(b_isFlmtOpen ? Qt::white : Qt::black);
+        //em status     3
+        m_zone->item(3, 1)->setText(s_emState);
+        m_zone->item(3, 1)->setBackground(b_isEmOpen ? Qt::darkGreen : Qt::white);
+        m_zone->item(3, 1)->setForeground(b_isEmOpen ? Qt::white : Qt::black);
+        //dwell     4
+        m_zone->item(4, 1)->setText(inst->get_rcpt_info(RgaUtility::RcptDwell));
+        //report unit       5
+        m_zone->item(5, 1)->setText(s_rptUnit);
+        //datalog state       6
+        m_zone->item(6, 1)->setText(b_isSaveData ? on_text : off_text);
+        m_zone->item(6, 1)->setToolTip(b_isSaveData ? inst->get_file_name() : "");
+        //error list    7
+        m_zone->item(7, 1)->setText(s_errCnt);
+        m_zone->item(7, 1)->setForeground(b_isHasErr ? Qt::darkMagenta : Qt::black);
+        //run tm    8
         if(inst->get_acquire_state()) {
-            m_zone->item(9, 1)->setText(inst->get_str_runtm() + "");
+            m_zone->item(8, 1)->setText(inst->get_str_runtm() + "");
         }
-        //scan tm   10
-        m_zone->item(10, 1)->setText(QString::number(inst->get_scan_tm_total(), 'f', 2) + " ms");
-        //total pressure
-        m_zone->item(11, 1)->setText(QString::number(inst->get_total_pres(), 'e', 2) + " " +
-                                     inst->get_rcpt_info(RgaUtility::RcptTPUnit));
-        //scan number
-        m_zone->item(12, 1)->setText(QString::number(inst->get_scan_num()));
+        //scan tm   9
+        m_zone->item(9, 1)->setText(QString::number(inst->get_scan_tm_total(), 'f', 2) + " ms");
+//        //total pressure
+//        m_zone->item(11, 1)->setText(QString::number(inst->get_total_pres(), 'e', 2) + " " +
+//                                     inst->get_rcpt_info(RgaUtility::RcptTPUnit));
+        //scan number 10
+        m_zone->item(10, 1)->setText(QString::number(inst->get_scan_num()));
     }
     if(m_zone->objectName() == "tw_data") {
         QStringList sl_data = inst->get_scan_sl_val(false);
@@ -117,8 +114,10 @@ void TableObserver::update() {
         if(!i_dataCnt) {
             return;
         }
-        for (int var = 0; var < i_dataCnt; ++var) {
-            m_zone->item(var, 1)->setText(sl_data.at(var));
+        QString s_unit = inst->get_rcpt_info(RgaUtility::RcptRptUnit) == "Current" ? "amp" : inst->get_pres_unit();
+        m_zone->item(0, 1)->setText(sl_data.at(0) + " " + inst->get_pres_unit());
+        for (int var = 1; var < i_dataCnt; ++var) {
+            m_zone->item(var, 1)->setText(sl_data.at(var) + " " + s_unit);
         }
 //        inst->reset_prog_val();
     }
