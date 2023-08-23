@@ -395,9 +395,6 @@ void MyRga::init_scan() {
     read_current_config(true);
     idle_tmr->setInterval(StaticContainer::STC_LONGINTVL);
     http_cli->cmd_enqueue(rga_inst->get_scan_set(), true);
-    foreach (auto s, rga_inst->get_scan_set()) {
-        qDebug() << s;
-    }
     rga_inst->reset_scan_data();
     rga_inst->gen_ticker();
     if(rga_inst->get_is_save_data()) {
