@@ -235,6 +235,10 @@ void MyRga::acq_tmr_action() {
     }
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
+        flmt_try_open++;
+        if(flmt_try_open > 4) {
+            stop_scan();
+        }
         return;
     }
     if(rga_inst->get_acquire_state()) {
@@ -815,6 +819,7 @@ void MyRga::stop_scan() {
     if(!rga_inst) {
         return;
     }
+    flmt_try_open = 0;
     acq_tmr->stop();
     ui->frame_settings->setHidden(false);
     http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);

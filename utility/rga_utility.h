@@ -143,6 +143,7 @@ class RgaUtility {
     //scan interval for progress bar
     int           prog_itvl         = 0;
     int           prog_val          = 0;
+    int           flmt_tried        = 0;
     //local timestamp
     qint64        local_tmstamp     = 0;
     //scan timestamp
@@ -175,6 +176,9 @@ class RgaUtility {
 
   public:
 
+
+    const int get_flmt_tried();
+    void set_flmt_tried(int tired = 0);
 
     const int get_prog_val();
     void gen_prog_itvl();

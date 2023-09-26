@@ -14,6 +14,14 @@ RgaUtility::RgaUtility() {
 RgaUtility::~RgaUtility() {
 }
 
+const int RgaUtility::get_flmt_tried() {
+    return flmt_tried;
+}
+
+void RgaUtility::set_flmt_tried(int tired) {
+    flmt_tried = tired;
+}
+
 
 const int RgaUtility::get_prog_val() {
     if(prog_val > 100) {

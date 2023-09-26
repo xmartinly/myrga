@@ -127,6 +127,8 @@ class MyRga : public QMainWindow
 
     QString y_scale = u8"对数";
 
+    int flmt_try_open = 0;
+
 
   private:
     // initialize data table
