@@ -157,6 +157,7 @@ void MyRga::on_tb_ctrl_clicked() {
     if(rga_inst->get_acquire_state()) {
         stop_scan();
     } else {
+        flmt_try_open = 0;
         start_scan();
     }
     rga_inst->set_em_auto(0);
@@ -819,7 +820,6 @@ void MyRga::stop_scan() {
     if(!rga_inst) {
         return;
     }
-    flmt_try_open = 0;
     acq_tmr->stop();
     ui->frame_settings->setHidden(false);
     http_cli->cmd_enqueue(rga_inst->get_stop_set(), true);
