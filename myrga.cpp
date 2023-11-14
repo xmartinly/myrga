@@ -237,7 +237,7 @@ void MyRga::acq_tmr_action() {
     if(!rga_inst->get_status(RgaUtility::EmissState)) {
         http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::OpenFlmt));
         flmt_try_open++;
-        if(flmt_try_open > 30) {
+        if(flmt_try_open > 50) {
             stop_scan();
         }
         return;
