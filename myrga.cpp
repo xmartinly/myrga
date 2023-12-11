@@ -249,7 +249,7 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
     }
-//    prog_bar->setValue(rga_inst->get_prog_val());
+
 }
 ///
 /// \brief MyRga::initDataTbl

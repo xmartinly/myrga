@@ -96,6 +96,7 @@ void CommHttp::cmd_enqueue(QVariant cmd, bool is_str_list) {
     foreach (QString _s, sl_cmds) {
         m_cmdQ.enqueue(_s);
     }
+//    qDebug() << m_cmdQ;
 }
 
 ///

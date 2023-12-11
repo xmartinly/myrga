@@ -14,9 +14,10 @@ int StaticContainer::STC_IDLINTVL       = 500;
 
 int StaticContainer::STC_LONGINTVL      = 2000;
 
-QString StaticContainer::STC_RVERSION     = " myRGA Comm. v1.1.5 \t";
+QString StaticContainer::STC_RVERSION     = " myRGA Comm. v1.1.6 \t";
 
 QMap<QString, QString> StaticContainer::STC_RVER = {
+    {"2023/8/23 v1.1.6", u8"add dwell 512 1024 2048"},
     {"2023/8/23 v1.1.5", u8"fix pressure unit issue"},
     {"2023/6/28 v1.1.4", u8"fix data save issue"},
     {"2023/5/6 v1.0.3", u8"fix scan time not show issue"},

@@ -297,6 +297,18 @@ QString DataHelper::dwell_convert(int dwell) {
         case 5:
             dwell_string = "128";
             break;
+        case 6:
+            dwell_string = "256";
+            break;
+        case 7:
+            dwell_string = "512";
+            break;
+        case 8:
+            dwell_string = "1024";
+            break;
+        case 9:
+            dwell_string = "2048";
+            break;
         default:
             break;
     }
