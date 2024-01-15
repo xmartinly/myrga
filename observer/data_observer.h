@@ -80,9 +80,9 @@ class TableObserver: public DataObserver {
     /// \brief m_zone(QTableWidge*)
     ///
     QTableWidget*       m_zone          = nullptr;
-    QString on_text = u8"开";
-    QString off_text = u8"关";
-    QString pending_text = u8"开启中";
+    QString on_text = "On";
+    QString off_text = "Off";
+    QString pending_text = "Opening";
 };
 
 ///

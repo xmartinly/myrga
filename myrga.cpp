@@ -197,7 +197,7 @@ void MyRga::on_cb_method_currentIndexChanged(int index) {
 ///
 void MyRga::idle_tmr_action() {
     bool in_acq = rga_inst->get_acquire_state();
-    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  u8"收集中" :  u8"已停止");
+    QString label_text = ("%1 | " + StaticContainer::STC_RVERSION).arg(in_acq ?  "Collecting" :  "Stopped");
     versio_label->setText(label_text);
     StaticContainer::STC_ISINACQ = acq_tmr->isActive();
     if(in_acq && !acq_tmr->isActive()) {
@@ -249,7 +249,6 @@ void MyRga::acq_tmr_action() {
         http_cli->cmd_enqueue(rga_inst->gen_rga_action(RgaUtility::OpenEm));
         rga_inst->set_em_auto(0);
     }
-
 }
 ///
 /// \brief MyRga::initDataTbl
@@ -262,7 +261,7 @@ void MyRga::init_data_tbl(bool is_misc_info) {
     tbl->clear();
     tbl->setRowCount(0);
     tbl->setColumnCount(2);
-    QStringList tblHeader_main = {u8"项目", u8"值"};
+    QStringList tblHeader_main = {"Item", "Value"};
     tbl->setHorizontalHeaderLabels(tblHeader_main);
     tbl->verticalHeader()->setVisible(false);
     tbl->horizontalHeader()->setStretchLastSection(true);
@@ -548,7 +547,7 @@ void MyRga::update_obs() {
 /// \param event
 ///
 void MyRga::closeEvent(QCloseEvent* event) {
-    QMessageBox::StandardButton result = QMessageBox::question(this, u8"退出", u8"是否确认退出?",
+    QMessageBox::StandardButton result = QMessageBox::question(this, "Exit", "Do you confirm exit?",
                                          QMessageBox::Yes | QMessageBox::No,
                                          QMessageBox::No);
     if (result == QMessageBox::Yes) {
@@ -567,7 +566,7 @@ void MyRga::closeEvent(QCloseEvent* event) {
 void MyRga::set_last_rcpt() {
     QMap<QString, QString> qm_values = DataHelper::read_config("lastrun.ini", DataHelper::get_file_folder(""), "Recipe");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, u8"错误", u8"未读取到任何数据");
+        QMessageBox::warning(nullptr, "Error", "No data found.");
         return;
     }
     //read Method
@@ -660,7 +659,7 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
         rga_addr_click_cnt = 0;
     }
     if(rga_addr_click_cnt == 5 && rga_inst->get_in_ctrl()) {
-        QMessageBox::StandardButton btn = QMessageBox::question(this,  u8"重启",  u8"是否确定重启?", QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  "Reboot",  "Do you confirm to Reboot?", QMessageBox::Yes | QMessageBox::No);
         if(btn == QMessageBox::Yes) {
             http_cli->cmd_exec(rga_inst->gen_rga_action(RgaUtility::Reboot));
             acq_tmr->stop();
@@ -678,8 +677,8 @@ void MyRga::on_tw_info_cellDoubleClicked(int row, int) {
     }
     if(row == 7 && !rga_inst->get_acquire_state()) {
         bool save_data = rga_inst->get_is_save_data();
-        QString is_save =  u8"设置数据保存 %1?";
-        QMessageBox::StandardButton btn = QMessageBox::question(this,  u8"数据记录", is_save.arg(save_data ? u8"关" : u8"开"), QMessageBox::Yes | QMessageBox::No);
+        QString is_save =  "Save data %1?";
+        QMessageBox::StandardButton btn = QMessageBox::question(this,  "Data Log", is_save.arg(save_data ? "Off" : "On"), QMessageBox::Yes | QMessageBox::No);
         save_data = !save_data;
         if(btn == QMessageBox::Yes) {
             rga_inst->set_is_save_data(save_data);
@@ -764,7 +763,7 @@ void MyRga::chart_actions(QAction* action) {
         QSharedPointer<QCPAxisTickerLog> log_ticker(new QCPAxisTickerLog);
         qcp_line->yAxis->setScaleType(line_scale_type ? QCPAxis::stLinear : QCPAxis::stLogarithmic);
         qcp_line->yAxis->setTicker(line_scale_type ? linear_ticker : log_ticker);
-        y_scale = line_scale_type ? u8"线性" : u8"对数";
+        y_scale = line_scale_type ? "Linear" : "Log";
         qcp_line->rescaleAxes();
         qcp_line->replot();
         return;
@@ -844,6 +843,6 @@ void MyRga::on_actionAbout_triggered() {
         s_about.append(it.key() + "\n  " + it.value() + "\n");
         ++it;
     }
-    QMessageBox::information(this, u8"关于", s_about);
+    QMessageBox::information(this, "About", s_about);
 }
 

@@ -67,7 +67,7 @@ void RecipeDlg::recipe_tbl_init() {
     recipe_list = DataHelper::list_config_file(recipe_config_path);
     int i_recipeCount = recipe_list.length();
     QStringList tblHeader;
-    tblHeader << u8"序号" << u8"标签";
+    tblHeader << "Index" << "Tag";
     ui->tbl_recipe->setColumnCount(2);
     ui->tbl_recipe->setHorizontalHeaderLabels(tblHeader);
     ui->tbl_recipe->verticalHeader()->setVisible(false);
@@ -93,7 +93,7 @@ void RecipeDlg::on_tbl_recipe_cellClicked(int row, int) {
     QStringList sl_recipes = DataHelper::list_config_file(recipe_config_path);
     QMap<QString, QString> qm_values = DataHelper::read_config(sl_recipes.at(row) + ".ini", recipe_config_path, "Recipe");
     if(!qm_values.count()) {
-        QMessageBox::warning(nullptr, u8"读取错误", u8"未读取到数据");
+        QMessageBox::warning(nullptr, "Read error", "No data was read");
         return;
     }
     //read Method
@@ -175,7 +175,7 @@ void RecipeDlg::on_btn_run_clicked() {
 void RecipeDlg::recipe_save(bool is_run) {
     QString s_recipeName        =  ui->le_name->text();
     if(s_recipeName.length() < 1) {
-        QMessageBox::warning(nullptr, u8"保存错误", u8"请输入配方标签");
+        QMessageBox::warning(nullptr, "Save error", "Please enter the recipe tag");
         return;
     } else {
         s_recipeName += ".ini";
@@ -203,9 +203,9 @@ void RecipeDlg::recipe_save(bool is_run) {
         if(is_run) {
             return;
         }
-        QMessageBox::information(nullptr, u8"成功", u8"配方已保存");
+        QMessageBox::information(nullptr, "Success", "Recipe saved");
     } else {
-        QMessageBox::warning(nullptr, u8"失败", u8"保存失败, 请检查设置.");
+        QMessageBox::warning(nullptr, "Failed", "Failed to save. Please check the Settings.");
     }
 }
 

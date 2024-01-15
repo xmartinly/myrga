@@ -118,19 +118,19 @@ class RgaUtility {
     QStringList   m_closeSet;
     //table headers
     QStringList   m_mainTblHead = {
-        u8"地址",     //0
-        u8"序列号",       //1
-//        u8"配方",   //2
-        u8"灯丝", //2
-        u8"倍增器",       //3
-        u8"间隔",    //4
-        u8"报告单位",  //5
-        u8"数据记录",  //6
-        u8"错误",    //7
-        u8"运行时间",    //8
-        u8"扫描时间",   //9
-//        u8"总压",    //11
-        u8"扫描次数"   //10
+        "Address",     //0
+        "SNS",       //1
+//        "配方",   //2
+        "Filament", //2
+        "EM",       //3
+        "Dwell",    //4
+        "RUnit",  //5
+        "Log",  //6
+        "Error",    //7
+        "Run Time",    //8
+        "Scan Time",   //9
+//        "总压",    //11
+        "Scan count"   //10
     };
 
     QFile*        data_file_ptr     = nullptr;

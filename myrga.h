@@ -113,9 +113,9 @@ class MyRga : public QMainWindow
     // line/spec chart menu
     QMenu* chart_right_b_menu = nullptr;
     // chart menu actions
-    QAction* action_y_type = new QAction(u8"切换y轴坐标系", this);
-    QAction* action_print = new QAction(u8"打印", this);
-    QAction* action_rescale = new QAction(u8"复位", this);
+    QAction* action_y_type = new QAction("Switch Y axis type", this);
+    QAction* action_print = new QAction("Print", this);
+    QAction* action_rescale = new QAction("Rescale", this);
     // visual cursor
     QCPItemLine* v_curs = nullptr;
     // version label
@@ -123,9 +123,9 @@ class MyRga : public QMainWindow
     // progress bar
 //    QProgressBar* prog_bar = nullptr;
     // run info text
-    QString run_info  = u8"已停止 | ";
+    QString run_info  = "Stopped | ";
 
-    QString y_scale = u8"对数";
+    QString y_scale = "Log";
 
     int flmt_try_open = 0;
 

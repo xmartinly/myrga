@@ -49,7 +49,7 @@
           </size>
          </property>
          <property name="text">
-          <string>标签</string>
+          <string>Tag</string>
          </property>
         </widget>
        </item>
@@ -101,7 +101,7 @@
           </size>
          </property>
          <property name="text">
-          <string>收集方式</string>
+          <string>Method</string>
          </property>
         </widget>
        </item>
@@ -124,12 +124,12 @@
          </property>
          <item>
           <property name="text">
-           <string>范围扫描</string>
+           <string>Sweep</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>点位选择</string>
+           <string>Points</string>
           </property>
          </item>
         </widget>
@@ -157,7 +157,7 @@
           </size>
          </property>
          <property name="text">
-          <string>范围</string>
+          <string>Range</string>
          </property>
         </widget>
        </item>
@@ -255,7 +255,7 @@
           </size>
          </property>
          <property name="text">
-          <string>点位</string>
+          <string>Points</string>
          </property>
         </widget>
        </item>
@@ -319,7 +319,7 @@
           </size>
          </property>
          <property name="text">
-          <string>扫描间隔</string>
+          <string>Dwell</string>
          </property>
         </widget>
        </item>
@@ -418,7 +418,7 @@
           </size>
          </property>
          <property name="text">
-          <string>每点分隔</string>
+          <string>PPAmu</string>
          </property>
         </widget>
        </item>
@@ -491,7 +491,7 @@
           </size>
          </property>
          <property name="text">
-          <string>数据类型</string>
+          <string>DataType</string>
          </property>
         </widget>
        </item>
@@ -514,12 +514,12 @@
          </property>
          <item>
           <property name="text">
-           <string>电流</string>
+           <string>Current</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>分压</string>
+           <string>PP</string>
           </property>
          </item>
         </widget>
@@ -547,7 +547,7 @@
           </size>
          </property>
          <property name="text">
-          <string>气压单位</string>
+          <string>PUnit</string>
          </property>
         </widget>
        </item>
@@ -617,7 +617,7 @@
           </size>
          </property>
          <property name="text">
-          <string>激活灯丝</string>
+          <string>Filament</string>
          </property>
         </widget>
        </item>
@@ -673,7 +673,7 @@
           </size>
          </property>
          <property name="text">
-          <string>运行时长</string>
+          <string>RunPeroid</string>
          </property>
         </widget>
        </item>
@@ -755,7 +755,7 @@
           </size>
          </property>
          <property name="text">
-          <string>倍增器</string>
+          <string>EM</string>
          </property>
         </widget>
        </item>
@@ -777,7 +777,7 @@
           <string>EM operation method.</string>
          </property>
          <property name="text">
-          <string>自动开</string>
+          <string>AutoOn</string>
          </property>
         </widget>
        </item>
@@ -833,12 +833,12 @@
          </property>
          <item>
           <property name="text">
-           <string>单次</string>
+           <string>OneTime</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>连续</string>
+           <string>Continuous</string>
           </property>
          </item>
         </widget>
@@ -860,7 +860,7 @@
         </size>
        </property>
        <property name="text">
-        <string>运行</string>
+        <string>Run</string>
        </property>
       </widget>
      </item>
@@ -895,7 +895,7 @@
         </size>
        </property>
        <property name="text">
-        <string>删除</string>
+        <string>Del</string>
        </property>
       </widget>
      </item>
@@ -930,7 +930,7 @@
         </size>
        </property>
        <property name="text">
-        <string>保存</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>

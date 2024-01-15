@@ -45,7 +45,7 @@ void TableObserver::update() {
         QString s_errCnt = QString::number(i_errCnt);
         QString s_flmtState = off_text;
         QString s_emState = off_text;
-        QString s_rptUnit = inst->get_rcpt_info(RgaUtility::RcptRptUnit) == "Current" ? u8"电流" : u8"分压";
+        QString s_rptUnit = inst->get_rcpt_info(RgaUtility::RcptRptUnit);
         if(b_isFlmtPending) {
             s_flmtState = pending_text;
         }
@@ -370,14 +370,14 @@ void TextInfoObserver::update() {
                        inst->get_em_gain_val(),
                        inst->get_pres_unit(true).toInt()
                    );
-            s_val.append(u8"\n分压: \t" + QString::number(d_pp, 'e', 2) + " " + inst->get_pres_unit());
+            s_val.append("\nPP: \t" + QString::number(d_pp, 'e', 2) + " " + inst->get_pres_unit());
         }
         d_ppm =  1000000 * d_pp / d_pressure;
         s_val.append("\nPPM: \t" + QString::number(d_ppm, 'e', 2));
         sl_vals.append(s_val);
         sl_mzs.append(s_mz);
     }
-    QString s_temp = u8"质荷比: \t%1\n值: \t%2\n元素: \t%3\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n";
+    QString s_temp = "Amu: \t%1\nValue: \t%2\nElement: \t%3\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n";
     for (int var = 0; var < i_selCnt; ++var) {
         s_info.append(s_temp.arg(
                           sl_mzs.at(var),

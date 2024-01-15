@@ -70,6 +70,7 @@ void CommHttp::replyFinishedSlot(QNetworkReply* reply) {
         QJsonDocument json_data = QJsonDocument::fromJson(data, &jsonpe);
         if (jsonpe.error == QJsonParseError::NoError) {
             QJsonObject data_obj = json_data.object();
+//            qDebug() << reply->url() << data_obj;
             data_obj.insert("id", s_rgaIp.replace(".", ""));
             ResponseCalc* calc = new ResponseCalc(data_obj, this);
             connect(calc, &ResponseCalc::send_calc_res, this, &CommHttp::get_calc_resp);

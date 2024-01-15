@@ -148,7 +148,7 @@
                     <string>Sweep range</string>
                    </property>
                    <property name="text">
-                    <string>范围</string>
+                    <string>Range</string>
                    </property>
                   </widget>
                  </item>
@@ -254,7 +254,7 @@
                    <string>Scan Method</string>
                   </property>
                   <property name="text">
-                   <string>搜集方式</string>
+                   <string>Method</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -280,12 +280,12 @@
                   </property>
                   <item>
                    <property name="text">
-                    <string>范围扫描</string>
+                    <string>Sweep</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>点位选择</string>
+                    <string>Points</string>
                    </property>
                   </item>
                  </widget>
@@ -325,7 +325,7 @@
                    <string>Pressure Unit</string>
                   </property>
                   <property name="text">
-                   <string>气压单位</string>
+                   <string>PUnit</string>
                   </property>
                  </widget>
                 </item>
@@ -405,7 +405,7 @@
                    <string>Scan Dwell</string>
                   </property>
                   <property name="text">
-                   <string>扫描间隔</string>
+                   <string>Dwell</string>
                   </property>
                  </widget>
                 </item>
@@ -516,7 +516,7 @@
                    <string>Scan PPAmu</string>
                   </property>
                   <property name="text">
-                   <string>每点分隔</string>
+                   <string>PPAmu</string>
                   </property>
                  </widget>
                 </item>
@@ -605,7 +605,7 @@
                     <string>Selected points</string>
                    </property>
                    <property name="text">
-                    <string>点位</string>
+                    <string>Points</string>
                    </property>
                   </widget>
                  </item>
@@ -664,7 +664,7 @@
                    <string>Data type</string>
                   </property>
                   <property name="text">
-                   <string>数据类型</string>
+                   <string>DataType</string>
                   </property>
                  </widget>
                 </item>
@@ -687,12 +687,12 @@
                   </property>
                   <item>
                    <property name="text">
-                    <string>电流</string>
+                    <string>Current</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>分压</string>
+                    <string>PP</string>
                    </property>
                   </item>
                  </widget>
@@ -732,7 +732,7 @@
                    <string>Select filament</string>
                   </property>
                   <property name="text">
-                   <string>激活灯丝</string>
+                   <string>Filament</string>
                   </property>
                  </widget>
                 </item>
@@ -998,7 +998,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>开关左边区域</string>
+          <string>Toggle Side</string>
          </property>
          <property name="text">
           <string/>
@@ -1046,7 +1046,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>通讯设置</string>
+          <string>Comm</string>
          </property>
          <property name="text">
           <string/>
@@ -1078,7 +1078,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>配方设置</string>
+          <string>Recipe</string>
          </property>
          <property name="text">
           <string/>
@@ -1110,7 +1110,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>数据回溯</string>
+          <string>Log</string>
          </property>
          <property name="text">
           <string/>
@@ -1142,7 +1142,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>其它信息</string>
+          <string>Additional Infomation</string>
          </property>
          <property name="text">
           <string/>
@@ -1174,7 +1174,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>开关倍增器</string>
+          <string>Toggle EM</string>
          </property>
          <property name="text">
           <string/>
@@ -1206,7 +1206,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>仪器连接</string>
+          <string>myRGA comm</string>
          </property>
          <property name="text">
           <string/>
@@ -1302,7 +1302,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>开关灯丝</string>
+          <string>Toggle Filament</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -1341,21 +1341,21 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>文件</string>
+     <string>File</string>
     </property>
     <addaction name="actionReview"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSetting">
     <property name="title">
-     <string>设置</string>
+     <string>Settings</string>
     </property>
     <addaction name="actionRecipe"/>
     <addaction name="actionComm"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>帮助</string>
+     <string>Help</string>
     </property>
     <addaction name="actionManual"/>
     <addaction name="actionAbout"/>
@@ -1367,32 +1367,32 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionReview">
    <property name="text">
-    <string>回溯</string>
+    <string>Log</string>
    </property>
   </action>
   <action name="actionRecipe">
    <property name="text">
-    <string>配方</string>
+    <string>Recipe</string>
    </property>
   </action>
   <action name="actionComm">
    <property name="text">
-    <string>通讯</string>
+    <string>Comm</string>
    </property>
   </action>
   <action name="actionManual">
    <property name="text">
-    <string>说明书</string>
+    <string>Manual</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>关于</string>
+    <string>About</string>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>退出</string>
+    <string>Exit</string>
    </property>
   </action>
  </widget>
